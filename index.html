@@ -1,767 +1,870 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Hacer Hoca ile Yeni Nesil Kesirler Değerlendirmesi</title>
-<style>
-  :root {
-    --primary: #4f46e5;
-    --secondary: #ec4899;
-    --success: #16a34a;
-    --success-light: #dcfce7;
-    --danger: #dc2626;
-    --danger-light: #fee2e2;
-    --warning: #f59e0b;
-    --bg: #f0f4f8;
-    --card: #ffffff;
-    --text: #1e293b;
-  }
-  * {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  }
-  body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    color: var(--text);
-    overflow-x: hidden;
-  }
-  .app-container {
-    width: 100%;
-    max-width: 480px;
-    min-height: 100vh;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    position: relative;
-  }
-  .teacher-banner {
-    background: linear-gradient(90deg, #4338ca, #db2777);
-    color: white;
-    text-align: center;
-    padding: 14px 10px;
-    font-weight: 800;
-    font-size: 1.1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  }
-  .header-stats {
-    background: #312e81;
-    color: white;
-    padding: 10px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 700;
-    font-size: 0.95rem;
-  }
-  .score-badge {
-    background: #f59e0b;
-    color: #fff;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 800;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
-  .reward-shelf-container {
-    background: #ffffff;
-    margin: 10px 12px 0;
-    padding: 10px;
-    border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    border: 2px solid #e0e7ff;
-  }
-  .shelf-title {
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #4f46e5;
-    text-align: center;
-    margin-bottom: 6px;
-  }
-  .badge-shelf {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 4px;
-  }
-  .badge-slot {
-    aspect-ratio: 1;
-    background: #f1f5f9;
-    border: 1.5px dashed #cbd5e1;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-  }
-  .badge-slot.earned {
-    background: #fef08a;
-    border: 1.5px solid #eab308;
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
-  }
-  .badge-slot.missed {
-    background: #fef3c7;
-    border: 1.5px solid #f59e0b;
-  }
-  .progress-bar-bg {
-    width: 92%;
-    height: 10px;
-    background: #cbd5e1;
-    border-radius: 10px;
-    margin: 10px auto 4px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #22c55e, #10b981);
-    width: 10%;
-    transition: width 0.4s ease;
-  }
-  .card {
-    background: var(--card);
-    margin: 8px 12px 14px;
-    padding: 18px;
-    border-radius: 18px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .welcome-screen {
-    text-align: center;
-    padding: 20px 10px;
-  }
-  .name-input {
-    width: 90%;
-    padding: 14px;
-    font-size: 1.05rem;
-    border: 2px solid #818cf8;
-    border-radius: 14px;
-    text-align: center;
-    font-weight: 700;
-    margin: 14px 0 6px;
-    outline: none;
-    transition: all 0.2s;
-  }
-  .name-input:focus {
-    border-color: #ec4899;
-    box-shadow: 0 0 0 4px #fce7f3;
-  }
-  .error-msg {
-    color: #dc2626;
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    min-height: 20px;
-  }
-  .q-title {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--primary);
-    margin: 0 0 10px 0;
-  }
-  .interactive-stage {
-    background: #f8fafc;
-    border: 2px dashed #94a3b8;
-    border-radius: 14px;
-    padding: 12px 10px;
-    margin-bottom: 12px;
-    text-align: center;
-  }
-  .hint-badge {
-    display: inline-block;
-    background: #fef3c7;
-    color: #b45309;
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-  }
-  .q-text {
-    font-size: 1rem;
-    line-height: 1.55;
-    margin-bottom: 14px;
-    font-weight: 500;
-  }
-  .frac {
-    display: inline-flex;
-    flex-direction: column;
-    vertical-align: middle;
-    text-align: center;
-    font-weight: 800;
-    margin: 0 4px;
-    font-size: 1.05em;
-    line-height: 1.1;
-  }
-  .frac .top {
-    border-bottom: 2px solid currentColor;
-    padding: 0 4px;
-  }
-  .frac .bottom {
-    padding: 0 4px;
-  }
-  .options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .opt-btn {
-    background: #f1f5f9;
-    border: 2px solid #cbd5e1;
-    border-radius: 14px;
-    padding: 12px 14px;
-    font-size: 0.98rem;
-    font-weight: 600;
-    color: var(--text);
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .opt-btn:disabled {
-    cursor: not-allowed;
-  }
-  .opt-btn.correct {
-    background: var(--success-light);
-    border-color: var(--success);
-    color: #065f46;
-    opacity: 1;
-  }
-  .opt-btn.correct .opt-letter {
-    background: var(--success);
-  }
-  .opt-btn.wrong {
-    background: var(--danger-light);
-    border-color: var(--danger);
-    color: #991b1b;
-  }
-  .opt-btn.wrong .opt-letter {
-    background: var(--danger);
-  }
-  .opt-letter {
-    background: var(--primary);
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 800;
-    flex-shrink: 0;
-  }
-  .explanation-box {
-    margin-top: 12px;
-    padding: 12px;
-    background: #f8fafc;
-    border-left: 4px solid var(--primary);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    display: none;
-    animation: fadeIn 0.3s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .next-btn, .action-btn {
-    margin-top: 14px;
-    width: 100%;
-    background: linear-gradient(90deg, #4f46e5, #db2777);
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 14px;
-    font-size: 1.05rem;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
-    transition: transform 0.1s;
-  }
-  .next-btn:active, .action-btn:active {
-    transform: scale(0.98);
-  }
-  .grid-row {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin: 6px 0;
-  }
-  .touch-box {
-    width: 48px;
-    height: 48px;
-    border: 2px solid #64748b;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.4rem;
-    background: white;
-    user-select: none;
-  }
-  .confetti {
-    position: fixed;
-    z-index: 999999;
-    pointer-events: none;
-    animation: fall linear forwards;
-  }
-  @keyframes fall {
-    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f5ff">
+  <meta name="description" content="Hacer Hoca ile 3. sınıfa özel, beceri temelli ve çocuk dostu yeni nesil kesirler değerlendirmesi.">
+  <title>Hacer Hoca ile Yeni Nesil Kesirler Değerlendirmesi</title>
+  <style>
+    :root{--ink:#27254b;--muted:#77748e;--violet:#6254d8;--violet-dark:#493ab7;--violet-pale:#f0edff;--mint:#1a9d77;--mint-pale:#e9f9f0;--coral:#ec7a71;--coral-pale:#fff1ed;--gold:#eab54b;--line:#eceaf5;--paper:#fff;--shadow:0 20px 58px rgba(48,38,110,.12)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;min-height:100vh;background:radial-gradient(circle at 10% 2%,#e5e7ff 0,transparent 33%),radial-gradient(circle at 95% 45%,#fce7d9 0,transparent 37%),#f8f7ff;line-height:1.5;-webkit-tap-highlight-color:transparent}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #facf77;outline-offset:3px}
+    .app{width:min(100%,480px);margin:0 auto;min-height:100dvh;background:var(--paper);box-shadow:var(--shadow);overflow:hidden}
+    [hidden]{display:none!important}
+    .page{animation:pageEnter .32s ease both}
+    @keyframes pageEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .hero{padding:24px 23px 32px;min-height:353px;overflow:hidden;position:relative;background:linear-gradient(145deg,#6f65dd 1%,#5547c8 54%,#4035aa 100%);color:#fff;border-radius:0 0 33px 33px}
+    .hero:before,.hero:after{content:"";position:absolute;border-radius:100%;border:1px solid rgba(255,255,255,.21);pointer-events:none}
+    .hero:before{width:260px;height:260px;top:-132px;right:-98px}
+    .hero:after{width:155px;height:155px;bottom:-102px;left:-45px}
+    .hero-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .logo-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.3);border-radius:30px;padding:6px 12px;background:rgba(255,255,255,.13);font-size:11px;letter-spacing:.6px;font-weight:800}
+    .grade-tag{background:rgba(255,255,255,.16);border-radius:9px;padding:5px 10px;font-size:11px;font-weight:800}
+    .hero-layout{display:flex;align-items:center;gap:4px;margin-top:22px;position:relative;z-index:1}
+    .hero-copy{flex:1;min-width:0}
+    .hero-eyebrow{color:#f9e6a7;letter-spacing:2px;text-transform:uppercase;font-weight:800;font-size:10px;margin:0 0 11px}
+    h1{font-size:clamp(27px,7vw,35px);line-height:1.15;letter-spacing:-1.2px;margin:0;font-weight:900}
+    .hero-description{font-size:12px;line-height:1.6;color:#ecebff;max-width:207px;margin:14px 0 0}
+    .teacher-art{width:151px;min-width:128px;max-width:39%;filter:drop-shadow(0 10px 11px rgba(29,22,109,.25))}
+    .welcome-inner{padding:24px 24px 30px}
+    .pill-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:24px}
+    .info-pill{background:#f7f6fc;padding:12px 7px;border:1px solid #efedf6;border-radius:15px;text-align:center}
+    .info-pill strong{font-size:21px;line-height:1.1;display:block;color:#5548ca}
+    .info-pill span{display:block;font-size:10px;font-weight:750;color:var(--muted);margin-top:6px}
+    .section-eyebrow{font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--violet);font-size:11px;margin:0 0 7px}
+    .welcome-inner h2{margin:0 0 8px;font-size:21px;letter-spacing:-.5px}
+    .intro-text{font-size:13px;color:var(--muted);margin:0 0 22px}
+    label[for="student-name"]{font-weight:800;font-size:13px;display:block;margin-bottom:9px}
+    .name-input{border:2px solid #e8e4f5;outline:none;background:#fbfaff;border-radius:13px;padding:15px;width:100%;color:var(--ink);font-size:15px;transition:.2s}
+    .name-input:focus{border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px #eae6ff}
+    .field-note{font-size:11px;color:var(--muted);margin:8px 0 0}
+    .field-error{font-size:12px;color:#ae4349;font-weight:700;margin:7px 0 0;min-height:0}
+    .primary-btn{border:0;background:linear-gradient(120deg,#6657d9,#5040c7);color:white;border-radius:15px;padding:16px 20px;width:100%;font-weight:850;font-size:15px;box-shadow:0 10px 21px rgba(85,71,200,.24);display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .15s,filter .15s}
+    .primary-btn:active{transform:scale(.985)}
+    .primary-btn:hover{filter:brightness(1.07)}
+    .welcome-start{margin-top:18px}
+    .honest-note{margin:16px 0 0;display:flex;gap:9px;align-items:flex-start;font-size:11px;color:#706c88;background:#f8f6ff;padding:12px;border-radius:12px}
+    .honest-note .mark{font-size:16px;flex:none}
+    .quiz-header{background:linear-gradient(150deg,#6758dc,#4d40b7);color:#fff;padding:20px 19px 23px;border-radius:0 0 25px 25px}
+    .toprow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .brand-tiny{font-size:12px;font-weight:850;letter-spacing:-.1px}
+    .student-chip{font-size:11px;font-weight:750;background:rgba(255,255,255,.18);border-radius:30px;padding:6px 10px;max-width:54%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .progress-meta{display:flex;justify-content:space-between;align-items:end;margin-top:24px;margin-bottom:8px}
+    .progress-meta .label{font-size:11px;color:#ddd9ff;font-weight:700}
+    .progress-meta .value{font-size:15px;font-weight:900}
+    .track{height:9px;border-radius:20px;background:rgba(255,255,255,.22);overflow:hidden}
+    .track-fill{height:100%;width:0%;background:#ffd179;border-radius:20px;transition:width .42s cubic-bezier(.2,.7,.2,1)}
+    .quiz-inner{padding:23px 19px 26px}
+    .shelf{margin-bottom:20px}
+    .shelf-title{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:850;margin-bottom:10px}
+    .shelf-title small{font-size:10px;color:var(--muted);font-weight:700}
+    .badge-track{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}
+    .achievement{width:100%;aspect-ratio:1;background:#f5f3fc;border:1px solid #ebe8f7;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#aaa5c6;font-size:13px;transition:background .25s,transform .25s}
+    .achievement.won{background:#fff2c5;border-color:#f4d88b;transform:translateY(-2px);font-size:15px}
+    .achievement.missed{background:#fff3f2;color:#e5a9aa;border-color:#f8e3e3}
+    .achievement.current{outline:2px solid #aa9df5;outline-offset:1px}
+    .question-card{border:1px solid #eeeaf8;box-shadow:0 12px 38px rgba(76,55,125,.055);border-radius:21px;padding:15px 15px 17px}
+    .question-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:13px}
+    .tag{font-size:10px;color:#5141b6;background:#f0edff;padding:6px 9px;border-radius:9px;font-weight:800}
+    .level{font-size:10px;color:#9b6b26;background:#fff5e2;padding:6px 9px;border-radius:9px;font-weight:850;white-space:nowrap}
+    .visual{background:linear-gradient(150deg,#f8f7ff,#fffaf6);border:1px solid #eceaf5;border-radius:15px;overflow:hidden;padding:8px 6px 5px;min-height:203px;display:flex;flex-direction:column;justify-content:center}
+    .visual svg{width:100%;height:auto;display:block;max-height:198px}
+    .visual-caption{font-size:11px;font-weight:700;text-align:center;color:#76718a;padding:7px 10px 4px}
+    .question-number{margin:18px 0 4px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:900;color:#8d82c7}
+    .question-prompt{font-size:17px;line-height:1.52;font-weight:850;letter-spacing:-.35px;margin:0 0 15px}
+    .choices{display:grid;gap:10px}
+    .choice{width:100%;border:2px solid #eeecf7;background:white;display:flex;align-items:center;gap:12px;text-align:left;border-radius:14px;padding:12px 14px;color:var(--ink);min-height:59px;transition:.18s;line-height:1.35}
+    .choice-letter{width:32px;height:32px;flex:none;border-radius:10px;background:#f3f0ff;color:#6356c6;display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:900}
+    .choice-label{font-size:14px;font-weight:800;flex:1}
+    .choice:not(:disabled):hover{border-color:#9489ec;background:#fbfaff}
+    .choice:disabled{cursor:default}
+    .choice.correct{border-color:#38ae88;background:#edfaf3}
+    .choice.correct .choice-letter{background:#d2f3e1;color:#15835d}
+    .choice.incorrect{border-color:#eb9897;background:#fff4f2}
+    .choice.incorrect .choice-letter{background:#fce4e3;color:#ad5152}
+    .choice.dimmed{opacity:.5}
+    .choice-status{font-weight:900;font-size:18px;flex:none}
+    .hint-area{margin-top:14px}
+    .hint-toggle{width:100%;padding:11px;border:1px dashed #bcb4ed;border-radius:11px;background:#f9f8ff;color:#6b59c7;font-weight:850;font-size:12px}
+    .hint-box{background:#f7f5ff;border-left:3px solid #8070e7;margin-top:9px;border-radius:9px;padding:12px;font-size:12px;line-height:1.6;color:#514978}
+    .feedback{margin-top:16px;border-radius:17px;padding:15px 16px;border:1px solid}
+    .feedback.success{background:#edfaf4;border-color:#c8eadc}
+    .feedback.growth{background:#fff8f0;border-color:#f7e3c5}
+    .feedback-title{margin:0 0 5px;font-size:16px;font-weight:900}
+    .feedback p{margin:0 0 10px;font-size:12px;line-height:1.65}
+    .feedback ol{margin:7px 0 10px;padding-left:21px;font-size:12px;line-height:1.7}
+    .feedback li+li{margin-top:5px}
+    .micro-note{margin-top:9px!important;margin-bottom:0!important;border-top:1px solid rgba(71,62,83,.1);padding-top:10px;font-weight:750}
+    .next-btn{margin-top:14px}
+    .mini-footer{text-align:center;color:#aba6bd;font-size:10px;padding:16px 4px 0}
+    .report{padding:0 0 30px}
+    .report-hero{background:linear-gradient(150deg,#6657d8,#4d41b8);padding:26px 22px 33px;color:white;border-radius:0 0 31px 31px;position:relative;overflow:hidden;text-align:center}
+    .report-hero:before{content:"✦";position:absolute;left:20px;top:50px;color:#fad180;font-size:24px}
+    .report-hero:after{content:"✦";position:absolute;right:23px;top:75px;color:#fad180;font-size:30px}
+    .report-hero .small{font-size:11px;font-weight:800;letter-spacing:1.6px;color:#e0dbff;text-transform:uppercase}
+    .report-hero h2{margin:7px 0 4px;font-size:27px;line-height:1.2;letter-spacing:-.8px}
+    .report-name{font-size:14px;font-weight:800;margin:7px 0}.report-date{margin:1px 0;font-size:10px;font-weight:700;color:#e7e1ff}
+    .score-ring{width:146px;height:146px;border-radius:50%;display:grid;place-items:center;margin:20px auto 14px;background:conic-gradient(#ffdc80 var(--score-stop),rgba(255,255,255,.2) 0);box-shadow:0 10px 23px rgba(33,23,105,.15)}
+    .score-ring-inner{width:118px;height:118px;border-radius:50%;background:#5546c2;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .score-ring strong{font-size:43px;line-height:1.05;letter-spacing:-1px}
+    .score-ring span{font-size:11px;color:#edeaff;font-weight:750}
+    .report-message{font-size:12px;max-width:325px;margin:0 auto;color:#eeeaff;line-height:1.5}
+    .report-inner{padding:21px 18px 0}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .metric{border-radius:14px;padding:13px 7px;text-align:center;background:#f7f6fc}
+    .metric strong{display:block;font-size:23px;line-height:1.2}
+    .metric span{display:block;color:#817c95;font-size:10px;font-weight:750;margin-top:4px}
+    .metric.good{background:#eafaef}.metric.good strong{color:#198b64}
+    .metric.growth{background:#fff4ed}.metric.growth strong{color:#c78342}
+    .report-section{margin-top:24px}
+    .report-section h3{font-size:17px;letter-spacing:-.4px;margin:0 0 6px}
+    .section-sub{font-size:11px;color:var(--muted);margin:0 0 15px;line-height:1.5}
+    .skill-row{margin-bottom:13px}
+    .skill-meta{display:flex;justify-content:space-between;gap:5px;font-size:12px;font-weight:800;margin-bottom:7px}
+    .skill-meta span:last-child{font-size:11px;color:#7d7696}
+    .skill-track{height:8px;border-radius:99px;background:#eeecf6;overflow:hidden}
+    .skill-track>div{height:100%;background:linear-gradient(90deg,#8476ec,#53c9a2);border-radius:99px}
+    .plan-card{background:#f6f5ff;border:1px solid #eae6ff;border-radius:16px;padding:15px;margin-top:18px}
+    .plan-card h4{font-size:13px;margin:0 0 8px}
+    .plan-card p{font-size:12px;color:#565173;margin:0;line-height:1.7}
+    .answer-list{display:grid;gap:11px;margin-top:14px}
+    .analysis-item{border-radius:15px;border:1px solid #ebe8f4;background:#fff;overflow:hidden;break-inside:avoid}
+    .analysis-item summary{cursor:pointer;padding:13px;display:flex;align-items:center;gap:9px;list-style:none}
+    .analysis-item summary::-webkit-details-marker{display:none}
+    .analysis-icon{width:33px;height:33px;border-radius:10px;background:#e6f7ee;display:grid;place-items:center;font-size:15px;flex:none}
+    .analysis-item.bad .analysis-icon{background:#fff0e7}
+    .analysis-ttl{font-size:12px;font-weight:900;line-height:1.35;flex:1}
+    .analysis-ttl small{display:block;font-size:10px;color:#8b869b;margin-top:3px;font-weight:650}
+    .analysis-chevron{font-size:12px;color:#aca5bf;transition:transform .2s}
+    .analysis-item[open] .analysis-chevron{transform:rotate(180deg)}
+    .analysis-content{border-top:1px solid #f0eef6;padding:12px 14px 14px;font-size:12px;line-height:1.65}
+    .analysis-content p{margin:0 0 8px}
+    .analysis-content ol{padding-left:21px;margin:9px 0}
+    .answer-compare{display:grid;gap:5px;background:#f8f7fd;padding:10px 11px;border-radius:10px;margin-bottom:10px;font-weight:760}
+    .answer-compare b{color:#19906c}
+    .error-insight{background:#fff7ee;padding:10px;border-radius:10px;color:#a36539;margin:10px 0}
+    .report-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:24px}
+    .secondary-btn{border:1px solid #dcd7f0;background:#f7f5ff;color:#584cc0;font-size:12px;font-weight:850;border-radius:14px;padding:13px 11px}
+    .report-actions .primary-btn{font-size:12px;padding:13px 10px;box-shadow:none}
+    .screen-reader-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+    .confetti-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:30}
+    .confetti-piece{position:absolute;top:-70px;font-size:clamp(18px,5vw,32px);will-change:transform,opacity;animation:fall var(--duration) linear var(--delay) forwards;filter:drop-shadow(0 3px 4px rgba(0,0,0,.08))}
+    @keyframes fall{0%{transform:translate3d(0,-65px,0) rotate(0deg) scale(.7);opacity:0}9%{opacity:1}85%{opacity:1}100%{transform:translate3d(var(--drift),110vh,0) rotate(var(--turn)) scale(1.15);opacity:0}}
+    @media(min-width:481px){body{padding:20px 12px}.app{min-height:calc(100dvh - 40px);border-radius:25px}.hero,.quiz-header,.report-hero{border-radius:25px 25px 31px 31px}}
+    @media(max-width:360px){.hero{padding-left:18px;padding-right:16px}.hero-layout{gap:0}.teacher-art{min-width:109px}h1{font-size:26px}.quiz-inner{padding-left:12px;padding-right:12px}.question-card{padding:12px}.badge-track{gap:3px}.hero-description{font-size:11px}.question-prompt{font-size:16px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+    /* Çocuk dostu macera girişi */
+    .hero{background:radial-gradient(ellipse at 92% 32%,rgba(255,208,125,.25),transparent 30%),radial-gradient(ellipse at 6% 102%,rgba(77,207,210,.24),transparent 43%),linear-gradient(138deg,#795ae5 0%,#5947d2 50%,#4035a8 100%);padding:20px 21px 17px;min-height:323px;border-radius:0 0 35px 35px}
+    .hero:before{width:188px;height:188px;top:-85px;right:-71px}
+    .hero:after{width:151px;height:151px;bottom:-96px;left:-49px}
+    .hero-top{gap:7px}
+    .logo-badge{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.43);font-size:10px;letter-spacing:.35px;white-space:nowrap;padding:7px 10px}
+    .grade-tag{background:#ffd98c;color:#4b3198;border-radius:11px;white-space:nowrap;font-size:10px;padding:7px 9px;box-shadow:0 3px 0 rgba(34,19,85,.12)}
+    .hero-layout{margin-top:17px;gap:0;align-items:center;min-height:206px}
+    .hero-eyebrow{color:#fff3a7;font-size:9px;letter-spacing:1.05px;line-height:1.3;margin-bottom:11px}
+    .hero h1{font-size:clamp(29px,8vw,39px);line-height:1.04;letter-spacing:-1.3px;text-shadow:0 3px 0 rgba(55,37,131,.12)}
+    .hero-rainbow{color:#ffe17e;display:inline-block;transform:rotate(-3deg);text-shadow:3px 3px 0 rgba(237,131,133,.45)}
+    .hero-description{font-size:12px;line-height:1.5;max-width:216px;margin-top:14px;color:#fff}
+    .hero-description strong{color:#ffe9a7}
+    .teacher-stage{width:46%;flex:none;position:relative;align-self:stretch;display:flex;align-items:center;justify-content:center;min-width:0}
+    .teacher-stage:before{content:"";position:absolute;width:95%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.16);box-shadow:0 0 0 10px rgba(255,255,255,.05);top:7px;right:0}
+    .teacher-art{width:100%;max-width:180px;min-width:0;position:relative;z-index:1;animation:teacherFloat 4.7s ease-in-out infinite;filter:drop-shadow(0 8px 8px rgba(28,18,95,.2))}
+    @keyframes teacherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .floating-fraction{position:absolute;z-index:2;display:grid;place-items:center;width:37px;height:37px;border-radius:13px;background:#ffde80;color:#5c3ab0;border:2px solid #fff2c5;font-weight:950;font-size:20px;box-shadow:0 5px 10px rgba(30,19,91,.15);animation:bobBadge 3.1s ease-in-out infinite}
+    .fraction-half{right:1px;top:4px;transform:rotate(12deg)}
+    .fraction-quarter{left:0;top:59px;background:#a9f0e0;animation-delay:-1.6s;transform:rotate(-10deg)}
+    @keyframes bobBadge{0%,100%{translate:0 0}50%{translate:0 -6px}}
+    .teacher-speech{position:absolute;z-index:3;right:0;bottom:4px;transform:rotate(-4deg);color:#6e46ad;background:#fff;border-radius:15px 15px 4px 15px;padding:7px 9px;font-size:10px;font-weight:900;white-space:nowrap;box-shadow:0 6px 14px rgba(36,19,89,.14)}
+    .hero-bottom{position:relative;z-index:2;display:flex;gap:5px;align-items:center;justify-content:center;margin-top:9px;flex-wrap:wrap}
+    .hero-bottom span{background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.23);border-radius:99px;color:#fff;font-size:10px;font-weight:850;padding:6px 9px}
+    .hero-decor{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+    .sparkle{position:absolute;color:#ffea9d;font-size:20px;text-shadow:0 0 12px rgba(255,244,174,.4);animation:twinkle 3.5s ease-in-out infinite}
+    .sparkle-one{top:24%;left:2%}.sparkle-two{top:9%;right:30%;animation-delay:-1.4s}.sparkle-three{bottom:18%;right:3%;animation-delay:-.7s}.sparkle-four{bottom:18%;left:42%;font-size:13px;animation-delay:-2s}
+    @keyframes twinkle{0%,100%{opacity:.45;scale:.82}50%{opacity:1;scale:1.15}}
+    .welcome-inner{padding:19px 21px 27px}
+    .pill-row{gap:8px;margin-bottom:22px}
+    .info-pill{border-color:#ece8fc;background:linear-gradient(160deg,#f8f6ff,#fff);padding:9px 4px;border-radius:16px;box-shadow:0 5px 12px rgba(78,61,169,.045)}
+    .info-pill .pill-emoji{font-size:24px;line-height:1.05;margin:0 auto 5px;display:block}
+    .info-pill strong{color:#5e47ce;font-size:24px}
+    .info-pill>span:last-child{font-size:9px;letter-spacing:.1px;line-height:1.3;min-height:25px}
+    .welcome-intro{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .intro-wave{width:44px;height:44px;display:grid;place-items:center;flex:none;border-radius:15px;background:#fff0c9;font-size:24px;transform:rotate(-8deg);box-shadow:3px 3px 0 #fce1a7}
+    .welcome-intro h2{margin:0;font-size:19px;line-height:1.2}
+    .welcome-intro .section-eyebrow{margin-bottom:4px;font-size:10px}
+    .intro-text{margin:0 0 17px;color:#76718e;font-size:12px;line-height:1.6}
+    .intro-text strong{color:#5044ad}
+    label[for="student-name"]{margin-bottom:8px}
+    .name-input{background:#fff;border-radius:13px;padding:13px 14px;font-size:14px}
+    .field-note{font-size:10px;margin:6px 0 0}
+    .buddy-picker{margin:17px 0 0;padding:0;border:0;min-width:0}
+    .buddy-picker legend{padding:0;margin:0 0 9px;font-size:12px;font-weight:900}
+    .buddy-picker legend small{font-size:10px;color:#8a829b;font-weight:600}
+    .buddy-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .buddy-option{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;background:#f9f7ff;border:2px solid #efebfb;border-radius:13px;padding:9px 4px;color:#645c82;transition:transform .16s,background .16s,border-color .16s;box-shadow:0 3px 0 rgba(73,53,158,.04)}
+    .buddy-option span{font-size:23px;line-height:1.1}.buddy-option b{font-size:12px}
+    .buddy-option.is-selected{border-color:#715bdf;background:#eee9ff;transform:translateY(-2px);box-shadow:0 4px 0 #d9cff9;color:#4a36a6}
+    .buddy-option:not(.is-selected):hover{background:#f3f0ff;border-color:#c0b6ef}
+    .buddy-message{background:#f9f7ff;border-radius:10px;padding:8px 10px;font-size:11px;color:#6b5ab1;margin:8px 0 0;line-height:1.5}
+    .welcome-start{margin-top:15px;background:linear-gradient(108deg,#ff9f52,#f07673);box-shadow:0 8px 0 #d85b6f,0 12px 20px rgba(218,99,115,.23);border:1px solid rgba(255,255,255,.14);font-weight:950;font-size:15px;letter-spacing:.3px;min-height:55px}
+    .welcome-start:hover{filter:saturate(1.12) brightness(1.03)}
+    .welcome-start:active{transform:translateY(4px);box-shadow:0 4px 0 #d85b6f}
+    .honest-note{margin-top:24px;background:#f3fcfa;color:#4a7370;border:1px solid #dff2ea;font-size:11px}
+    .report-buddy{font-size:11px;font-weight:750;margin:-1px 0 5px;color:#fff1ba}
+    .report-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .report-actions .share-btn{grid-column:1/-1;min-height:56px;font-size:15px;background:linear-gradient(120deg,#ff9f52,#f17672);box-shadow:0 6px 0 #d85c70;color:#fff}
+    .report-actions .secondary-btn{font-size:11px;padding:14px 8px;line-height:1.25;min-height:49px}
+    .report-actions .restart-btn{grid-column:1/-1;background:#f7f5ff}
+    .share-status{margin:12px 2px 0;color:#5a48af;font-size:12px;line-height:1.6;font-weight:750;min-height:0}
+    .share-status:empty{display:none}
+    .share-privacy{color:#8a849c;font-size:10px;line-height:1.55;text-align:center;margin:14px 6px 0}
+    @media(min-width:481px){.hero{border-radius:25px 25px 35px 35px}}
+    @media(max-width:365px){.hero{padding-left:15px;padding-right:15px;min-height:309px}.hero-layout{min-height:195px}.hero h1{font-size:29px}.hero-description{font-size:10.5px;margin-top:10px}.hero-eyebrow{font-size:8px}.teacher-stage{width:44%}.teacher-speech{font-size:9px;padding:6px}.floating-fraction{width:30px;height:30px;font-size:18px}.logo-badge{font-size:9px;padding:6px}.grade-tag{font-size:9px}.hero-bottom span{font-size:9px;padding:5px 7px}.welcome-inner{padding-left:14px;padding-right:14px}.welcome-intro h2{font-size:17px}.buddy-option{gap:4px}.buddy-option span{font-size:21px}}
+    @media(prefers-reduced-motion:reduce){.teacher-art,.sparkle,.floating-fraction{animation:none!important}}
+    @media print{
+      @page{size:A4;margin:15mm}
+      body{background:#fff!important;color:#222!important;font-size:11pt}
+      .app{box-shadow:none;width:100%;max-width:100%;margin:0;min-height:auto;overflow:visible}
+      #welcome-screen,#quiz-screen,.report-actions,.share-status,.share-privacy,.confetti-layer{display:none!important}
+      #report-screen{display:block!important}
+      .report-hero{background:#f4f2ff!important;color:#27254b!important;padding:16px;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+      .report-hero .small,.report-message{color:#504779!important}
+      .score-ring{background:#eae5ff!important;box-shadow:none;width:92px;height:92px;margin:12px auto}
+      .score-ring-inner{background:#f4f2ff!important;color:#27254b!important;width:80px;height:80px}
+      .score-ring strong{font-size:30px}.score-ring span{color:#514779}
+      .report-inner{padding:10px 0}.report-section{margin-top:13px}
+      .analysis-item{break-inside:avoid;page-break-inside:avoid}
+      .analysis-item:not([open]) .analysis-content{display:block!important}
+      .analysis-chevron{display:none}
+    }
+  </style>
 </head>
 <body>
+  <main class="app" id="app">
+    <section class="page" id="welcome-screen" aria-label="Kesirler macerasına hoş geldin">
+      <div class="hero">
+        <div class="hero-decor" aria-hidden="true"><span class="sparkle sparkle-one">✦</span><span class="sparkle sparkle-two">✧</span><span class="sparkle sparkle-three">✴</span><span class="sparkle sparkle-four">✦</span></div>
+        <div class="hero-top"><span class="logo-badge">✦ HACER HOCA KULÜBÜ</span><span class="grade-tag">🚀 3. SINIF</span></div>
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <p class="hero-eyebrow">SÜRPRİZLER SENİ BEKLİYOR!</p>
+            <h1>Kesirlerin<br><span class="hero-rainbow">Süper</span><br>Macerası!</h1>
+            <p class="hero-description">Pizzaları paylaş, robotlara güç ver, <strong>kesirlerin sırrını keşfet!</strong></p>
+          </div>
+          <div class="teacher-stage">
+            <span class="floating-fraction fraction-half" aria-hidden="true">½</span>
+            <span class="floating-fraction fraction-quarter" aria-hidden="true">¼</span>
+          <svg class="teacher-art" viewBox="0 0 166 229" role="img" aria-label="Gülümseyen öğretmen Hacer Hoca çizimi">
+            <ellipse cx="84" cy="218" rx="66" ry="9" fill="#24177e" opacity=".2"/>
+            <circle cx="83" cy="89" r="74" fill="#b5b1ff" opacity=".2"/>
+            <path d="M35 168Q49 142 80 142Q118 141 134 170L142 207H24Z" fill="#f2ad5d"/>
+            <path d="M43 160Q37 117 41 78Q36 37 82 33Q127 33 130 82L129 161Z" fill="#402c60"/>
+            <ellipse cx="83" cy="95" rx="43" ry="52" fill="#ffd2a9"/>
+            <path d="M40 84Q30 43 66 34Q116 22 129 65Q112 60 103 49Q83 76 40 84" fill="#35244f"/>
+            <path d="M61 102Q67 98 74 103M93 103Q99 98 106 102" fill="none" stroke="#3e3553" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="69" cy="104" r="3" fill="#342b46"/><circle cx="101" cy="104" r="3" fill="#342b46"/>
+            <rect x="51" y="91" width="30" height="24" rx="11" fill="none" stroke="#7159a2" stroke-width="3"/>
+            <rect x="88" y="91" width="30" height="24" rx="11" fill="none" stroke="#7159a2" stroke-width="3"/>
+            <path d="M81 100H88" stroke="#7159a2" stroke-width="3"/>
+            <circle cx="53" cy="122" r="8" fill="#ffa1a0" opacity=".55"/><circle cx="112" cy="122" r="8" fill="#ffa1a0" opacity=".55"/>
+            <path d="M73 123Q83 136 95 123" fill="none" stroke="#a95157" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M65 147L82 165L103 146" fill="#fff2e2"/>
+            <path d="M24 205L20 166Q20 152 34 158L67 172L86 175L107 172L139 158Q150 154 149 169L144 204Z" fill="#f5c17b"/>
+            <path d="M81 179L52 166Q40 164 27 170L28 212Q51 204 81 220Z" fill="#fffdf5" stroke="#523da4" stroke-width="3"/>
+            <path d="M81 179L110 166Q124 164 137 170L136 212Q107 204 81 220Z" fill="#fffdf5" stroke="#523da4" stroke-width="3"/>
+            <path d="M81 180V218M37 180L70 188M93 188L128 179" stroke="#c7c0e4" stroke-width="2"/>
+            <text x="82" y="207" font-size="15" text-anchor="middle" fill="#6252c5" font-weight="900">½</text>
+            <path d="M19 56l5-12 5 12 12 5-12 5-5 12-5-12-12-5z" fill="#ffe09b"/>
+            <path d="M143 35l4-9 4 9 9 4-9 4-4 9-4-9-9-4z" fill="#ffe09b"/>
+          </svg>
+            <div class="teacher-speech" aria-hidden="true">Sen yaparsın! ⭐</div>
+          </div>
+        </div>
+        <div class="hero-bottom" aria-label="Sınavın özellikleri"><span>🧠 Düşün</span><span>✨ Keşfet</span><span>🏅 Rozet kazan</span></div>
+      </div>
+      <div class="welcome-inner">
+        <div class="pill-row" aria-label="Macera bilgileri">
+          <div class="info-pill"><span class="pill-emoji" aria-hidden="true">🧩</span><strong>10</strong><span>MERAK UYANDIRAN GÖREV</span></div>
+          <div class="info-pill"><span class="pill-emoji" aria-hidden="true">🏆</span><strong>100</strong><span>TOPLANACAK PUAN</span></div>
+          <div class="info-pill"><span class="pill-emoji" aria-hidden="true">🕰️</span><strong>∞</strong><span>ACELE ETME!</span></div>
+        </div>
+        <div class="welcome-intro">
+          <div class="intro-wave" aria-hidden="true">👋</div>
+          <div><p class="section-eyebrow">HAZIR MISIN, KAŞİF?</p><h2>Merhaba, minik matematik dehası!</h2></div>
+        </div>
+        <p class="intro-text">Her soruda yeni bir sürpriz, her doğru cevapta bir rozet var! Cevabını seçmeden önce düşün; <strong>bir kez seçince değişmiyor.</strong> Sonunda sana özel karne hazırlanacak.</p>
+        <form id="student-form" novalidate>
+          <label for="student-name">✏️ Kahramanımızın adı ve soyadı</label>
+          <input class="name-input" id="student-name" type="text" placeholder="Adını ve soyadını buraya yaz..." maxlength="64" minlength="5" autocomplete="name" aria-describedby="name-hint name-error" required>
+          <p class="field-note" id="name-hint">Başlamak için adını ve soyadını yazmalısın (en az 5 karakter).</p>
+          <p class="field-error" id="name-error" role="alert" aria-live="polite"></p>
+          <fieldset class="buddy-picker" aria-label="Macera arkadaşını seç">
+            <legend>🎒 Macera arkadaşını seç <small>(isteğe bağlı)</small></legend>
+            <div class="buddy-row" id="buddy-row" role="group" aria-label="Macera arkadaşı">
+              <button type="button" class="buddy-option is-selected" data-buddy="robot" aria-pressed="true"><span aria-hidden="true">🤖</span><b>Robo</b></button>
+              <button type="button" class="buddy-option" data-buddy="fox" aria-pressed="false"><span aria-hidden="true">🦊</span><b>Pati</b></button>
+              <button type="button" class="buddy-option" data-buddy="unicorn" aria-pressed="false"><span aria-hidden="true">🦄</span><b>Işıl</b></button>
+            </div>
+            <p class="buddy-message" id="buddy-message" aria-live="polite">🤖 Robo: Birlikte bütün soruları keşfedelim!</p>
+          </fieldset>
+          <button type="submit" class="primary-btn welcome-start"><span aria-hidden="true">🚀</span> MACERAYA BAŞLA! <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="honest-note"><span class="mark" aria-hidden="true">💜</span><span>Bu bir öğrenme ve değerlendirme yolculuğu. Yanlış cevaplar seni üzmesin; Hacer Hoca her soruda nasıl düşünmen gerektiğini gösterecek. Süre sınırı yok!</span></p>
+      </div>
+    </section>
 
-<div class="app-container">
-  <div class="teacher-banner">
-    🌟 Hacer Hoca ile Yeni Nesil Kesirler Değerlendirmesi 🌟
-  </div>
+    <section class="page" id="quiz-screen" hidden aria-label="Kesirler sınavı">
+      <header class="quiz-header">
+        <div class="toprow"><span class="brand-tiny">✦ Hacer Hoca ile Kesirler</span><span class="student-chip" id="student-chip"></span></div>
+        <div class="progress-meta"><span class="label">KEŞİF YOLCULUĞU</span><span class="value" id="question-counter">1 / 10</span></div>
+        <div class="track" role="progressbar" aria-label="Tamamlanan soru sayısı" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progressbar"><div class="track-fill" id="progress-fill"></div></div>
+      </header>
+      <div class="quiz-inner">
+        <div class="shelf"><div class="shelf-title"><span>🏅 Başarı rozetlerin</span><small id="badge-summary">0 rozet kazanıldı</small></div><div class="badge-track" id="badge-track" aria-label="On soruluk rozet rafı"></div></div>
+        <article class="question-card" aria-live="polite">
+          <div class="question-top"><span class="tag" id="question-skill"></span><span class="level" id="question-level"></span></div>
+          <div class="visual" id="visual-area"></div>
+          <p class="question-number" id="question-name"></p>
+          <h2 class="question-prompt" id="question-text"></h2>
+          <div class="choices" id="choices" role="group" aria-label="Cevap seçenekleri"></div>
+          <div class="hint-area" id="hint-area">
+            <button class="hint-toggle" type="button" id="hint-toggle" aria-expanded="false">🔍 Düşünme ipucu görmek ister misin?</button>
+            <div id="hint-box" class="hint-box" hidden></div>
+          </div>
+        </article>
+        <div id="feedback-area" aria-live="polite"></div>
+        <button class="primary-btn next-btn" id="next-btn" type="button" hidden>Sonraki soruya geç <span aria-hidden="true">→</span></button>
+        <div class="mini-footer">Hacer Hoca • Her düşünce, öğrenmeye açılan yeni bir kapı.</div>
+      </div>
+    </section>
 
-  <div class="header-stats" id="header-stats" style="display:none;">
-    <div id="question-counter">Soru 1 / 10</div>
-    <div class="score-badge">🏆 Puan: <span id="score">0</span></div>
-  </div>
-
-  <div class="reward-shelf-container" id="reward-shelf-box" style="display:none;">
-    <div class="shelf-title">📊 Değerlendirme Takibi (Doğru / Gelişim Alanı)</div>
-    <div class="badge-shelf" id="badge-shelf">
-      <div class="badge-slot" id="slot-0">🔒</div>
-      <div class="badge-slot" id="slot-1">🔒</div>
-      <div class="badge-slot" id="slot-2">🔒</div>
-      <div class="badge-slot" id="slot-3">🔒</div>
-      <div class="badge-slot" id="slot-4">🔒</div>
-      <div class="badge-slot" id="slot-5">🔒</div>
-      <div class="badge-slot" id="slot-6">🔒</div>
-      <div class="badge-slot" id="slot-7">🔒</div>
-      <div class="badge-slot" id="slot-8">🔒</div>
-      <div class="badge-slot" id="slot-9">🔒</div>
-    </div>
-  </div>
-
-  <div class="progress-bar-bg" id="progress-bg" style="display:none;">
-    <div class="progress-bar-fill" id="progress-fill"></div>
-  </div>
-
-  <!-- Karşılama Ekranı -->
-  <div class="card" id="welcome-card">
-    <div class="welcome-screen">
-      <div style="font-size: 3.5rem;">👩‍🏫📋</div>
-      <h2 style="color: var(--primary); margin: 8px 0;">Yeni Nesil Beceri Sınavı</h2>
-      <p style="color: #475569; font-size: 0.92rem; line-height: 1.5;">
-        Bu test 3. sınıf düzeyinde <b>10 özgün, çok adımlı ve analitik yeni nesil sorudan</b> oluşur. Başlamak için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde giriniz.
-      </p>
-      <input type="text" id="student-name-input" class="name-input" placeholder="Adınız ve Soyadınız..." maxlength="30">
-      <div class="error-msg" id="error-msg"></div>
-      <button class="action-btn" type="button" onclick="startGame()">🚀 Sınavı Başlat</button>
-    </div>
-  </div>
-
-  <!-- Soru Kartı -->
-  <div class="card" id="quiz-card" style="display:none;">
-    <div class="q-title" id="q-title"></div>
-    <div class="interactive-stage">
-      <div class="hint-badge" id="stage-hint">👆 Beceri Temelli Senaryo</div>
-      <div id="stage-content"></div>
-    </div>
-    <div class="q-text" id="q-text"></div>
-    <div class="options" id="options-container"></div>
-    
-    <div class="explanation-box" id="explanation-box">
-      <div id="exp-text" style="font-weight: 500;"></div>
-    </div>
-
-    <button class="next-btn" id="next-btn" style="display:none;" type="button" onclick="nextQuestion()">Sonraki Soru ➡️</button>
-  </div>
-
-  <!-- Sonuç / Karne Ekranı -->
-  <div class="card" id="report-card" style="display:none; padding:10px 4px; text-align:center;"></div>
-
-</div>
-
+    <section class="page report" id="report-screen" hidden aria-label="Öğrenci değerlendirme karnesi">
+      <header class="report-hero">
+        <div class="small">✦ HACER HOCA • GELİŞİM KARNESİ ✦</div>
+        <h2 id="report-headline">Kesir Yolculuğun</h2>
+        <p class="report-name" id="report-name"></p><p class="report-buddy" id="report-buddy"></p><p class="report-date" id="report-date"></p>
+        <div class="score-ring" id="score-ring" style="--score-stop:0%"><div class="score-ring-inner"><strong id="report-score">0</strong><span>100 ÜZERİNDEN</span></div></div>
+        <p class="report-message" id="report-message"></p>
+      </header>
+      <div class="report-inner">
+        <div class="metrics" id="report-metrics"></div>
+        <section class="report-section" aria-labelledby="skill-heading"><h3 id="skill-heading">Beceri haritan</h3><p class="section-sub">Hangi konuda güçlü olduğunu ve hangi konuyu yeniden çalışabileceğini gör.</p><div id="skills-list"></div></section>
+        <div class="plan-card" id="teacher-plan"></div>
+        <section class="report-section" aria-labelledby="answers-heading"><h3 id="answers-heading">Sorularının ayrıntılı analizi</h3><p class="section-sub">Her soruda cevabını, doğru seçeneği, Hacer Hoca'nın çözümünü ve öğrenme notunu görebilirsin.</p><div class="answer-list" id="answer-list"></div></section>
+        <div class="report-actions">
+          <button class="primary-btn share-btn" id="share-btn" type="button">📤 Karnemi paylaş</button>
+          <button class="secondary-btn" id="download-btn" type="button">🖼️ Karne görselini indir</button>
+          <button class="secondary-btn" id="print-btn" type="button">🖨️ Yazdır / PDF kaydet</button>
+          <button class="secondary-btn restart-btn" id="restart-btn" type="button">↻ Yeni sınav başlat</button>
+        </div>
+        <p class="share-status" id="share-status" role="status" aria-live="polite"></p>
+        <p class="share-privacy">🔒 Karne yalnızca sen paylaşırsan cihazından gönderilir. Görselde adın, puanın ve beceri sonuçların bulunur.</p>
+        <div class="mini-footer">Öğrenmek, bir kez daha düşünmeye cesaret etmektir. ✦</div>
+      </div>
+    </section>
+  </main>
+  <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
 <script>
-// --- Global Değişkenler ---
-let studentName = "";
-let currentQ = 0;
-let score = 0;
-let answered = false;
-let userAnswers = [];
+'use strict';
 
-// Alt-üst çizgili kesir gösterimi için yardımcı fonksiyon
-function frac(top, bottom) {
-  return '<span class="frac"><span class="top">' + top + '</span><span class="bottom">' + bottom + '</span></span>';
-}
+const LETTERS = ['A','B','C'];
+const EMOJIS = ['🌟','🎉','🏅','✨','🎈','🎁','🏆','💎'];
+const SKILL_ORDER = ['Parça–bütün ilişkisi','Kesri modelleme','Sayı doğrusu','Birim kesir','Çokluğun birim kesri'];
+const SKILL_GUIDES = {
+  'Parça–bütün ilişkisi':'Bir bütünü eş parçalarına ayırıp hem ayrılan hem kalan parçaları say. Bütünü hiç değiştirme.',
+  'Kesri modelleme':'Önce kaç eş parça olduğunu bul: payda budur. Ardından işaretli parça sayısını belirle: pay budur.',
+  'Sayı doğrusu':'0 ve 1 arasını eş aralıklara ayır. Her adımı bu aralıklardan biri kadar say.',
+  'Birim kesir':'Birim kesir, eş parçalardan yalnızca biridir. Katlama ve gruplama sırasında bütünün değişmediğini hatırla.',
+  'Çokluğun birim kesri':'Toplam nesne sayısını eş grup sayısına böl, sonra senaryodaki ekleme veya eksiltmeyi sırayla uygula.'
+};
 
-// --- 10 Soru Veritabanı ---
-const questions = [
+const QUESTIONS = [
   {
-    title: "🍕 1. Pizza Partisi ve Artan Dilimler",
-    badgeIcon: "🍕",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">8 Eş Dilimli İki Özdeş Pizza</div>' +
-             '<div class="grid-row"><div class="touch-box">🍕</div><div class="touch-box">🍕</div><div class="touch-box">🍕</div><div class="touch-box">⬜</div></div>' +
-             '<div style="font-size:0.8rem; color:#475569; margin-top:4px;">Kerem 2 tam pizzanın 5 dilimini ikram etmiştir.</div>';
-    },
-    text: 'Kerem, eş büyüklükte iki tam pizzayı da <b>8\'er eş dilime</b> ayırmıştır. Arkadaşlarıyla birlikte toplam **10 dilim** pizza yemişlerdir. Geriye kalan pizza miktarını gösteren kesir ve bunun tam sayı cinsinden ifadesi aşağıdakilerden hangisidir?',
-    options: [
-      'Geriye ' + frac(6, 8) + ' pizza kalmıştır (Yarım pizzadan fazladır).',
-      'Geriye ' + frac(3, 8) + ' pizza kalmıştır.',
-      'Geriye ' + frac(10, 8) + ' pizza kalmıştır.'
-    ],
-    correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 16 dilim vardır (2 x 8 = 16). 10 dilimi yenildiğine göre 16 - 10 = 6 dilim kalmıştır. Bu da ' + frac(6, 8) + ' demektir ve yarımdan (' + frac(4, 8) + ') büyüktür.'
+    title:'Pizza paylaşımının sırrı',skill:'Parça–bütün ilişkisi',level:2,visual:'pizza',
+    caption:'Bir pizza 8 eş dilime ayrılmış. Mercan: Ece, mor: Mert, sarı: kalan.',
+    question:'8 eş dilimli pizzanın 2 dilimini Ece, 2 dilimini Mert yedi. Geriye kalan pizza bir bütünün kaçta kaçıdır?',
+    choices:['1/4','1/2','3/4'],correct:1,
+    hint:'Önce iki çocuğun birlikte kaç dilim yediğini bul. Sonra yenmeyen dilimleri 8 dilimlik bütünle karşılaştır.',
+    steps:['Ece 2, Mert 2 dilim yedi. Toplam 2 + 2 = 4 dilim yenildi.','8 dilimin 4’ü kaldı: 8 − 4 = 4.','4 dilim, 8 eş parçanın yarısıdır. Kalan miktar 4/8 yani 1/2 bütündür.'],
+    takeaway:'Bir kesri anlamlandırırken önce bütünün kaç eş parçaya ayrıldığına bak.',
+    diagnose:['2 dilimi saymış olabilirsin. Ama soru bir kişinin yediğini değil, iki kişi yedikten sonra kalanı soruyor.','', '6 dilim kaldığını düşünmüş olabilirsin. İki çocuk toplam 4 dilim yemişti.']
   },
   {
-    title: "🔋 2. Akıllı Telefon Batarya Analizi",
-    badgeIcon: "⚡",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">🔋 12 Bölmeli Batarya Göstergesi</div>' +
-             '<div class="grid-row"><div class="touch-box" style="background:#22c55e; color:white;">🔋</div><div class="touch-box" style="background:#22c55e; color:white;">🔋</div><div class="touch-box" style="background:#22c55e; color:white;">🔋</div><div class="touch-box">⬜</div></div>' +
-             '<div style="font-size:0.8rem; color:#475569;">Her 3 bölme %25 doluluğa eşittir.</div>';
-    },
-    text: 'Zeynep\'in tabletinin bataryası <b>12 eş bölmeden</b> oluşmaktadır. Tablette şu an bataryanın ' + frac(9, 12) + '\'ü dolu durumdadır. Zeynep ders çalışırken <b>3 bölmelik</b> şarj harcamıştır. Son durumda bataryanın doluluk oranını belirten birim kesir ve kalan miktar nedir?',
-    options: [
-      'Kalan miktar ' + frac(6, 12) + '\'dir ve birim kesri ' + frac(1, 12) + '\'dir.',
-      'Kalan miktar ' + frac(3, 12) + '\'dir.',
-      'Batarya tamamen tükenmiştir.'
-    ],
-    correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Başlangıçta 9 bölme dolu idi. 3 bölme harcanınca 9 - 3 = 6 bölme kaldı (' + frac(6, 12) + '). Bu yapının payındaki her bir parça (bölme) ' + frac(1, 12) + ' birim kesrini ifade eder.'
+    title:'Robotun enerji görevi',skill:'Kesri modelleme',level:2,visual:'battery',
+    caption:'Şarj çubuğu 4 eş bölmeli. Mor: başlangıç, yeşil: sonradan dolan.',
+    question:'Robotun pili başlangıçta 1 çeyrek dolu. Birinci molada 1 çeyrek, ikinci molada 1 çeyrek daha doluyor. Pilin son doluluk kesri nedir?',
+    choices:['2/4','3/4','4/4'],correct:1,
+    hint:'Başlangıçtaki dolu bölmeyi unutma. İki moladaki artışları da aynı şarj çubuğuna ekle.',
+    steps:['Şarj çubuğu 4 eş bölmeden oluşur.','Başlangıçta 1 bölme doludur. İki mola, 2 yeni bölme daha doldurur.','Toplam 3 dolu bölme vardır; doluluk 3/4 olarak gösterilir.'],
+    takeaway:'Payda toplam eş bölüm sayısını, pay ise dolu bölüm sayısını gösterir.',
+    diagnose:['Başlangıçtaki 1 çeyreği saymayı unutmuş olabilirsin. 2 çeyrek sonradan ekleniyor.','', 'Pil tam dolmadı; dört bölmeden sonuncusu hâlâ boş.']
   },
   {
-    title: "🌻 3. Çiftlik Parsel Tasarımı",
-    badgeIcon: "🌻",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">Bahçe Bölümleme Planı</div>' +
-             '<div style="font-size:0.8rem; color:#b45309;">Alanların Eşitlik Kriteri İncelemesi</div>';
-    },
-    text: 'Bahçıvan Celal Amca, dikdörtgen biçimindeki tarlasını ekin ekecektir. Tarlasını <b>4 eş parçaya</b> ayırmak istiyor. Hangi model doğru kesir modellemesini gösterir?',
-    options: [
-      'Alanları birbirinden farklı büyüklükte olan 4 rastgele bölgeye ayırmak.',
-      'Tarlayı alanı ve şekli birbirinin aynısı olan 4 eşit dikdörtgen parçaya bölmek.',
-      'Tarlanın sadece ortasından bir çizgi çekip 2 parçaya ayırmak.'
-    ],
-    correct: 1,
-    explanation: '💡 <b>Analitik Çözüm:</b> Bir bütünün kesir olarak ifade edilebilmesi ve doğru paylaştırılabilmesi için parçaların kesinlikle alan ve ölçü olarak <b>eş (özdeş)</b> olması gerekir.'
+    title:'Sayı doğrusunda rota',skill:'Sayı doğrusu',level:3,visual:'line',
+    caption:'0 ile 1 arası 4 eş aralıktır. Robotun ilk konumu A noktasıdır.',
+    question:'Robot A noktasından 2 küçük aralık sağa, ardından 1 küçük aralık sola gidiyor. Hangi noktada durur?',
+    choices:['A (1/4)','B (1/2)','C (3/4)'],correct:1,
+    hint:'A’dan başla. Önce iki işaret sağa, sonra tek işaret sola ilerle. Başladığın yerden kaç aralık uzaktasın?',
+    steps:['A, 0’dan sonraki ilk işarettir: 1/4.','İki aralık sağa gidince C’ye, yani 3/4 noktasına gelir.','Bir aralık sola dönünce B’ye, yani 2/4 = 1/2 noktasına varır.'],
+    takeaway:'Sayı doğrusunda her küçük aralığın uzunluğu eşittir.',
+    diagnose:['Robotun başladığı yerde kaldığını düşünmüş olabilirsin. İleri ve geri hareketler birbirini tamamen götürmüyor.','', 'İki adım sağa gittikten sonraki noktayı seçmiş olabilirsin. Bir adım geri dönüşü de say.']
   },
   {
-    title: "🐸 4. Uzun Atlama Parkuru",
-    badgeIcon: "🐸",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">Sayı Doğrusu Üzerinde Çekirge</div>' +
-             '<div style="font-size:0.85rem; font-weight:bold; padding:4px;">0 ---- A ---- B ---- C ---- D ---- 1</div>';
-    },
-    text: '0 ile 1 arası <b>6 eş aralığa</b> bölünmüştür. 0 noktasından hareket eden bir çekirge, her zıplayışında birim kesir kadar ilerleyip **C noktasına** konmuştur. Çekirgenin bastığı C noktasının kesir değeri nedir?',
-    options: [
-      'C noktası ' + frac(3, 6) + ' (yarım) değerindedir.',
-      'C noktası ' + frac(2, 6) + ' değerindedir.',
-      'C noktası ' + frac(5, 6) + ' değerindedir.'
-    ],
-    correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 6 eş aralık vardır (payda = 6). 0\'dan C\'ye kadar 3 adım (3 aralık) atılmıştır; dolayısıyla kesir ' + frac(3, 6) + ' (yani yarım) olur.'
+    title:'Akvaryumun mavi bölmesi',skill:'Çokluğun birim kesri',level:2,visual:'aquarium',
+    caption:'12 balık, 3 eş sayılı bölmeye ayrılmış; mavi bölmeden 1 balık ayrılacak.',
+    question:'Akvaryumdaki 12 balık 3 bölmeye eşit dağıtıldı. Mavi bölmedeki balıklardan 1 tanesi başka bölmeye yüzdü. Mavi bölmede kaç balık kaldı?',
+    choices:['3','4','6'],correct:0,
+    hint:'Önce 12 balığın 3 eş bölmeye dağılımını bul. Ardından mavi bölmeden ayrılan 1 balığı çıkar.',
+    steps:['12 balık, 3 bölmeye eşit paylaştırılır: 12 ÷ 3 = 4.','Başlangıçta mavi bölmede 4 balık vardır.','1 balık ayrılınca 4 − 1 = 3 balık kalır.'],
+    takeaway:'Bir çokluğun üçte biri, 3 eş gruptan birindeki nesne sayısıdır.',
+    diagnose:['','Bir bölmede başlangıçta 4 balık vardı; hareket eden 1 balığı çıkarmayı unutmuş olabilirsin.','12 balığı 2 gruba ayırmış olabilirsin. Görselde 3 eş bölme var.']
   },
   {
-    title: "🧱 5. Tarihi Taş Köprü Onarımı",
-    badgeIcon: "👷",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">10 Eş Bloklu Köprü Sistemi</div>' +
-             '<div class="grid-row"><div class="touch-box" style="background:#a16207; color:white;">🟫</div><div class="touch-box" style="background:#a16207; color:white;">🟫</div><div class="touch-box" style="background:#a16207; color:white;">🟫</div><div class="touch-box">⬜</div></div>';
-    },
-    text: '10 eş tahta bloktan oluşan bir köprünün sağlam tutulması için en az ' + frac(8, 10) + '\'inin sağlam olması şarttır. Şu an köprünün ' + frac(3, 10) + '\'i onarılmıştır. Hedefe ulaşmak için işçilerin **kaç blok daha** onarması gerekir?',
-    options: [
-      '3 blok daha onarmalıdırlar.',
-      '5 blok daha onarmalıdırlar.',
-      '8 blok daha onarmalıdırlar.'
-    ],
-    correct: 1,
-    explanation: '💡 <b>Analitik Çözüm:</b> Hedef ' + frac(8, 10) + ', mevcut durum ' + frac(3, 10) + '\'dir. Aradaki fark: 8 - 3 = 5 blok daha onarılması gerektiğini gösterir.'
+    title:'Mozaik ustasının değişimi',skill:'Parça–bütün ilişkisi',level:3,visual:'mosaic',
+    caption:'Pano 16 eş kareden oluşur. 4 yeşil karenin noktalı 2 tanesi boyanacak.',
+    question:'16 eş karelik panonun önce 1/4’ü yeşile boyandı. Sonra yeşil karelerden 2’si maviye çevrildi. Kaç kare yeşil kaldı?',
+    choices:['2','4','8'],correct:0,
+    hint:'Önce 16’nın dörtte birini bul; işlem bununla bitmiyor. Rengi değişen kareleri de hesaba kat.',
+    steps:['16 kare, 4 eş gruba ayrıldığında her grupta 4 kare bulunur.','1/4’ü yeşil olduğuna göre önce 4 yeşil kare vardır.','2 yeşil kare maviye çevrilince 4 − 2 = 2 yeşil kare kalır.'],
+    takeaway:'Çok adımlı sorularda ilk bulduğun sayı, her zaman son cevap değildir.',
+    diagnose:['','İlk boyanan 4 kareyi bulmuş olabilirsin. Ardından 2 tanesinin renk değiştirdiğini unutma.','16’nın yarısını bulmuş olabilirsin. Bir çeyrek için 4 eş gruptan yalnızca 1 grubu düşün.']
   },
   {
-    title: "🍰 6. Doğum Günü Pastası Paylaşımı",
-    badgeIcon: "🎂",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">Farklı Kesir Dilimleri Karşılaştırması</div>';
-    },
-    text: 'Özdeş büyüklükteki iki pastadan birinci pasta **6 eş dilime**, ikinci pasta ise **12 eş dilime** ayrılmıştır. Birinci pastadan 1 dilim, ikinci pastadan 1 dilim alan iki kardeşten kim daha fazla pasta yemiştir?',
-    options: [
-      'İkinci pastadan 1 dilim alan kardeş (Çünkü 12 sayısı daha büyüktür).',
-      'Birinci pastadan 1 dilim alan kardeş (Çünkü dilim sayısı azaldıkça paylaşılan parça büyür).',
-      'İkisi de tamamen eşit miktarda pasta yemiştir.'
-    ],
-    correct: 1,
-    explanation: '💡 <b>Analitik Çözüm:</b> Paylar eşitken, paydası küçük olan kesir daha büyüktür (' + frac(1, 6) + ' > ' + frac(1, 12) + '). Az kişiye bölünen pasta dilimi daha iridir ve doyurucudur.'
+    title:'Katla, aç, keşfet',skill:'Birim kesir',level:2,visual:'fold',
+    caption:'Aynı kâğıt sırasıyla iki kez ikiye katlanıyor, sonra açılıyor.',
+    question:'Elif bir kâğıdı önce iki eş parçaya, sonra katlı hâlini yeniden iki eş parçaya katlıyor. Açıldığında oluşan küçük parçaların her biri bütünün kaçta kaçıdır?',
+    choices:['1/2','1/4','1/8'],correct:1,
+    hint:'İlk katlama bütünü 2 eş parçaya ayırır. İkinci katlama her bir parçayı bir kez daha ikiye ayırır.',
+    steps:['İlk katlamada 2 eş parça oluşur.','İkinci katlamada bu parçaların her biri ikiye ayrılır: toplam 4 eş parça oluşur.','Her küçük parça bütünün dörtte biridir, yani 1/4’tür.'],
+    takeaway:'Birim kesirde pay 1 olur. Payda ise eş parçaların toplam sayısıdır.',
+    diagnose:['Yalnızca ilk katlamayı saymış olabilirsin. Kâğıt ikinci kez de katlandı.','', 'Kâğıt 3 kez değil, 2 kez ikiye katlandı. 8 değil 4 eş parça oluşur.']
   },
   {
-    title: "💎 7. Mücevher Kutusu Dağılımı",
-    badgeIcon: "💎",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">24 Adet Altın Değerinde Elmas</div>';
-    },
-    text: 'Bir hazine avcısı sandığında bulunan **24 elmasın** önce ' + frac(1, 4) + '\'ini müze müdürüne, kalanların bir kısmını ise kendi tayfasına vermiştir. Müzedekilere verilen elmas sayısı kaç tanedir?',
-    options: [
-      '6 elmas verilmiştir.',
-      '8 elmas verilmiştir.',
-      '12 elmas verilmiştir.'
-    ],
-    correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Bir çokluğun birim kesir kadarı bulunurken sayı paya çarpılıp paydaya bölünür veya direkt olarak çeyreği bulmak için dörde böleriz: 24 ÷ 4 = 6 elmas.'
+    title:'Sihirli bahçenin planı',skill:'Çokluğun birim kesri',level:3,visual:'garden',
+    caption:'20 fidan 4 eş sırada. Her sırada aynı sayıda fidan var.',
+    question:'Hacer Hoca 20 fidanın 1/4’ünün bulunduğu bir sırayı suladı. Sonra aynı büyüklükte bir sırayı daha suladı. Toplam kaç fidan sulandı?',
+    choices:['5','10','15'],correct:1,
+    hint:'20 fidanı dört eş sıraya ayır. Bir sıranın sayısını bulduktan sonra iki sıra için düşün.',
+    steps:['20 fidan, 4 eş sıraya ayrılır: her sırada 20 ÷ 4 = 5 fidan vardır.','İlk sulamada 5 fidan sulanır.','Bir sıra daha sulanınca 5 + 5 = 10 fidana ulaşılır.'],
+    takeaway:'Bir çokluğun çeyreğini bulduktan sonra senaryodaki toplam sıra sayısını takip et.',
+    diagnose:['Sadece ilk sırayı saymış olabilirsin. Soruda bir sıra daha sulanıyor.','', 'Üç sırayı saymış olabilirsin; sulanan sıra sayısı ikidir.']
   },
   {
-    title: "♻️ 8. Geri Dönüşüm Kampanyası",
-    badgeIcon: "🌍",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">30 Kilogramlık Atık Kutusu</div>';
-    },
-    text: 'Okulca toplanan <b>30 kg kağıt atığın</b> önce ' + frac(1, 3) + '\'i hurda merkezine gönderilmiş, ardından kalan kağıtların 5 kg\'ı ile atölye çalışması yapılmıştır. Geriye kaç kg kağıt kalmıştır?',
-    options: [
-      '15 kg kağıt kalmıştır.',
-      '20 kg kağıt kalmıştır.',
-      '10 kg kağıt kalmıştır.'
-    ],
-    correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> 30 kg\'ın ' + frac(1, 3) + '\'i 10 kg\'dır (30 ÷ 3). Geriye 30 - 10 = 20 kg kalır. Atölyede de 5 kg harcanırsa: 20 - 5 = 15 kg son kalan kağıttır.'
+    title:'Kurdelelerin adil yarışı',skill:'Parça–bütün ilişkisi',level:3,visual:'ribbon',
+    caption:'İki kurdele de aynı uzunlukta. Üstte 1/2, altta 2/4 kullanılıyor.',
+    question:'Ada bir kurdelenin yarısını, Eren aynı uzunluktaki başka bir kurdelenin iki çeyreğini kullandı. Kim daha uzun kurdele kullanmıştır?',
+    choices:['Ada','Eren','İkisi eşit'],correct:2,
+    hint:'İki çeyreği yan yana getirince bütünün ne kadarını oluşturduğuna dikkat et.',
+    steps:['Ada, bütünün 1/2’sini kullanmıştır.','Eren, 4 eş bölümden 2’sini yani 2/4’ünü kullanmıştır.','İki çeyrek bir yarım eder. Kurdeleler aynı uzunlukta olduğu için kullanılan miktarlar eşittir.'],
+    takeaway:'Eş büyüklükte iki çeyrek, bir yarım ile aynı miktarı gösterir.',
+    diagnose:['Yarımı, iki çeyrekten daha büyük sanmış olabilirsin. İki çeyreği yan yana getirip karşılaştır.','Daha fazla parça seçilmiş gibi görünebilir; ancak iki çeyrek bir yarımdır.','']
   },
   {
-    title: "🐠 9. Akvaryum Su Seviyesi Problemi",
-    badgeIcon: "🐬",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">15 Bölmeli Özel Tasarım Akvaryum</div>';
-    },
-    text: '15 eş bölmeden oluşan akvaryumun ' + frac(7, 15) + '\'i doludur. Balıkların yaşayabilmesi için akvaryumun tam ' + frac(12, 15) + '\'sinin dolması gerekmektedir. Musluk açılıp su doldurulduğunda aradaki fark kaç bölme su eklenmesiyle kapanır?',
-    options: [
-      '5 bölme su eklenmelidir.',
-      '7 bölme su eklenmelidir.',
-      '12 bölme su eklenmelidir.'
-    ],
-    correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Hedef 12 bölme, mevcut durum ise 7 bölmedir. Gerekli olan farkı bulmak için: 12 - 7 = 5 bölme daha su eklenmelidir.'
+    title:'Limonata standının hesabı',skill:'Birim kesir',level:3,visual:'lemonade',
+    caption:'10 bardaktan mor olanı ilk misafire, turuncu ikisi sonraki misafirlere verilecek.',
+    question:'10 bardak limonatanın önce 1/10’u, ardından 2 bardağı daha dağıtılıyor. Masada kaç bardak limonata kalır?',
+    choices:['7','8','9'],correct:0,
+    hint:'10 bardağın onda biri kaç bardaktır? Önce onu, sonra verilen 2 bardağı toplamdan çıkar.',
+    steps:['10 eş bardağın 1/10’u 1 bardaktır.','Daha sonra 2 bardak daha dağıtılır; toplam 1 + 2 = 3 bardak verilir.','10 − 3 = 7 bardak kalır.'],
+    takeaway:'Payda 10 ise bütünün 10 eş grubundan birini düşün. Sonraki işlemi atlama.',
+    diagnose:['','İlk verilen 1 bardağı unutmuş olabilirsin. Toplam 3 bardak dağıtıldı.','Yalnızca ilk 1/10’u çıkarmış olabilirsin. Ardından 2 bardak daha verildi.']
   },
   {
-    title: "🎨 10. Dijital Mozaik Tasarımı",
-    badgeIcon: "👑",
-    renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">20 Eş Birim Karelik Mozaik Alanı</div>';
-    },
-    text: 'Mimar Elif Hanım, **20 eş kareden** oluşan bir duvar panosunun ' + frac(1, 5) + '\'ini maviye, kalan karelerin yarısını ise sarıya boyamıştır. Panoda boyanmadan kalan son beyaz kare sayısı kaçtır?',
-    options: [
-      '8 beyaz kare kalmıştır.',
-      '10 beyaz kare kalmıştır.',
-      '12 beyaz kare kalmıştır.'
-    ],
-    correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> 20 karenin ' + frac(1, 5) + '\'i 4 karedir (mavi). Kalan kare: 20 - 4 = 16\'dır. Kalanların yarısı sarı ise: 16 ÷ 2 = 8 kare sarıdır. Toplam boyalı: 4 + 8 = 12 kare. Beyaz kalan: 20 - 12 = 8 karedir.'
+    title:'Ödül kutularının büyük sırrı',skill:'Çokluğun birim kesri',level:3,visual:'gifts',
+    caption:'24 rozet, 6 kutuya eşit ayrılmış. A ve B işaretli iki kutu hediye edilecek.',
+    question:'24 rozet 6 kutuya eşit dağıtıldı. Hacer Hoca önce A kutusunu, sonra B kutusunu öğrencilerine hediye etti. Geriye kaç rozet kaldı?',
+    choices:['12','16','20'],correct:1,
+    hint:'Önce bir kutudaki rozet sayısını bul. Sonra verilen iki kutudaki rozetleri toplamdan çıkar.',
+    steps:['24 rozet 6 eş kutuya ayrılır: 24 ÷ 6 = 4 rozet/kutu.','İki kutu verildiğinden 4 + 4 = 8 rozet dağıtıldı.','24 − 8 = 16 rozet kaldı.'],
+    takeaway:'Bir çokluğu eş gruplara ayır, verilen grup sayısını dikkate al ve kalanı hesapla.',
+    diagnose:['Üç kutuyu dağıtılmış saymış olabilirsin. Yalnızca A ve B kutuları hediye edildi.','', 'Yalnızca A kutusunu çıkarmış olabilirsin; B kutusu da verildi.']
   }
 ];
 
-// --- Fonksiyonlar ---
-
-function startGame() {
-  const inputEl = document.getElementById("student-name-input");
-  const inputVal = inputEl.value.trim();
-  const errorBox = document.getElementById("error-msg");
-  
-  // İsim alanı en az 5 karakter kontrolü
-  if (inputVal.length < 5) {
-    errorBox.innerText = "⚠️ Sınava giriş için adınız ve soyadınız en az 5 karakterden oluşmalıdır!";
-    inputEl.focus();
-    return;
-  }
-  
-  studentName = inputVal;
-  document.getElementById("welcome-card").style.display = "none";
-  document.getElementById("header-stats").style.display = "flex";
-  document.getElementById("reward-shelf-box").style.display = "block";
-  document.getElementById("progress-bg").style.display = "block";
-  document.getElementById("quiz-card").style.display = "flex";
-  loadQuestion();
+const $ = id => document.getElementById(id);
+const BUDDIES = {robot:{name:'Robo',emoji:'🤖',message:'Birlikte bütün soruları keşfedelim!'},fox:{name:'Pati',emoji:'🦊',message:'Düşünmek bir süper güçtür!'},unicorn:{name:'Işıl',emoji:'🦄',message:'Her kesirde bir sürpriz saklı!'}};
+const state = {student:'',index:0,answers:[],hintUsed:false,buddy:'robot'};
+const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function safeText(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function changeScreen(which){
+  for(const id of ['welcome-screen','quiz-screen','report-screen']) $(id).hidden = id!==which;
+  window.scrollTo({top:0,behavior:'auto'});
+}
+function validateName(raw){
+  const value=raw.trim().replace(/\s+/g,' ');
+  if(Array.from(value).length<5)return 'Adın ve soyadın birlikte en az 5 karakter olmalı.';
+  const parts=value.split(' ');
+  if(parts.length<2)return 'Lütfen hem adını hem de soyadını yaz.';
+  if(parts.some(part=>Array.from(part.replace(/[-’']/g,'')).length<2 || !/^[\p{L}’'\-]+$/u.test(part)))return 'Ad ve soyadın en az ikişer harften oluşmalı; rakam kullanma.';
+  return '';
 }
 
-function loadQuestion() {
-  answered = false;
-  const q = questions[currentQ];
-  
-  // Üst istatistik ve bar güncellemeleri
-  document.getElementById("question-counter").innerText = "Soru " + (currentQ + 1) + " / " + questions.length;
-  document.getElementById("progress-fill").style.width = (((currentQ + 1) / questions.length) * 100) + "%";
-  
-  // Soru içeriklerinin yerleştirilmesi
-  document.getElementById("q-title").innerHTML = q.title;
-  document.getElementById("stage-hint").innerText = "👆 Beceri Temelli Senaryo";
-  document.getElementById("stage-content").innerHTML = q.renderStage();
-  document.getElementById("q-text").innerHTML = q.text;
-
-  // Şıkların oluşturulması
-  const optsContainer = document.getElementById("options-container");
-  optsContainer.innerHTML = "";
-  const letters = ["A", "B", "C"];
-
-  q.options.forEach(function(optText, idx) {
-    const btn = document.createElement("button");
-    btn.className = "opt-btn";
-    btn.type = "button";
-    btn.innerHTML = '<span class="opt-letter">' + letters[idx] + '</span> <span>' + optText + '</span>';
-    btn.onclick = function() {
-      selectAnswer(idx, btn);
-    };
-    optsContainer.appendChild(btn);
+function selectBuddy(id){
+  if(!BUDDIES[id])return;
+  state.buddy=id;
+  document.querySelectorAll('.buddy-option').forEach(button=>{
+    const selected=button.dataset.buddy===id;
+    button.classList.toggle('is-selected',selected);
+    button.setAttribute('aria-pressed',String(selected));
   });
-
-  // Ekranı sıfırlama (Önceki açıklamaları gizle vs.)
-  document.getElementById("explanation-box").style.display = "none";
-  document.getElementById("next-btn").style.display = "none";
+  const b=BUDDIES[id];
+  $('buddy-message').textContent=`${b.emoji} ${b.name}: ${b.message}`;
 }
+$('buddy-row').addEventListener('click',event=>{
+  const button=event.target.closest('[data-buddy]');
+  if(button)selectBuddy(button.dataset.buddy);
+});
+$('student-form').addEventListener('submit',event=>{
+  event.preventDefault();
+  const value=$('student-name').value.trim().replace(/\s+/g,' ');
+  const error=validateName(value);
+  $('name-error').textContent=error;
+  $('student-name').setAttribute('aria-invalid',String(Boolean(error)));
+  if(error){$('student-name').focus();return;}
+  state.student=value;state.index=0;state.answers=[];state.hintUsed=false;
+  changeScreen('quiz-screen');renderQuestion();
+});
+$('student-name').addEventListener('input',()=>{$('name-error').textContent='';$('student-name').removeAttribute('aria-invalid');});
 
-function selectAnswer(idx, selectedBtn) {
-  // Sadece ilk cevabı kabul et, kilit mekanizması
-  if (answered) return; 
-  answered = true;
-
-  const q = questions[currentQ];
-  const allBtns = document.querySelectorAll(".opt-btn");
-  
-  // Değerlendirme için cevabı kaydet
-  userAnswers.push({
-    questionNum: currentQ + 1,
-    title: q.title,
-    selected: idx,
-    correct: q.correct,
-    isCorrect: idx === q.correct,
-    explanation: q.explanation
+function svg(children,aria){return `<svg viewBox="0 0 360 184" role="img" aria-label="${aria}" xmlns="http://www.w3.org/2000/svg">${children}</svg>`;}
+function txt(x,y,text,{size=12,color='#554a7c',weight=800,anchor='middle'}={}){return `<text x="${x}" y="${y}" font-size="${size}" fill="${color}" font-weight="${weight}" text-anchor="${anchor}" font-family="system-ui,Arial,sans-serif">${text}</text>`;}
+function polar(cx,cy,r,a){const q=(a-90)*Math.PI/180;return [cx+r*Math.cos(q),cy+r*Math.sin(q)];}
+function sector(cx,cy,r,start,end,fill){const [x1,y1]=polar(cx,cy,r,start),[x2,y2]=polar(cx,cy,r,end);return `<path d="M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${end-start>180?1:0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z" fill="${fill}" stroke="#fffaf0" stroke-width="2.6"/>`;}
+function fish(x,y,color){return `<g transform="translate(${x} ${y})"><ellipse cx="0" cy="0" rx="10" ry="6" fill="${color}"/><path d="M-8 0l-8-7v14z" fill="${color}"/><circle cx="5" cy="-1.5" r="1.3" fill="#30254d"/></g>`;}
+function sprout(x,y,color){return `<g transform="translate(${x} ${y})"><path d="M0 9V-2" stroke="#588d60" stroke-width="2"/><ellipse cx="-4" cy="-2" rx="5" ry="3" transform="rotate(29 -4 -2)" fill="${color}"/><ellipse cx="4" cy="-5" rx="5" ry="3" transform="rotate(-29 4 -5)" fill="${color}"/><path d="M-7 9h14" stroke="#c9b9a7" stroke-width="2" stroke-linecap="round"/></g>`;}
+function renderScene(type){
+ let s='';
+ if(type==='pizza'){
+   s+=`<circle cx="111" cy="91" r="77" fill="#ead7a8"/>`;
+   for(let i=0;i<8;i++)s+=sector(111,91,69,i*45,(i+1)*45,i<2?'#f59b8f':i<4?'#9a87e8':'#ffd580');
+   s+=`<circle cx="111" cy="91" r="4.5" fill="#fff9ee"/>`;
+   s+=txt(228,49,'KİM NE YAPTI?',{size:12,anchor:'start'});
+   [['#f59b8f','Ece'],['#9a87e8','Mert'],['#ffd580','Kalan']].forEach((v,i)=>{s+=`<rect x="227" y="${62+i*33}" width="16" height="16" rx="5" fill="${v[0]}"/>${txt(252,75+i*33,v[1],{size:12,anchor:'start'})}`;});
+ }
+ if(type==='battery'){
+   s+=txt(180,32,'ROBOTUN ŞARJ GÖSTERGESİ',{size:12});
+   s+=`<rect x="26" y="65" width="305" height="72" rx="18" fill="#fff" stroke="#9990c4" stroke-width="3"/><rect x="331" y="85" width="10" height="30" rx="4" fill="#9990c4"/>`;
+   for(let i=0;i<4;i++){const colors=['#8170e6','#55c99d','#55c99d','#ece9f3'];s+=`<rect x="${36+72*i}" y="75" width="65" height="52" rx="10" fill="${colors[i]}"/>${txt(68+72*i,105,i===0?'●':i===3?'○':'+',{size:23,color:i===3?'#b0abc4':'#fff'})}`;}
+   s+=txt(66,153,'Başlangıç',{size:10});s+=txt(177,153,'2 mola',{size:10});s+=txt(284,153,'Boş',{size:10});
+ }
+ if(type==='line'){
+   s+=txt(180,29,'AYNI UZUNLUKTA 4 ARALIK',{size:11});
+   s+=`<path d="M31 98H332" stroke="#7b70b1" stroke-width="5" stroke-linecap="round"/>`;
+   for(let i=0;i<5;i++){const x=31+75*i;s+=`<path d="M${x} 86v23" stroke="#776daf" stroke-width="3" stroke-linecap="round"/>`;s+=txt(x,125,['0','1/4','1/2','3/4','1'][i],{size:12});if(i>0&&i<4)s+=txt(x,70,['','A','B','C'][i],{size:16,color:'#5d4bd0'});}
+   s+=`<circle cx="106" cy="98" r="15" fill="#ffce7e" stroke="#fff" stroke-width="3"/>${txt(106,103,'🤖',{size:16})}`;
+   s+=`<rect x="45" y="142" width="270" height="28" rx="13" fill="#eeeaff"/>${txt(180,160,'A’dan başla:  →  →  ←',{size:12,color:'#5143b7'})}`;
+ }
+ if(type==='aquarium'){
+   s+=`<rect x="18" y="31" width="324" height="133" rx="15" fill="#e5f9ff" stroke="#69bfd3" stroke-width="4"/><path d="M126 34v128M234 34v128" stroke="#69bfd3" stroke-width="4" stroke-dasharray="6 4"/>`;
+   s+=`<path d="M21 54Q47 43 73 54T125 54T179 54T233 54T287 54T339 54V157H21Z" fill="#c9effb" opacity=".7"/>`;
+   for(let g=0;g<3;g++){for(let i=0;i<4;i++){s+=fish(54+g*108+(i%2)*36,88+Math.floor(i/2)*38,['#536bd8','#f2a36c','#61bca3'][g]);}}
+   s+=`<rect x="33" y="13" width="74" height="24" rx="10" fill="#dce4ff"/>${txt(70,29,'MAVİ BÖLME',{size:10,color:'#4561ad'})}`;
+ }
+ if(type==='mosaic'){
+   s+=txt(180,20,'16 EŞ KARELİ PANO',{size:11});
+   for(let i=0;i<16;i++){const x=69+(i%4)*55,y=29+Math.floor(i/4)*37;const green=i<4;s+=`<rect x="${x}" y="${y}" width="49" height="31" rx="5" fill="${green?'#80d6a3':'#fff2d6'}" stroke="#fff" stroke-width="2"/>`;if(i<2)s+=`<rect x="${x+4}" y="${y+4}" width="41" height="23" rx="3" fill="none" stroke="#5543b9" stroke-dasharray="4 3" stroke-width="2"/>`;}
+   s+=`<rect x="95" y="169" width="10" height="10" rx="2" fill="none" stroke="#5543b9" stroke-width="2" stroke-dasharray="2 1"/>${txt(114,178,'Maviye dönüşecek',{size:10,anchor:'start'})}`;
+ }
+ if(type==='fold'){
+   const configs=[{x:16,n:1,title:'BÜTÜN'},{x:135,n:2,title:'1. KAT'},{x:254,n:4,title:'2. KAT'}];
+   configs.forEach((c,j)=>{s+=txt(c.x+45,31,c.title,{size:11});s+=`<rect x="${c.x+7}" y="51" width="76" height="84" rx="3" fill="#ffd992" stroke="#8a6aad" stroke-width="2.5"/>`;if(j>=1)s+=`<path d="M${c.x+45} 52v82" stroke="#7763cf" stroke-width="2" stroke-dasharray="5 4"/>`;if(j===2)s+=`<path d="M${c.x+8} 93h74" stroke="#7763cf" stroke-width="2" stroke-dasharray="5 4"/>`;});
+   s+=txt(114,99,'→',{size:27,color:'#8272d0'});s+=txt(233,99,'→',{size:27,color:'#8272d0'});s+=txt(180,160,'Kâğıdın tamamı hâlâ aynı bütün.',{size:10});
+ }
+ if(type==='garden'){
+   s+=txt(180,23,'DÖRT EŞ SIRA • TOPLAM 20 FİDAN',{size:11});
+   for(let row=0;row<4;row++){
+     if(row===0)s+=`<rect x="31" y="35" width="299" height="31" rx="12" fill="#e7e5ff"/>`;
+     for(let col=0;col<5;col++)s+=sprout(61+col*59,45+row*36,row===0?'#695bcf':'#70bf84');
+   }
+   s+=txt(182,178,'İlk sulanan sıra mor renkle işaretli.',{size:10});
+ }
+ if(type==='ribbon'){
+   s+=txt(28,35,'ADA',{size:12,anchor:'start'});
+   s+=`<rect x="100" y="20" width="228" height="43" rx="7" fill="#f3e7fc" stroke="#a6a0bc" stroke-width="2"/><rect x="100" y="20" width="114" height="43" rx="7" fill="#8577e9"/><path d="M214 20v43" stroke="#fff" stroke-width="2.5"/>`;
+   s+=txt(28,117,'EREN',{size:12,anchor:'start'});
+   s+=`<rect x="100" y="100" width="228" height="43" rx="7" fill="#fff2d4" stroke="#d4c4a6" stroke-width="2"/><rect x="100" y="100" width="114" height="43" rx="7" fill="#f0bb5d"/>`;
+   for(let i=1;i<4;i++)s+=`<path d="M${100+57*i} 100v43" stroke="#fff" stroke-width="2"/>`;
+   s+=txt(214,77,'Yarım',{size:11});s+=txt(214,157,'İki çeyrek',{size:11});
+ }
+ if(type==='lemonade'){
+   s+=txt(180,23,'MASADA 10 BARDAK VAR',{size:12});
+   for(let i=0;i<10;i++){
+     const x=25+(i%5)*68,y=40+Math.floor(i/5)*65,color=i===0?'#9285df':i<3?'#faac83':'#a9dcd1';
+     s+=`<path d="M${x+7} ${y}h39l-5 40h-29Z" fill="#fff" stroke="#8792b8" stroke-width="2"/><path d="M${x+11} ${y+12}h31l-4 24h-23Z" fill="${color}"/><path d="M${x+18} ${y-9}l13 15" stroke="#e6a44a" stroke-width="3" stroke-linecap="round"/>`;
+   }
+   s+=`<circle cx="90" cy="173" r="5" fill="#9285df"/>${txt(100,177,'Önce',{size:10,anchor:'start'})}<circle cx="185" cy="173" r="5" fill="#faac83"/>${txt(195,177,'Sonra',{size:10,anchor:'start'})}`;
+ }
+ if(type==='gifts'){
+   s+=txt(180,21,'24 ROZET • 6 EŞ KUTU',{size:12});
+   for(let i=0;i<6;i++){
+     const x=18+(i%3)*115,y=31+Math.floor(i/3)*67;
+     s+=`<rect x="${x}" y="${y+8}" width="93" height="45" rx="8" fill="${i===0?'#f8d1bf':i===1?'#dbd3ff':'#e6f3ed'}" stroke="${i<2?'#c7a5b8':'#bfdacf'}" stroke-width="2"/>`;
+     s+=`<path d="M${x+46} ${y+9}v44" stroke="#fff" stroke-width="3"/>`;
+     for(let j=0;j<4;j++)s+=`<circle cx="${x+20+(j%2)*52}" cy="${y+20+Math.floor(j/2)*19}" r="5" fill="${i<2?'#7562cb':'#59ac91'}"/>`;
+     if(i<2)s+=`<rect x="${x+26}" y="${y-2}" width="41" height="20" rx="9" fill="${i===0?'#f5b98e':'#a998f1'}"/>${txt(x+47,y+12,i===0?'A':'B',{size:11,color:'#fff'})}`;
+   }
+ }
+ return svg(s,{
+   pizza:'Sekiz eş parçalı pizza ve renklerine göre Ece, Mert, kalan dilimler',battery:'Dört eş bölmeli pilden üçü dolu biri boş',line:'0 ile 1 arasının dört eş aralığa ayrıldığı sayı doğrusu',aquarium:'Üç bölmede toplam on iki balık',mosaic:'Dörde dört kareli mozaik ve başlangıçta dört yeşil kare',fold:'Kâğıdın bütün hâli, birinci ve ikinci katlanma çizgileri',garden:'Dört sıra hâlinde yirmişer değil toplam yirmi fidan',ribbon:'Eş uzunlukta iki kurdeleden yarım ve iki çeyreğin boyalı karşılaştırması',lemonade:'On bardak limonatadan biri mor ikisi turuncu işaretli',gifts:'Altı kutu ve her kutunun içindeki dört rozet'}[type]);
+}
+function renderBadges(){
+  $('badge-summary').textContent=state.answers.filter(a=>a.correct).length+' rozet kazanıldı';
+  $('badge-track').replaceChildren();
+  for(let i=0;i<QUESTIONS.length;i++){
+    const a=state.answers[i],span=document.createElement('span');
+    span.className='achievement'+(a?(a.correct?' won':' missed'):'')+(i===state.index?' current':'');
+    span.textContent=a?(a.correct?'🏅':'·'):(i+1).toString();
+    span.title=`${i+1}. soru: ${a?(a.correct?'rozet kazanıldı':'öğrenme notu alındı'):'henüz yanıtlanmadı'}`;
+    $('badge-track').append(span);
+  }
+}
+function renderQuestion(){
+  const q=QUESTIONS[state.index],a=state.answers[state.index];
+  if(!q){renderReport();return;}
+  $('student-chip').textContent=BUDDIES[state.buddy].emoji+' '+state.student;
+  $('question-counter').textContent=`${state.index+1} / ${QUESTIONS.length}`;
+  const completed=state.answers.length;
+  $('progress-fill').style.width=(completed/QUESTIONS.length*100)+'%';
+  $('progressbar').setAttribute('aria-valuenow',String(completed));
+  renderBadges();
+  $('question-skill').textContent=q.skill;
+  $('question-level').textContent='★'.repeat(q.level)+' Düşünme görevi';
+  $('visual-area').innerHTML=renderScene(q.visual)+`<div class="visual-caption">${q.caption}</div>`;
+  $('question-name').textContent=`${state.index+1}. GÖREV · ${q.title}`;
+  $('question-text').textContent=q.question;
+  const choices=$('choices');choices.replaceChildren();
+  q.choices.forEach((choice,i)=>{
+    const btn=document.createElement('button');btn.type='button';
+    btn.className='choice';btn.disabled=Boolean(a);
+    if(a){if(i===q.correct)btn.classList.add('correct');else if(i===a.choice)btn.classList.add('incorrect');else btn.classList.add('dimmed');}
+    const letter=document.createElement('span');letter.className='choice-letter';letter.textContent=LETTERS[i];
+    const label=document.createElement('span');label.className='choice-label';label.textContent=choice;
+    btn.append(letter,label);
+    if(a&&i===q.correct){const check=document.createElement('span');check.className='choice-status';check.textContent='✓';btn.append(check);}
+    if(a&&i===a.choice&&!a.correct){const mark=document.createElement('span');mark.className='choice-status';mark.textContent='•';btn.append(mark);}
+    if(!a)btn.addEventListener('click',()=>chooseAnswer(i),{once:true});
+    choices.append(btn);
   });
-
-  const slot = document.getElementById("slot-" + currentQ);
-  const expBox = document.getElementById("explanation-box");
-  const expText = document.getElementById("exp-text");
-
-  // Tüm butonları devre dışı bırak
-  allBtns.forEach(function(b) {
-    b.disabled = true;
-    b.style.pointerEvents = "none";
+  $('hint-toggle').textContent='🔍 Düşünme ipucu görmek ister misin?';
+  $('hint-toggle').setAttribute('aria-expanded','false');
+  $('hint-toggle').disabled=Boolean(a);
+  $('hint-box').textContent=q.hint;
+  $('hint-box').hidden=true;
+  $('hint-area').hidden=Boolean(a);
+  $('feedback-area').replaceChildren();
+  $('next-btn').hidden=!a;
+  if(a)renderFeedback(q,a);
+  $('next-btn').innerHTML=state.index===QUESTIONS.length-1?'Karnemi gör <span aria-hidden="true">🏅</span>':'Sonraki soruya geç <span aria-hidden="true">→</span>';
+}
+$('hint-toggle').addEventListener('click',()=>{
+  if(state.answers[state.index])return;
+  const showing=$('hint-box').hidden;
+  $('hint-box').hidden=!showing;
+  $('hint-toggle').setAttribute('aria-expanded',String(showing));
+  $('hint-toggle').textContent=showing?'🔍 İpucunu gizle':'🔍 Düşünme ipucu görmek ister misin?';
+  if(showing)state.hintUsed=true;
+});
+function chooseAnswer(choice){
+  if(state.answers[state.index]||!QUESTIONS[state.index])return;
+  const q=QUESTIONS[state.index];
+  const a={choice,correct:choice===q.correct,hintUsed:state.hintUsed};
+  state.answers.push(a);
+  renderQuestion();
+  if(a.correct)rewardRain();
+}
+function renderFeedback(q,a){
+  const div=document.createElement('div');div.className='feedback '+(a.correct?'success':'growth');
+  const title=a.correct?'🌟 Tebrikler, doğru keşif!':'🥺 Henüz değil, ama şimdi öğrendik!';
+  div.innerHTML=`<h3 class="feedback-title">${title}</h3><p>${a.correct?'Düşüncen seni doğru sonuca götürdü. Rozetin rafa eklendi!':'Bu soru yeni bir öğrenme fırsatı. Seçimin kilitlendi; doğru cevabı yeşil kutuda görebilirsin.'}</p><strong style="font-size:12px">✎ Hacer Hoca’nın çözüm açıklaması</strong><ol>${q.steps.map(step=>`<li>${safeText(step)}</li>`).join('')}</ol>${!a.correct?`<p><strong>Birlikte fark edelim:</strong> ${safeText(q.diagnose[a.choice])}</p>`:''}<p class="micro-note">💡 ${safeText(q.takeaway)}</p>`;
+  $('feedback-area').append(div);
+  $('next-btn').hidden=false;
+}
+$('next-btn').addEventListener('click',()=>{
+  if(!state.answers[state.index])return;
+  if(state.index===QUESTIONS.length-1){renderReport();return;}
+  state.index++;state.hintUsed=false;
+  renderQuestion();
+  window.scrollTo({top:0,behavior:reducedMotion?'auto':'smooth'});
+});
+let confettiCleanup=0;
+function rewardRain(){
+  const layer=$('confetti-layer');layer.replaceChildren();
+  clearTimeout(confettiCleanup);
+  if(reducedMotion)return;
+  const pieces=document.createDocumentFragment();
+  for(let i=0;i<60;i++){
+    const s=document.createElement('span');s.className='confetti-piece';
+    s.textContent=EMOJIS[i%EMOJIS.length];
+    s.style.left=(Math.random()*100)+'%';
+    s.style.setProperty('--duration',(2.3+Math.random()*2.7)+'s');
+    s.style.setProperty('--delay',(Math.random()*0.95)+'s');
+    s.style.setProperty('--drift',(-95+Math.random()*190)+'px');
+    s.style.setProperty('--turn',(-540+Math.random()*1080)+'deg');
+    pieces.append(s);
+  }
+  layer.append(pieces);
+  confettiCleanup=setTimeout(()=>layer.replaceChildren(),6400);
+}
+function scoreHeadline(score){
+  if(score===100)return ['Kesirlerin Yıldızı!','Bütün soruları doğru çözdün! Bilgini modellerle açıklayabilmen özellikle değerli.'];
+  if(score>=80)return ['Harika Bir Keşif!','Çok güçlü bir çalışma yaptın. Küçük ipuçlarınla zorlandığın konuları da geliştirebilirsin.'];
+  if(score>=60)return ['Gelişen Matematikçi!','Birçok görevi başardın. Şimdi yanıtlarına bakıp düşünme yollarını güçlendirme zamanı.'];
+  return ['Meraklı Kesir Kaşifi!','Yeni şeyler öğrenmenin en güzel yanı, farklı yolları denemektir. Hacer Hoca’nın çözüm adımları yolunu aydınlatacak.'];
+}
+function renderReport(){
+  if(state.answers.length!==QUESTIONS.length)return;
+  const correct=state.answers.filter(a=>a.correct).length,wrong=QUESTIONS.length-correct,score=correct*10;
+  const independently=state.answers.filter(a=>a.correct&&!a.hintUsed).length;
+  const [headline,message]=scoreHeadline(score);
+  $('report-headline').textContent=headline;
+  $('report-name').textContent=state.student;
+  $('report-buddy').textContent=BUDDIES[state.buddy].emoji+' '+BUDDIES[state.buddy].name+' macerana eşlik etti!';
+  $('share-status').textContent='';
+  $('report-date').textContent='Değerlendirme tarihi: '+new Intl.DateTimeFormat('tr-TR',{day:'numeric',month:'long',year:'numeric'}).format(new Date());
+  $('report-score').textContent=score;
+  $('score-ring').style.setProperty('--score-stop',score+'%');
+  $('report-message').textContent=message;
+  const metrics=[['Doğru cevap',correct,'good'],['Gelişen (yanlış)',wrong,'growth'],['İpucusuz doğru',independently,'']];
+  $('report-metrics').innerHTML=metrics.map(([label,value,cls])=>`<div class="metric ${cls}"><strong>${value}</strong><span>${label}</span></div>`).join('');
+  const results=SKILL_ORDER.map(skill=>{
+    const ids=QUESTIONS.map((q,i)=>q.skill===skill?i:-1).filter(i=>i!==-1);
+    const done=ids.filter(i=>state.answers[i].correct).length;
+    return {skill,ids,done,count:ids.length,pct:Math.round(done/ids.length*100)};
   });
+  $('skills-list').innerHTML=results.map(s=>`<div class="skill-row"><div class="skill-meta"><span>${safeText(s.skill)}</span><span>${s.done}/${s.count} doğru</span></div><div class="skill-track" role="progressbar" aria-label="${safeText(s.skill)} beceri başarısı" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${s.pct}"><div style="width:${s.pct}%"></div></div></div>`).join('');
+  const growth=results.filter(s=>s.done<s.count).sort((a,b)=>(a.pct-b.pct)||(b.count-a.count));
+  let plan='';
+  if(growth.length){const top=growth.slice(0,2);plan=`<h4>👩‍🏫 Hacer Hoca’dan kişisel çalışma planın</h4><p><strong>Önce şu becerilere odaklan:</strong> ${top.map(s=>safeText(s.skill)).join(' ve ')}.<br>${top.map(s=>safeText(SKILL_GUIDES[s.skill])).join(' ')}<br><strong>Öneri:</strong> Her yanlış soruyu çözüm adımlarını kapatarak bir kez defterinde yeniden açıkla.</p>`;}
+  else plan='<h4>👩‍🏫 Hacer Hoca’dan sana bir üst seviye görev</h4><p>Tüm becerilerde doğru cevaplar verdin. Şimdi kendi kesir problemini tasarla: bir görsel oluştur, üç seçenek yaz ve doğru cevabın neden doğru olduğunu anlat.</p>';
+  $('teacher-plan').innerHTML=plan;
+  $('answer-list').innerHTML=QUESTIONS.map((q,i)=>{
+    const a=state.answers[i],good=a.correct;
+    return `<details class="analysis-item ${good?'good':'bad'}" open><summary><span class="analysis-icon">${good?'✓':'✎'}</span><span class="analysis-ttl">${i+1}. ${safeText(q.title)}<small>${safeText(q.skill)} · ${good?'Doğru çözüm':'Gelişim fırsatı'}${a.hintUsed?' · İpucu kullanıldı':''}</small></span><span class="analysis-chevron" aria-hidden="true">⌄</span></summary><div class="analysis-content"><p><strong>Soru:</strong> ${safeText(q.question)}</p><div class="answer-compare"><span>Senin yanıtın: ${LETTERS[a.choice]}) ${safeText(q.choices[a.choice])} ${good?'✓':'✎'}</span><span>Doğru yanıt: <b>${LETTERS[q.correct]}) ${safeText(q.choices[q.correct])}</b></span></div><strong>Hacer Hoca’nın adım adım çözümü:</strong><ol>${q.steps.map(step=>`<li>${safeText(step)}</li>`).join('')}</ol>${good?'':`<div class="error-insight"><strong>Olası düşünme hatası:</strong> ${safeText(q.diagnose[a.choice])}</div>`}<p><strong>Akılda kalsın:</strong> ${safeText(q.takeaway)}</p></div></details>`;
+  }).join('');
+  $('confetti-layer').replaceChildren();
+  changeScreen('report-screen');
+}
 
-  // Cevap değerlendirmesi (Doğru / Yanlış)
-  if (idx === q.correct) {
-    selectedBtn.classList.add("correct");
-    score += 10;
-    document.getElementById("score").innerText = score;
-    
-    // Rozet Güncellemesi
-    slot.innerText = q.badgeIcon;
-    slot.classList.add("earned");
-    
-    // Hacer Hoca Açıklaması
-    expText.innerHTML = "✅ <b>Tebrikler, harika analiz!</b><br><br>" + q.explanation;
-    
-    // Ödül Yağmuru
-    launchConfetti();
-  } else {
-    selectedBtn.classList.add("wrong");
-    // Doğru olanı yeşil olarak vurgula
-    allBtns[q.correct].classList.add("correct"); 
-    
-    // Yanlış rozeti (Şefkatli Hüzün Emojisi)
-    slot.innerText = "🥺"; 
-    slot.classList.add("missed");
-    
-    // Hacer Hoca Açıklaması
-    expText.innerHTML = "🥺 <b>Minik bir hata ama üzülme, birlikte öğreniyoruz!</b><br><br>" + q.explanation;
+/* Karnenin paylaşıma uygun PNG görseli: harici kütüphane ve sunucu kullanılmaz. */
+function roundedPath(ctx,x,y,w,h,r){
+  r=Math.max(0,Math.min(r,w/2,h/2));
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+function fillRound(ctx,x,y,w,h,r,color){ctx.fillStyle=color;roundedPath(ctx,x,y,w,h,r);ctx.fill();}
+function drawWrappedText(ctx,content,x,y,maxWidth,lineHeight,maxLines=3){
+  const words=String(content).split(/\s+/);let line='',printed=0;
+  for(let i=0;i<words.length;i++){
+    const next=line?line+' '+words[i]:words[i];
+    if(ctx.measureText(next).width>maxWidth&&line){
+      ctx.fillText(line,x,y+printed*lineHeight,maxWidth);printed++;line=words[i];
+      if(printed>=maxLines-1){line=[line,...words.slice(i+1)].join(' ');break;}
+    }else line=next;
   }
-
-  // Açıklamayı ve İleri butonunu göster
-  expBox.style.display = "block";
-  document.getElementById("next-btn").style.display = "block";
+  if(line)ctx.fillText(line,x,y+printed*lineHeight,maxWidth);
 }
-
-function nextQuestion() {
-  currentQ++;
-  if (currentQ < questions.length) {
-    loadQuestion();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  } else {
-    showEvaluationReport();
+function createReportCanvas(){
+  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1510;
+  const c=canvas.getContext('2d');if(!c)throw new Error('Görsel oluşturulamıyor');
+  const correct=state.answers.filter(a=>a.correct).length;
+  const wrong=QUESTIONS.length-correct,score=correct*10,independent=state.answers.filter(a=>a.correct&&!a.hintUsed).length;
+  const skills=SKILL_ORDER.map(skill=>{
+    const ids=QUESTIONS.map((q,i)=>q.skill===skill?i:-1).filter(i=>i>=0);
+    return {skill,count:ids.length,correct:ids.filter(i=>state.answers[i].correct).length};
+  });
+  c.fillStyle='#f7f4ff';c.fillRect(0,0,1080,1510);
+  const grad=c.createLinearGradient(0,0,1080,510);grad.addColorStop(0,'#7660de');grad.addColorStop(1,'#493bb9');
+  fillRound(c,36,35,1008,500,43,grad);
+  c.save();c.globalAlpha=.13;c.fillStyle='#ffffff';c.beginPath();c.arc(943,110,176,0,2*Math.PI);c.fill();c.beginPath();c.arc(80,520,115,0,2*Math.PI);c.fill();c.restore();
+  c.fillStyle='#fff2b1';c.font='bold 27px system-ui, sans-serif';c.textAlign='center';
+  c.fillText('✦  HACER HOCA AKADEMİ  ✦',540,100);
+  c.fillStyle='#ffffff';c.font='900 51px system-ui, sans-serif';c.fillText('KESİRLER GELİŞİM KARNEM',540,163,920);
+  c.fillStyle='#f8efff';c.font='750 34px system-ui, sans-serif';c.fillText(state.student,540,218,896);
+  c.fillStyle='#fff2b1';c.font='750 24px system-ui, sans-serif';
+  c.fillText(`${BUDDIES[state.buddy].name} ile tamamlanan keşif macerası`,540,261,920);
+  const cx=540,cy=389,r=95;c.lineWidth=22;c.strokeStyle='rgba(255,255,255,.25)';c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.stroke();
+  c.strokeStyle='#ffda80';c.lineCap='round';c.beginPath();c.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*score/100);if(score>0)c.stroke();
+  c.fillStyle='#ffffff';c.font='950 90px system-ui, sans-serif';c.fillText(String(score),cx,406);
+  c.font='800 27px system-ui, sans-serif';c.fillText('PUAN',cx,450);
+  c.font='700 20px system-ui, sans-serif';c.fillText('100 üzerinden',cx,509);
+  const stats=[{x:64,label:'DOĞRU',value:correct,fill:'#e7f9ef',color:'#13845e'},
+   {x:386,label:'GELİŞEN',value:wrong,fill:'#fff0e7',color:'#bd7245'},
+   {x:708,label:'İPUCUSUZ DOĞRU',value:independent,fill:'#eeeaff',color:'#5b46bf'}];
+  for(const t of stats){
+    fillRound(c,t.x,558,308,150,25,t.fill);c.textAlign='center';c.fillStyle=t.color;c.font='900 64px system-ui, sans-serif';c.fillText(String(t.value),t.x+154,634);
+    c.font='800 22px system-ui, sans-serif';c.fillText(t.label,t.x+154,678);
   }
+  c.textAlign='left';c.fillStyle='#29224a';c.font='900 43px system-ui, sans-serif';c.fillText('Beceri Haritam',75,788);
+  c.font='500 23px system-ui, sans-serif';c.fillStyle='#736c90';c.fillText('Başarılarımı ve yeni çalışma hedeflerimi görüyorum.',75,826);
+  skills.forEach((s,i)=>{
+    const y=877+i*96,p=s.correct/s.count;
+    c.font='800 26px system-ui, sans-serif';c.fillStyle='#363054';c.fillText(s.skill,80,y);
+    c.textAlign='right';c.font='800 24px system-ui, sans-serif';c.fillStyle='#7465c0';c.fillText(`${s.correct}/${s.count}`,999,y);
+    c.textAlign='left';fillRound(c,79,y+19,922,19,9,'#ebe7f6');
+    if(p>0)fillRound(c,79,y+19,922*p,19,9,'#6dcba9');
+  });
+  const growth=skills.filter(s=>s.correct<s.count).sort((a,b)=>a.correct/a.count-b.correct/b.count);
+  fillRound(c,65,1341,950,78,17,'#eee9ff');c.fillStyle='#5142a9';c.textAlign='center';c.font='800 24px system-ui, sans-serif';
+  const tip=growth.length?'Sıradaki hedefim: '+growth.slice(0,2).map(s=>s.skill).join(' ve '):'Tüm beceriler tamam! Şimdi kendi sorumu tasarlayabilirim.';
+  c.fillText(tip,540,1389,905);
+  c.textAlign='left';c.font='650 20px system-ui, sans-serif';c.fillStyle='#9690aa';
+  c.fillText(new Intl.DateTimeFormat('tr-TR',{day:'numeric',month:'long',year:'numeric'}).format(new Date()),78,1460);
+  c.textAlign='right';c.fillText('3. Sınıf • Hacer Hoca ile Kesirler',1000,1460);
+  return canvas;
 }
-
-function launchConfetti() {
-  const emojis = ["🌟", "🎉", "🏅", "✨", "🎈", "🎁", "🏆", "💎"];
-  for (let i = 0; i < 45; i++) {
-    const conf = document.createElement("div");
-    conf.className = "confetti";
-    conf.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    conf.style.left = (Math.random() * 100) + "vw";
-    conf.style.top = (-30 - Math.random() * 50) + "px";
-    conf.style.fontSize = (Math.random() * 1.8 + 1.2) + "rem";
-    conf.style.animationDuration = (Math.random() * 2 + 1.2) + "s";
-    conf.style.animationDelay = (Math.random() * 0.3) + "s";
-    document.body.appendChild(conf);
-    
-    // Animasyon bitince temizle
-    setTimeout(function() {
-      conf.remove();
-    }, 3500);
+function reportImageFile(){
+  // Senkron üretim, telefonlardaki paylaşım menüsünün kullanıcı etkileşimini korur.
+  const url=createReportCanvas().toDataURL('image/png');
+  const raw=atob(url.slice(url.indexOf(',')+1));const bytes=new Uint8Array(raw.length);
+  for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+  const filename='Hacer-Hoca-Kesirler-Karnem.png';
+  return new File([bytes],filename,{type:'image/png'});
+}
+function saveReportFile(file){
+  const url=URL.createObjectURL(file),a=document.createElement('a');
+  a.href=url;a.download=file.name;document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+}
+function shortShareText(){
+  const correct=state.answers.filter(a=>a.correct).length;
+  return `${state.student} • Hacer Hoca ile Kesirler Değerlendirmesi: ${correct*10}/100 puan, ${correct} doğru. ${QUESTIONS.length-correct} gelişim fırsatı.`;
+}
+$('share-btn').addEventListener('click',()=>{
+  if(state.answers.length!==QUESTIONS.length)return;
+  const status=$('share-status');status.textContent='';
+  let file;
+  try{file=reportImageFile();}catch(e){status.textContent='Karne görseli hazırlanamadı. PDF için Yazdır / PDF Kaydet seçeneğini kullanabilirsin.';return;}
+  if(typeof navigator.share==='function' && typeof navigator.canShare==='function' && navigator.canShare({files:[file]})){
+    navigator.share({title:'Hacer Hoca • Kesirler Karnem',text:shortShareText(),files:[file]})
+      .then(()=>{status.textContent='Paylaşım menüsündeki işlemin tamamlandı.';})
+      .catch(err=>{
+        if(err && err.name==='AbortError')return;
+        saveReportFile(file);status.textContent='Cihazın doğrudan paylaşımı desteklemedi. Karne görseli indirildi; WhatsApp veya başka bir uygulamadan gönderebilirsin.';
+      });
+  }else{
+    saveReportFile(file);status.textContent='Karne görseli cihazına indirildi. WhatsApp veya başka bir uygulamada fotoğraf olarak paylaşabilirsin.';
   }
-}
+});
+$('download-btn').addEventListener('click',()=>{
+  if(state.answers.length!==QUESTIONS.length)return;
+  try{saveReportFile(reportImageFile());$('share-status').textContent='PNG karne görselin indirildi.';}
+  catch(e){$('share-status').textContent='Karne görseli oluşturulamadı. PDF olarak kaydetmeyi deneyebilirsin.';}
+});
 
-function showEvaluationReport() {
-  launchConfetti();
-  
-  // Ana ekran öğelerini gizle
-  document.getElementById("quiz-card").style.display = "none";
-  document.getElementById("reward-shelf-box").style.display = "none";
-  document.getElementById("progress-bg").style.display = "none";
-  document.getElementById("header-stats").style.display = "none";
-
-  const correctCount = userAnswers.filter(function(a) { return a.isCorrect; }).length;
-  const wrongCount = questions.length - correctCount;
-
-  // Analiz Raporunu HTML formatında oluştur
-  let reportDetails = userAnswers.map(function(ans) {
-    let bgColor = ans.isCorrect ? '#f0fdf4' : '#fffbeb';
-    let borderColor = ans.isCorrect ? '#bbf7d0' : '#fde68a';
-    let statusColor = ans.isCorrect ? '#16a34a' : '#d97706';
-    let statusText = ans.isCorrect ? '✅ Doğru' : '🥺 Geliştirilebilir';
-
-    return '<div style="background:' + bgColor + '; border:1px solid ' + borderColor + '; border-radius:10px; padding:10px; margin-bottom:8px; text-align:left; font-size:0.85rem;">' +
-           '<b>Soru ' + ans.questionNum + ':</b> ' + ans.title + '<br>' +
-           'Durum: <span style="color:' + statusColor + '; font-weight:bold;">' + statusText + '</span><br>' +
-           '<div style="margin-top:4px; color:#475569;">' + ans.explanation + '</div>' +
-           '</div>';
-  }).join("");
-
-  // Karne Kartını Ekrana Bas
-  const reportCard = document.getElementById("report-card");
-  reportCard.style.display = "block";
-  reportCard.innerHTML = 
-    '<div style="font-size:3rem; margin-bottom:10px;">📊👩‍🏫📋</div>' +
-    '<h2 style="color:var(--primary); margin:6px 0;">Değerlendirme Karnesi</h2>' +
-    '<p style="font-size:1.1rem; margin:6px 0;">Öğrenci: <b style="color:#db2777; font-size:1.25rem;">' + studentName + '</b></p>' +
-    
-    '<div style="background:#312e81; color:white; padding:12px; border-radius:14px; margin:12px 0; display:flex; justify-content:space-around; font-weight:bold; font-size:1rem; box-shadow:0 4px 6px rgba(0,0,0,0.1);">' +
-      '<div>⭐ Puan: ' + score + '/100</div>' +
-      '<div>✅ Doğru: ' + correctCount + '</div>' +
-      '<div>🥺 Gelişen: ' + wrongCount + '</div>' +
-    '</div>' +
-    
-    '<div style="font-weight:800; color:#1e293b; margin:14px 0 8px; font-size:1rem; text-align:left; border-bottom:2px solid #e2e8f0; padding-bottom:4px;">📋 Soru Analiz Dökümü:</div>' +
-    '<div style="max-height: 300px; overflow-y: auto; padding-right: 6px; margin-bottom:10px;">' + reportDetails + '</div>' +
-    
-    '<p style="font-size:0.85rem; color:#475569; margin-top:14px; font-style:italic;">"Harika bir çaba gösterdin, başarılarının devamını dilerim!"<br><b style="color:#db2777;">— Hacer Hoca 👩‍🏫💖</b></p>' +
-    
-    '<button class="action-btn" style="margin-top:14px;" type="button" onclick="location.reload()">🔄 Yeni Değerlendirme Başlat</button>';
-}
+$('print-btn').addEventListener('click',()=>window.print());
+$('restart-btn').addEventListener('click',()=>{
+  state.student='';state.index=0;state.answers=[];state.hintUsed=false;selectBuddy('robot');
+  $('student-name').value='';$('name-error').textContent='';$('student-name').removeAttribute('aria-invalid');
+  $('confetti-layer').replaceChildren();changeScreen('welcome-screen');
+  $('student-name').focus({preventScroll:true});
+});
 </script>
 </body>
 </html>
