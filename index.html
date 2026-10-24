@@ -108,8 +108,8 @@
     box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
   }
   .badge-slot.missed {
-    background: #fee2e2;
-    border: 1.5px solid #dc2626;
+    background: #fef3c7;
+    border: 1.5px solid #f59e0b;
   }
   .progress-bar-bg {
     width: 92%;
@@ -229,8 +229,25 @@
     cursor: pointer;
     transition: all 0.15s ease;
   }
-  .opt-btn:active {
-    transform: scale(0.98);
+  .opt-btn:disabled {
+    cursor: not-allowed;
+  }
+  .opt-btn.correct {
+    background: var(--success-light);
+    border-color: var(--success);
+    color: #065f46;
+    opacity: 1;
+  }
+  .opt-btn.correct .opt-letter {
+    background: var(--success);
+  }
+  .opt-btn.wrong {
+    background: var(--danger-light);
+    border-color: var(--danger);
+    color: #991b1b;
+  }
+  .opt-btn.wrong .opt-letter {
+    background: var(--danger);
   }
   .opt-letter {
     background: var(--primary);
@@ -243,22 +260,6 @@
     align-items: center;
     font-weight: 800;
     flex-shrink: 0;
-  }
-  .opt-btn.correct {
-    background: var(--success-light);
-    border-color: var(--success);
-    color: #065f46;
-  }
-  .opt-btn.correct .opt-letter {
-    background: var(--success);
-  }
-  .opt-btn.wrong {
-    background: var(--danger-light);
-    border-color: var(--danger);
-    color: #991b1b;
-  }
-  .opt-btn.wrong .opt-letter {
-    background: var(--danger);
   }
   .explanation-box {
     margin-top: 12px;
@@ -287,6 +288,10 @@
     font-weight: 800;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+    transition: transform 0.1s;
+  }
+  .next-btn:active, .action-btn:active {
+    transform: scale(0.98);
   }
   .grid-row {
     display: flex;
@@ -307,7 +312,6 @@
     background: white;
     user-select: none;
   }
-  /* Ödül Yağmuru Efekti */
   .confetti {
     position: fixed;
     z-index: 999999;
@@ -333,7 +337,7 @@
   </div>
 
   <div class="reward-shelf-container" id="reward-shelf-box" style="display:none;">
-    <div class="shelf-title">📊 Değerlendirme Takibi (Doğru / Yanlış Dağılımı)</div>
+    <div class="shelf-title">📊 Değerlendirme Takibi (Doğru / Gelişim Alanı)</div>
     <div class="badge-shelf" id="badge-shelf">
       <div class="badge-slot" id="slot-0">🔒</div>
       <div class="badge-slot" id="slot-1">🔒</div>
@@ -352,13 +356,13 @@
     <div class="progress-bar-fill" id="progress-fill"></div>
   </div>
 
-  <!-- Karşılama Ekranı (En az 5 karakter zorunlu) -->
+  <!-- Karşılama Ekranı -->
   <div class="card" id="welcome-card">
     <div class="welcome-screen">
       <div style="font-size: 3.5rem;">👩‍🏫📋</div>
       <h2 style="color: var(--primary); margin: 8px 0;">Yeni Nesil Beceri Sınavı</h2>
       <p style="color: #475569; font-size: 0.92rem; line-height: 1.5;">
-        Bu test 3. sınıf düzeyinde <b>10 özgün, çok adımlı ve analitik yeni nesil sorudan</b> oluşur. Sınava başlamak için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde giriniz.
+        Bu test 3. sınıf düzeyinde <b>10 özgün, çok adımlı ve analitik yeni nesil sorudan</b> oluşur. Başlamak için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde giriniz.
       </p>
       <input type="text" id="student-name-input" class="name-input" placeholder="Adınız ve Soyadınız..." maxlength="30">
       <div class="error-msg" id="error-msg"></div>
@@ -382,19 +386,26 @@
 
     <button class="next-btn" id="next-btn" style="display:none;" type="button" onclick="nextQuestion()">Sonraki Soru ➡️</button>
   </div>
+
+  <!-- Sonuç / Karne Ekranı -->
+  <div class="card" id="report-card" style="display:none; padding:10px 4px; text-align:center;"></div>
+
 </div>
 
 <script>
+// --- Global Değişkenler ---
 let studentName = "";
 let currentQ = 0;
 let score = 0;
 let answered = false;
 let userAnswers = [];
 
+// Alt-üst çizgili kesir gösterimi için yardımcı fonksiyon
 function frac(top, bottom) {
   return '<span class="frac"><span class="top">' + top + '</span><span class="bottom">' + bottom + '</span></span>';
 }
 
+// --- 10 Soru Veritabanı ---
 const questions = [
   {
     title: "🍕 1. Pizza Partisi ve Artan Dilimler",
@@ -402,7 +413,7 @@ const questions = [
     renderStage: function() {
       return '<div style="font-weight:bold; margin-bottom:6px;">8 Eş Dilimli İki Özdeş Pizza</div>' +
              '<div class="grid-row"><div class="touch-box">🍕</div><div class="touch-box">🍕</div><div class="touch-box">🍕</div><div class="touch-box">⬜</div></div>' +
-             '<div style="font-size:0.8rem; color:#475569; margin-top:4px;">Kerem 2 tam pizzanın 5 dilimini misafirlere ikram etmiştir.</div>';
+             '<div style="font-size:0.8rem; color:#475569; margin-top:4px;">Kerem 2 tam pizzanın 5 dilimini ikram etmiştir.</div>';
     },
     text: 'Kerem, eş büyüklükte iki tam pizzayı da <b>8\'er eş dilime</b> ayırmıştır. Arkadaşlarıyla birlikte toplam **10 dilim** pizza yemişlerdir. Geriye kalan pizza miktarını gösteren kesir ve bunun tam sayı cinsinden ifadesi aşağıdakilerden hangisidir?',
     options: [
@@ -411,7 +422,7 @@ const questions = [
       'Geriye ' + frac(10, 8) + ' pizza kalmıştır.'
     ],
     correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 16 dilim vardır (2 x 8). 10 dilimi yenildiğine göre 16 - 10 = 6 dilim kalmıştır. Bu da ' + frac(6, 8) + ' demektir ve yarımdan (' + frac(4, 8) + ') büyüktür.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 16 dilim vardır (2 x 8 = 16). 10 dilimi yenildiğine göre 16 - 10 = 6 dilim kalmıştır. Bu da ' + frac(6, 8) + ' demektir ve yarımdan (' + frac(4, 8) + ') büyüktür.'
   },
   {
     title: "🔋 2. Akıllı Telefon Batarya Analizi",
@@ -428,7 +439,7 @@ const questions = [
       'Batarya tamamen tükenmiştir.'
     ],
     correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Başlangıçta 9 bölme dolu idi. 3 bölme harcanınca 9 - 3 = 6 bölme kaldı (' + frac(6, 12) + '). Bu yapının payındaki her bir parça ' + frac(1, 12) + ' birim kesrini ifade eder.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Başlangıçta 9 bölme dolu idi. 3 bölme harcanınca 9 - 3 = 6 bölme kaldı (' + frac(6, 12) + '). Bu yapının payındaki her bir parça (bölme) ' + frac(1, 12) + ' birim kesrini ifade eder.'
   },
   {
     title: "🌻 3. Çiftlik Parsel Tasarımı",
@@ -444,7 +455,7 @@ const questions = [
       'Tarlanın sadece ortasından bir çizgi çekip 2 parçaya ayırmak.'
     ],
     correct: 1,
-    explanation: '💡 <b>Analitik Çözüm:</b> Bir bütünün kesir olarak ifade edilebilmesi ve paylaştırılabilmesi için parçaların kesinlikle alan ve ölçü olarak <b>eş (özdeş)</b> olması gerekir.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Bir bütünün kesir olarak ifade edilebilmesi ve doğru paylaştırılabilmesi için parçaların kesinlikle alan ve ölçü olarak <b>eş (özdeş)</b> olması gerekir.'
   },
   {
     title: "🐸 4. Uzun Atlama Parkuru",
@@ -460,7 +471,7 @@ const questions = [
       'C noktası ' + frac(5, 6) + ' değerindedir.'
     ],
     correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 6 eş aralık vardır (payda 6). 0\'dan C\'ye kadar 3 adım atılmıştır; dolayısıyla kesir ' + frac(3, 6) + ' (yani yarım) olur.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 6 eş aralık vardır (payda = 6). 0\'dan C\'ye kadar 3 adım (3 aralık) atılmıştır; dolayısıyla kesir ' + frac(3, 6) + ' (yani yarım) olur.'
   },
   {
     title: "🧱 5. Tarihi Taş Köprü Onarımı",
@@ -476,7 +487,7 @@ const questions = [
       '8 blok daha onarmalıdırlar.'
     ],
     correct: 1,
-    explanation: '💡 <b>Analitik Çözüm:</b> Hedef ' + frac(8, 10) + ', mevcut durum ' + frac(3, 10) + '\'dir. Aradaki fark 8 - 3 = 5 blokdur.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Hedef ' + frac(8, 10) + ', mevcut durum ' + frac(3, 10) + '\'dir. Aradaki fark: 8 - 3 = 5 blok daha onarılması gerektiğini gösterir.'
   },
   {
     title: "🍰 6. Doğum Günü Pastası Paylaşımı",
@@ -491,7 +502,7 @@ const questions = [
       'İkisi de tamamen eşit miktarda pasta yemiştir.'
     ],
     correct: 1,
-    explanation: '💡 <b>Analitik Çözüm:</b> Paylar eşitken, paydası küçük olan kesir daha büyüktür (' + frac(1, 6) + ' > ' + frac(1, 12) + '). Az kişiye bölünen pasta dilimi daha iridir.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Paylar eşitken, paydası küçük olan kesir daha büyüktür (' + frac(1, 6) + ' > ' + frac(1, 12) + '). Az kişiye bölünen pasta dilimi daha iridir ve doyurucudur.'
   },
   {
     title: "💎 7. Mücevher Kutusu Dağılımı",
@@ -506,7 +517,7 @@ const questions = [
       '12 elmas verilmiştir.'
     ],
     correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Bir çokluğun birim kesir kadarı bulunurken sayı paya çarpılıp paydaya bölünür veya direkt 24 ÷ 4 = 6 işleminden 6 elmas bulunur.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Bir çokluğun birim kesir kadarı bulunurken sayı paya çarpılıp paydaya bölünür veya direkt olarak çeyreği bulmak için dörde böleriz: 24 ÷ 4 = 6 elmas.'
   },
   {
     title: "♻️ 8. Geri Dönüşüm Kampanyası",
@@ -521,7 +532,7 @@ const questions = [
       '10 kg kağıt kalmıştır.'
     ],
     correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> 30 kg\'ın ' + frac(1, 3) + '\'i 10 kg\'dır (30 ÷ 3). Geriye 30 - 10 = 20 kg kalır. Atölyede 5 kg harcanırsa 20 - 5 = 15 kg kalır.'
+    explanation: '💡 <b>Analitik Çözüm:</b> 30 kg\'ın ' + frac(1, 3) + '\'i 10 kg\'dır (30 ÷ 3). Geriye 30 - 10 = 20 kg kalır. Atölyede de 5 kg harcanırsa: 20 - 5 = 15 kg son kalan kağıttır.'
   },
   {
     title: "🐠 9. Akvaryum Su Seviyesi Problemi",
@@ -536,7 +547,7 @@ const questions = [
       '12 bölme su eklenmelidir.'
     ],
     correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> Hedef 12 bölme, mevcut durum 7 bölmedir. 12 - 7 = 5 bölme su eklenmelidir.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Hedef 12 bölme, mevcut durum ise 7 bölmedir. Gerekli olan farkı bulmak için: 12 - 7 = 5 bölme daha su eklenmelidir.'
   },
   {
     title: "🎨 10. Dijital Mozaik Tasarımı",
@@ -551,17 +562,20 @@ const questions = [
       '12 beyaz kare kalmıştır.'
     ],
     correct: 0,
-    explanation: '💡 <b>Analitik Çözüm:</b> 20 karenin ' + frac(1, 5) + '\'i 4 karedir (mavi). Kalan kare: 20 - 4 = 16. Kalanların yarısı sarı boyanırsa: 16 ÷ 2 = 8 kare sarıdır. Toplam boyalı: 4 + 8 = 12. Beyaz kalan: 20 - 12 = 8 karedir.'
+    explanation: '💡 <b>Analitik Çözüm:</b> 20 karenin ' + frac(1, 5) + '\'i 4 karedir (mavi). Kalan kare: 20 - 4 = 16\'dır. Kalanların yarısı sarı ise: 16 ÷ 2 = 8 kare sarıdır. Toplam boyalı: 4 + 8 = 12 kare. Beyaz kalan: 20 - 12 = 8 karedir.'
   }
 ];
+
+// --- Fonksiyonlar ---
 
 function startGame() {
   const inputEl = document.getElementById("student-name-input");
   const inputVal = inputEl.value.trim();
   const errorBox = document.getElementById("error-msg");
   
+  // İsim alanı en az 5 karakter kontrolü
   if (inputVal.length < 5) {
-    errorBox.innerText = "⚠️ Adınız ve soyadınız en az 5 karakterden oluşmalıdır!";
+    errorBox.innerText = "⚠️ Sınava giriş için adınız ve soyadınız en az 5 karakterden oluşmalıdır!";
     inputEl.focus();
     return;
   }
@@ -578,13 +592,18 @@ function startGame() {
 function loadQuestion() {
   answered = false;
   const q = questions[currentQ];
+  
+  // Üst istatistik ve bar güncellemeleri
   document.getElementById("question-counter").innerText = "Soru " + (currentQ + 1) + " / " + questions.length;
   document.getElementById("progress-fill").style.width = (((currentQ + 1) / questions.length) * 100) + "%";
+  
+  // Soru içeriklerinin yerleştirilmesi
   document.getElementById("q-title").innerHTML = q.title;
-  document.getElementById("stage-hint").innerText = q.renderStage ? "👆 Beceri Temelli Senaryo" : "";
-  document.getElementById("stage-content").innerHTML = q.renderStage ? q.renderStage() : "";
+  document.getElementById("stage-hint").innerText = "👆 Beceri Temelli Senaryo";
+  document.getElementById("stage-content").innerHTML = q.renderStage();
   document.getElementById("q-text").innerHTML = q.text;
 
+  // Şıkların oluşturulması
   const optsContainer = document.getElementById("options-container");
   optsContainer.innerHTML = "";
   const letters = ["A", "B", "C"];
@@ -600,17 +619,20 @@ function loadQuestion() {
     optsContainer.appendChild(btn);
   });
 
+  // Ekranı sıfırlama (Önceki açıklamaları gizle vs.)
   document.getElementById("explanation-box").style.display = "none";
   document.getElementById("next-btn").style.display = "none";
 }
 
 function selectAnswer(idx, selectedBtn) {
+  // Sadece ilk cevabı kabul et, kilit mekanizması
   if (answered) return; 
   answered = true;
 
   const q = questions[currentQ];
   const allBtns = document.querySelectorAll(".opt-btn");
   
+  // Değerlendirme için cevabı kaydet
   userAnswers.push({
     questionNum: currentQ + 1,
     title: q.title,
@@ -624,25 +646,41 @@ function selectAnswer(idx, selectedBtn) {
   const expBox = document.getElementById("explanation-box");
   const expText = document.getElementById("exp-text");
 
+  // Tüm butonları devre dışı bırak
+  allBtns.forEach(function(b) {
+    b.disabled = true;
+    b.style.pointerEvents = "none";
+  });
+
+  // Cevap değerlendirmesi (Doğru / Yanlış)
   if (idx === q.correct) {
     selectedBtn.classList.add("correct");
     score += 10;
     document.getElementById("score").innerText = score;
+    
+    // Rozet Güncellemesi
     slot.innerText = q.badgeIcon;
     slot.classList.add("earned");
-    expText.innerHTML = "✅ <b>Doğru Analiz!</b><br>" + q.explanation;
-    launchConfetti(); // Coşkulu ödül yağmuru tetiklenir
+    
+    // Hacer Hoca Açıklaması
+    expText.innerHTML = "✅ <b>Tebrikler, harika analiz!</b><br><br>" + q.explanation;
+    
+    // Ödül Yağmuru
+    launchConfetti();
   } else {
     selectedBtn.classList.add("wrong");
+    // Doğru olanı yeşil olarak vurgula
     allBtns[q.correct].classList.add("correct"); 
-    slot.innerText = "😭"; 
+    
+    // Yanlış rozeti (Şefkatli Hüzün Emojisi)
+    slot.innerText = "🥺"; 
     slot.classList.add("missed");
-    expText.innerHTML = "😭 <b>Yanlış Cevap!</b><br>" + q.explanation;
+    
+    // Hacer Hoca Açıklaması
+    expText.innerHTML = "🥺 <b>Minik bir hata ama üzülme, birlikte öğreniyoruz!</b><br><br>" + q.explanation;
   }
 
-  allBtns.forEach(function(b) {
-    b.style.pointerEvents = "none";
-  });
+  // Açıklamayı ve İleri butonunu göster
   expBox.style.display = "block";
   document.getElementById("next-btn").style.display = "block";
 }
@@ -657,19 +695,20 @@ function nextQuestion() {
   }
 }
 
-// Güçlendirilmiş Coşkulu Ödül Yağmuru Efekti
 function launchConfetti() {
   const emojis = ["🌟", "🎉", "🏅", "✨", "🎈", "🎁", "🏆", "💎"];
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 45; i++) {
     const conf = document.createElement("div");
     conf.className = "confetti";
     conf.innerText = emojis[Math.floor(Math.random() * emojis.length)];
     conf.style.left = (Math.random() * 100) + "vw";
-    conf.style.top = (-20 - Math.random() * 40) + "px";
-    conf.style.fontSize = (Math.random() * 1.5 + 1.5) + "rem";
-    conf.style.animationDuration = (Math.random() * 2 + 1) + "s";
-    conf.style.animationDelay = (Math.random() * 0.4) + "s";
+    conf.style.top = (-30 - Math.random() * 50) + "px";
+    conf.style.fontSize = (Math.random() * 1.8 + 1.2) + "rem";
+    conf.style.animationDuration = (Math.random() * 2 + 1.2) + "s";
+    conf.style.animationDelay = (Math.random() * 0.3) + "s";
     document.body.appendChild(conf);
+    
+    // Animasyon bitince temizle
     setTimeout(function() {
       conf.remove();
     }, 3500);
@@ -678,36 +717,50 @@ function launchConfetti() {
 
 function showEvaluationReport() {
   launchConfetti();
-  const card = document.getElementById("quiz-card");
+  
+  // Ana ekran öğelerini gizle
+  document.getElementById("quiz-card").style.display = "none";
   document.getElementById("reward-shelf-box").style.display = "none";
   document.getElementById("progress-bg").style.display = "none";
   document.getElementById("header-stats").style.display = "none";
 
   const correctCount = userAnswers.filter(function(a) { return a.isCorrect; }).length;
-  const wrongCount = 10 - correctCount;
+  const wrongCount = questions.length - correctCount;
 
+  // Analiz Raporunu HTML formatında oluştur
   let reportDetails = userAnswers.map(function(ans) {
-    return '<div style="background:' + (ans.isCorrect ? '#f0fdf4' : '#fef2f2') + '; border:1px solid ' + (ans.isCorrect ? '#bbf7d0' : '#fecaca') + '; border-radius:10px; padding:8px; margin-bottom:6px; text-align:left; font-size:0.83rem;">' +
+    let bgColor = ans.isCorrect ? '#f0fdf4' : '#fffbeb';
+    let borderColor = ans.isCorrect ? '#bbf7d0' : '#fde68a';
+    let statusColor = ans.isCorrect ? '#16a34a' : '#d97706';
+    let statusText = ans.isCorrect ? '✅ Doğru' : '🥺 Geliştirilebilir';
+
+    return '<div style="background:' + bgColor + '; border:1px solid ' + borderColor + '; border-radius:10px; padding:10px; margin-bottom:8px; text-align:left; font-size:0.85rem;">' +
            '<b>Soru ' + ans.questionNum + ':</b> ' + ans.title + '<br>' +
-           'Durum: <span style="color:' + (ans.isCorrect ? '#16a34a' : '#dc2626') + '; font-weight:bold;">' + (ans.isCorrect ? '✅ Doğru' : '😭 Yanlış') + '</span><br>' +
-           '<span style="color:#475569;">' + ans.explanation + '</span>' +
+           'Durum: <span style="color:' + statusColor + '; font-weight:bold;">' + statusText + '</span><br>' +
+           '<div style="margin-top:4px; color:#475569;">' + ans.explanation + '</div>' +
            '</div>';
   }).join("");
 
-  card.innerHTML = '<div style="text-align:center; padding: 10px 4px;">' +
-    '<div style="font-size:2.8rem;">📊👩‍🏫📋</div>' +
+  // Karne Kartını Ekrana Bas
+  const reportCard = document.getElementById("report-card");
+  reportCard.style.display = "block";
+  reportCard.innerHTML = 
+    '<div style="font-size:3rem; margin-bottom:10px;">📊👩‍🏫📋</div>' +
     '<h2 style="color:var(--primary); margin:6px 0;">Değerlendirme Karnesi</h2>' +
-    '<p style="font-size:1.05rem; margin:4px 0;">Öğrenci: <b style="color:#db2777; font-size:1.2rem;">' + studentName + '</b></p>' +
-    '<div style="background:#312e81; color:white; padding:10px; border-radius:14px; margin:10px 0; display:flex; justify-content:space-around; font-weight:bold; font-size:0.95rem;">' +
-    '<div>⭐ Puan: ' + score + '/100</div>' +
-    '<div>✅ Doğru: ' + correctCount + '</div>' +
-    '<div>😭 Yanlış: ' + wrongCount + '</div>' +
+    '<p style="font-size:1.1rem; margin:6px 0;">Öğrenci: <b style="color:#db2777; font-size:1.25rem;">' + studentName + '</b></p>' +
+    
+    '<div style="background:#312e81; color:white; padding:12px; border-radius:14px; margin:12px 0; display:flex; justify-content:space-around; font-weight:bold; font-size:1rem; box-shadow:0 4px 6px rgba(0,0,0,0.1);">' +
+      '<div>⭐ Puan: ' + score + '/100</div>' +
+      '<div>✅ Doğru: ' + correctCount + '</div>' +
+      '<div>🥺 Gelişen: ' + wrongCount + '</div>' +
     '</div>' +
-    '<div style="font-weight:800; color:#1e293b; margin:12px 0 6px; font-size:0.95rem; text-align:left;">📋 Soru Analiz Dökümü:</div>' +
-    '<div style="max-height: 260px; overflow-y: auto; padding-right: 4px;">' + reportDetails + '</div>' +
-    '<p style="font-size:0.82rem; color:#475569; margin-top:10px; font-style:italic;">"Bu analiz raporu öğrencinin ilk deneme performansına göre oluşturulmuştur."<br><b>— Hacer Hoca 👩‍🏫</b></p>' +
-    '<button class="action-btn" type="button" onclick="location.reload()">🔄 Yeni Değerlendirme Başlat</button>' +
-    '</div>';
+    
+    '<div style="font-weight:800; color:#1e293b; margin:14px 0 8px; font-size:1rem; text-align:left; border-bottom:2px solid #e2e8f0; padding-bottom:4px;">📋 Soru Analiz Dökümü:</div>' +
+    '<div style="max-height: 300px; overflow-y: auto; padding-right: 6px; margin-bottom:10px;">' + reportDetails + '</div>' +
+    
+    '<p style="font-size:0.85rem; color:#475569; margin-top:14px; font-style:italic;">"Harika bir çaba gösterdin, başarılarının devamını dilerim!"<br><b style="color:#db2777;">— Hacer Hoca 👩‍🏫💖</b></p>' +
+    
+    '<button class="action-btn" style="margin-top:14px;" type="button" onclick="location.reload()">🔄 Yeni Değerlendirme Başlat</button>';
 }
 </script>
 </body>
