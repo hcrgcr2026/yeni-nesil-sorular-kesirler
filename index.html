@@ -353,17 +353,17 @@
     <div class="progress-bar-fill" id="progress-fill"></div>
   </div>
 
-  <!-- Karşılama Ekranı (En az 5 karakter zorunlu) -->
+  <!-- Karşılama Ekranı -->
   <div class="card" id="welcome-card">
     <div class="welcome-screen">
       <div style="font-size: 3.5rem;">👩‍🏫📋</div>
       <h2 style="color: var(--primary); margin: 8px 0;">Değerlendirme Sınavına Hoş Geldin!</h2>
       <p style="color: #475569; font-size: 0.92rem; line-height: 1.5;">
-        Bu test <b>10 yeni nesil sorudan</b> oluşur. Sınav güvenliği için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde girmeniz gerekmektedir. Yanlış cevaplarda tekrar deneme hakkı yoktur, doğru çözümler gösterilir.
+        Bu test <b>10 yeni nesil sorudan</b> oluşur. Sınav güvenliği için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde girmeniz gerekmektedir.
       </p>
       <input type="text" id="student-name-input" class="name-input" placeholder="Adınızı ve soyadınızı yazın..." maxlength="30">
       <div class="error-msg" id="error-msg"></div>
-      <button class="action-btn" onclick="startGame()">🚀 Sınavı Başlat</button>
+      <button class="action-btn" type="button" onclick="startGame()">🚀 Sınavı Başlat</button>
     </div>
   </div>
 
@@ -381,7 +381,7 @@
       <div id="exp-text" style="font-weight: 500;"></div>
     </div>
 
-    <button class="next-btn" id="next-btn" style="display:none;" onclick="nextQuestion()">Sonraki Soru ➡️</button>
+    <button class="next-btn" id="next-btn" style="display:none;" type="button" onclick="nextQuestion()">Sonraki Soru ➡️</button>
   </div>
 </div>
 
@@ -393,192 +393,193 @@ let answered = false;
 let userAnswers = [];
 
 function frac(top, bottom) {
-  return `<span class="frac"><span class="top">${top}</span><span class="bottom">${bottom}</span></span>`;
+  return '<span class="frac"><span class="top">' + top + '</span><span class="bottom">' + bottom + '</span></span>';
 }
 
 const questions = [
   {
     title: "🍕 1. Dijital Pizza Ustası",
     badgeIcon: "🍕",
-    renderStage: () => `
-      <div style="font-weight:bold; margin-bottom:6px;">Bütün Pizza Tepsisi (4 Eş Bölme)</div>
-      <div class="grid-row">
-        <div class="touch-box" style="background:#fef08a;">🍕</div>
-        <div class="touch-box" style="background:#fef08a;">🍕</div>
-        <div class="touch-box">⬜</div>
-        <div class="touch-box">⬜</div>
-      </div>
-      <div style="font-size:0.82rem; color:#475569;">Başlangıçta: 2 Çeyrek Dilim Dolu</div>
-    `,
-    text: `Aşçı Kerem'in tepsisinde şu an <b>2 tane çeyrek</b> dilim pizza vardır. Tepsiyi tamamen doldurup <b>1 bütün</b> pizza elde etmek için kaç çeyrek dilim daha eklemelidir ve başlangıçtaki 2 çeyrek dilim neye eşittir?`,
+    renderStage: function() {
+      return '<div style="font-weight:bold; margin-bottom:6px;">Bütün Pizza Tepsisi (4 Eş Bölme)</div>' +
+             '<div class="grid-row">' +
+             '<div class="touch-box" style="background:#fef08a;">🍕</div>' +
+             '<div class="touch-box" style="background:#fef08a;">🍕</div>' +
+             '<div class="touch-box">⬜</div>' +
+             '<div class="touch-box">⬜</div>' +
+             '</div>' +
+             '<div style="font-size:0.82rem; color:#475569;">Başlangıçta: 2 Çeyrek Dilim Dolu</div>';
+    },
+    text: 'Aşçı Kerem\'in tepsisinde şu an <b>2 tane çeyrek</b> dilim pizza vardır. Tepsiyi tamamen doldurup <b>1 bütün</b> pizza elde etmek için kaç çeyrek dilim daha eklemelidir ve başlangıçtaki 2 çeyrek dilim neye eşittir?',
     options: [
-      `1 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 bütündür.`,
-      `2 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 yarımdür.`,
-      `4 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 çeyrektir.`
+      '1 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 bütündür.',
+      '2 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 yarımdür.',
+      '4 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 çeyrektir.'
     ],
     correct: 1,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> Bir bütün pizza 4 çeyrektir. Tepsideki 2 çeyrek dilim 1 yarım eder. 1 bütün için 2 çeyrek daha eklenmelidir.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> Bir bütün pizza 4 çeyrektir. Tepsideki 2 çeyrek dilim 1 yarım eder. 1 bütün için 2 çeyrek daha eklenmelidir.'
   },
   {
     title: "🔋 2. Tablet Şarj Göstergesi",
     badgeIcon: "⚡",
-    renderStage: () => `
-      <div style="font-weight:bold; margin-bottom:6px;">🔋 Şarj Çubuğu (8 Eş Bölme)</div>
-      <div class="grid-row" style="gap:4px;">
-        <div class="battery-cell active"></div>
-        <div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>
-        <div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>
-      </div>
-      <div style="font-size:0.82rem; color:#475569; margin-top:4px;">Sadece 1 yeşil bölme yanıyor!</div>
-    `,
-    text: `Zeynep'in tabletinin şarj göstergesi <b>8 eş bölmeye</b> ayrılmıştır ve sadece <b>1 yeşil bölme</b> yanmaktadır. Bu yeşil bölmenin gösterdiği <b>birim kesir</b> hangisidir?`,
+    renderStage: function() {
+      return '<div style="font-weight:bold; margin-bottom:6px;">🔋 Şarj Çubuğu (8 Eş Bölme)</div>' +
+             '<div class="grid-row" style="gap:4px;">' +
+             '<div class="battery-cell active"></div>' +
+             '<div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>' +
+             '<div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>' +
+             '</div>' +
+             '<div style="font-size:0.82rem; color:#475569; margin-top:4px;">Sadece 1 yeşil bölme yanıyor!</div>';
+    },
+    text: 'Zeynep\'in tabletinin şarj göstergesi <b>8 eş bölmeye</b> ayrılmıştır ve sadece <b>1 yeşil bölme</b> yanmaktadır. Bu yeşil bölmenin gösterdiği <b>birim kesir</b> hangisidir?',
     options: [
-      `${frac(8, 1)}`,
-      `${frac(1, 7)}`,
-      `${frac(1, 8)}`
+      frac(8, 1),
+      frac(1, 7),
+      frac(1, 8)
     ],
     correct: 2,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> Paydaya toplam eş parça sayısı (8), paya ise boyalı parça sayısı (1) yazılır. Kesir ${frac(1, 8)} olur.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> Paydaya toplam eş parça sayısı (8), paya ise boyalı parça sayısı (1) yazılır. Kesir ' + frac(1, 8) + ' olur.'
   },
   {
     title: "🌻 3. Eş Parçaları Bul!",
     badgeIcon: "🌻",
-    renderStage: () => `
-      <div style="font-size:0.8rem; font-weight:bold; color:#b45309;">Şekillerin Eşit Bölünme Durumu Analizi</div>
-    `,
-    text: `Bahçıvan dede, bahçesinin tam ${frac(1, 4)}'ine (dörtte birine) ayçiçeği ekmek istiyor. Hangi bahçe kesir kuralına <b>uygun</b> olarak bölünmüş ve ekilmiştir?`,
+    renderStage: function() {
+      return '<div style="font-size:0.8rem; font-weight:bold; color:#b45309;">Şekillerin Eşit Bölünme Durumu Analizi</div>';
+    },
+    text: 'Bahçıvan dede, bahçesinin tam ' + frac(1, 4) + '\'ine (dörtte birine) ayçiçeği ekmek istiyor. Hangi bahçe kesir kuralına <b>uygun</b> olarak bölünmüş ve ekilmiştir?',
     options: [
-      `1. Bahçe`,
-      `2. Bahçe`,
-      `3. Bahçe`
+      '1. Bahçe',
+      '2. Bahçe',
+      '3. Bahçe'
     ],
     correct: 1,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> Kesir belirtebilmesi için şeklin mutlaka aynı büyüklükte (eş) parçalara ayrılması şarttır (2. Bahçe).`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> Kesir belirtebilmesi için şeklin mutlaka aynı büyüklükte (eş) parçalara ayrılması şarttır (2. Bahçe).'
   },
   {
     title: "🐸 4. Zıplayan Kurbağa",
     badgeIcon: "🐸",
-    renderStage: () => `
-      <div style="padding:6px;">
-        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:0.85rem;">
-          <span>0</span><span>A</span><span>B</span><span>C</span><span>D</span><span>1</span>
-        </div>
-        <div style="height:5px; background:#334155; margin:4px 0; border-radius:4px;"></div>
-      </div>
-    `,
-    text: `Sayı doğrusunda <b>0 ile 1</b> arası <b>5 eş parçaya (adıma)</b> bölünmüştür. 0 noktasındaki kurbağa sadece <b>birim kesir</b> kadar (1 adım) ileri zıplarsa hangi harfe konar ve bu kesir nedir?`,
+    renderStage: function() {
+      return '<div style="padding:6px;">' +
+             '<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:0.85rem;">' +
+             '<span>0</span><span>A</span><span>B</span><span>C</span><span>D</span><span>1</span>' +
+             '</div>' +
+             '<div style="height:5px; background:#334155; margin:4px 0; border-radius:4px;"></div>' +
+             '</div>';
+    },
+    text: 'Sayı doğrusunda <b>0 ile 1</b> arası <b>5 eş parçaya (adıma)</b> bölünmüştür. 0 noktasındaki kurbağa sadece <b>birim kesir</b> kadar (1 adım) ileri zıplarsa hangi harfe konar ve bu kesir nedir?',
     options: [
-      `A noktası – ${frac(1, 5)}`,
-      `A noktası – ${frac(1, 6)}`,
-      `B noktası – ${frac(2, 5)}`
+      'A noktası – ' + frac(1, 5),
+      'A noktası – ' + frac(1, 6),
+      'B noktası – ' + frac(2, 5)
     ],
     correct: 0,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> Aralık sayısı 5 olduğundan payda 5'tir. İlk adım A noktasına karşılık gelir ve ${frac(1, 5)} olur.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> Aralık sayısı 5 olduğundan payda 5\'tir. İlk adım A noktasına karşılık gelir ve ' + frac(1, 5) + ' olur.'
   },
   {
     title: "🧱 5. Köprü Tamiri",
     badgeIcon: "👷",
-    renderStage: () => `
-      <div style="font-weight:bold; margin-bottom:6px;">Köprü (6 Eş Tahta Blok)</div>
-      <div class="grid-row">
-        <div class="touch-box" style="background:#a16207; color:white;">🟫</div>
-        <div class="touch-box" style="background:#a16207; color:white;">🟫</div>
-        <div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div>
-      </div>
-    `,
-    text: `6 eş parçadan oluşan köprünün ${frac(5, 6)}'sinin tamir edilmiş (kahverengi) olması gerekiyor. Şu an ${frac(2, 6)}'si tamir edildiğine göre, beyaz bloklardan <b>kaç tanesine daha</b> dokunup boyamalıyız?`,
+    renderStage: function() {
+      return '<div style="font-weight:bold; margin-bottom:6px;">Köprü (6 Eş Tahta Blok)</div>' +
+             '<div class="grid-row">' +
+             '<div class="touch-box" style="background:#a16207; color:white;">🟫</div>' +
+             '<div class="touch-box" style="background:#a16207; color:white;">🟫</div>' +
+             '<div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div>' +
+             '</div>';
+    },
+    text: '6 eş parçadan oluşan köprünün ' + frac(5, 6) + '\'sinin tamir edilmiş (kahverengi) olması gerekiyor. Şu an ' + frac(2, 6) + '\'si tamir edildiğine göre, beyaz bloklardan <b>kaç tanesine daha</b> dokunup boyamalıyız?',
     options: [
-      `2 blok daha boyamalıyız.`,
-      `3 blok daha boyamalıyız.`,
-      `5 blok daha boyamalıyız.`
+      '2 blok daha boyamalıyız.',
+      '3 blok daha boyamalıyız.',
+      '5 blok daha boyamalıyız.'
     ],
     correct: 1,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> 2 blok boyalıdır. Hedef 5 bloktur. 5 - 2 = 3 blok daha boyanmalıdır.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> 2 blok boyalıdır. Hedef 5 bloktur. 5 - 2 = 3 blok daha boyanmalıdır.'
   },
   {
     title: "🍰 6. Hangi Dilim Daha Büyük?",
     badgeIcon: "🎂",
-    renderStage: () => `
-      <div style="font-size:0.8rem; font-weight:bold;">Aynı Büyüklükteki Tepsilerin Paylaşımı</div>
-    `,
-    text: `Aynı büyüklükteki üç tepsi kek farklı sayıda eş dilimlere ayrılmıştır. Çok acıkan Mert <b>en büyük</b> dilimi yemek istiyor. Hangi kesri seçmelidir?`,
+    renderStage: function() {
+      return '<div style="font-size:0.8rem; font-weight:bold;">Aynı Büyüklükteki Tepsilerin Paylaşımı</div>';
+    },
+    text: 'Aynı büyüklükteki üç tepsi kek farklı sayıda eş dilimlere ayrılmıştır. Çok acıkan Mert <b>en büyük</b> dilimi yemek istiyor. Hangi kesri seçmelidir?',
     options: [
-      `${frac(1, 8)} (Çünkü 8 sayısı en büyüktür)`,
-      `${frac(1, 4)} (Çünkü çeyrek dilim orta boydur)`,
-      `${frac(1, 2)} (Çünkü az parçaya bölünen dilim daha büyüktür)`
+      frac(1, 8) + ' (Çünkü 8 sayısı en büyüktür)',
+      frac(1, 4) + ' (Çünkü çeyrek dilim orta boydur)',
+      frac(1, 2) + ' (Çünkü az parçaya bölünen dilim daha büyüktür)'
     ],
     correct: 2,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> Payda küçüldükçe parça boyutu büyür; bu yüzden 2 eş parçaya bölünen dilim (${frac(1, 2)}) en büyüktür.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> Payda küçüldükçe parça boyutu büyür; bu yüzden 2 eş parçaya bölünen dilim (' + frac(1, 2) + ') en büyüktür.'
   },
   {
     title: "⭐ 7. Hazine Sandığı",
     badgeIcon: "💎",
-    renderStage: () => `
-      <div style="font-size:0.8rem; font-weight:bold;">12 Yıldız (3 Eş Sıra)</div>
-    `,
-    text: `Oyunda üst seviyeye geçmek için ekrandaki <b>12 yıldızın</b> ${frac(1, 3)}'ini (üçte birini) hazine sandığına atman gerekiyor. Sandığa <b>kaç yıldız</b> atmalısın?`,
+    renderStage: function() {
+      return '<div style="font-size:0.8rem; font-weight:bold;">12 Yıldız (3 Eş Sıra)</div>';
+    },
+    text: 'Oyunda üst seviyeye geçmek için ekrandaki <b>12 yıldızın</b> ' + frac(1, 3) + '\'ini (üçte birini) hazine sandığına atman gerekiyor. Sandığa <b>kaç yıldız</b> atmalısın?',
     options: [
-      `3 yıldız`,
-      `4 yıldız`,
-      `6 yıldız`
+      '3 yıldız',
+      '4 yıldız',
+      '6 yıldız'
     ],
     correct: 1,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> 12 yıldız 3 eş gruba bölünür: 12 ÷ 3 = 4 yıldız eder.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> 12 yıldız 3 eş gruba bölünür: 12 ÷ 3 = 4 yıldız eder.'
   },
   {
     title: "♻️ 8. Sıfır Atık Oyunu",
     badgeIcon: "🌍",
-    renderStage: () => `
-      <div style="font-size:0.8rem; font-weight:bold;">20 Şişe (4 Eş Kutu)</div>
-    `,
-    text: `Öğrenciler <b>20 tane</b> plastik şişe toplamıştır. Bu şişelerin ${frac(1, 4)}'ini (çeyreğini) mavi geri dönüşüm kutusuna atmışlardır. Diğer kutulara atılmak üzere <b>geriye kaç şişe kalmıştır?</b>`,
+    renderStage: function() {
+      return '<div style="font-size:0.8rem; font-weight:bold;">20 Şişe (4 Eş Kutu)</div>';
+    },
+    text: 'Öğrenciler <b>20 tane</b> plastik şişe toplamıştır. Bu şişelerin ' + frac(1, 4) + '\'ini (çeyreğini) mavi geri dönüşüm kutusuna atmışlardır. Diğer kutulara atılmak üzere <b>geriye kaç şişe kalmıştır?</b>',
     options: [
-      `5 şişe`,
-      `10 şişe`,
-      `15 şişe`
+      '5 şişe',
+      '10 şişe',
+      '15 şişe'
     ],
     correct: 2,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> 20'nin çeyreği 5'tir (20 ÷ 4 = 5). Geriye kalan: 20 - 5 = 15 şişedir.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> 20\'nin çeyreği 5\'tir (20 ÷ 4 = 5). Geriye kalan: 20 - 5 = 15 şişedir.'
   },
   {
     title: "🐠 9. Akvaryumu Dolduralım",
     badgeIcon: "🐬",
-    renderStage: () => `
-      <div style="font-size:0.8rem; font-weight:bold;">9 Eş Bölmeli Akvaryum (4 Bölme Dolu)</div>
-    `,
-    text: `9 eş bölmeli akvaryumun şu an ${frac(4, 9)}'ü su ile doludur. Musluk butonuna her basışta ${frac(1, 9)} kadar su dolmaktadır. Akvaryumu <b>tamamen doldurmak (1 bütün yapmak)</b> için butona kaç kez basmalıyız?`,
+    renderStage: function() {
+      return '<div style="font-size:0.8rem; font-weight:bold;">9 Eş Bölmeli Akvaryum (4 Bölme Dolu)</div>';
+    },
+    text: '9 eş bölmeli akvaryumun şu an ' + frac(4, 9) + '\'ü su ile doludur. Musluk butonuna her basışta ' + frac(1, 9) + ' kadar su dolmaktadır. Akvaryumu <b>tamamen doldurmak (1 bütün yapmak)</b> için butona kaç kez basmalıyız?',
     options: [
-      `4 kez`,
-      `5 kez`,
-      `9 kez`
+      '4 kez',
+      '5 kez',
+      '9 kez'
     ],
     correct: 1,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> Tam dolu olması için ${frac(9, 9)} olmalıdır. 9 - 4 = 5 bölme eksiktir.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> Tam dolu olması için ' + frac(9, 9) + ' olmalıdır. 9 - 4 = 5 bölme eksiktir.'
   },
   {
     title: "🎨 10. Piksel Boyama Atölyesi",
     badgeIcon: "👑",
-    renderStage: () => `
-      <div style="font-size:0.8rem; font-weight:bold;">16 Eş Karelik Tuval</div>
-    `,
-    text: `Elif, <b>16 eş kareden</b> oluşan resim tuvalinin önce ${frac(1, 4)}'ini <b>maviye</b>, ardından kalan karelerden <b>2 tanesini sarıya</b> boyamıştır. Tuvalde henüz boyanmamış kaç tane <b>beyaz kare</b> kalmıştır?`,
+    renderStage: function() {
+      return '<div style="font-size:0.8rem; font-weight:bold;">16 Eş Karelik Tuval</div>';
+    },
+    text: 'Elif, <b>16 eş kareden</b> oluşan resim tuvalinin önce ' + frac(1, 4) + '\'ini <b>maviye</b>, ardından kalan karelerden <b>2 tanesini sarıya</b> boyamıştır. Tuvalde henüz boyanmamış kaç tane <b>beyaz kare</b> kalmıştır?',
     options: [
-      `10 beyaz kare`,
-      `12 beyaz kare`,
-      `14 beyaz kare`
+      '10 beyaz kare',
+      '12 beyaz kare',
+      '14 beyaz kare'
     ],
     correct: 0,
-    explanation: `💡 <b>Çözüm Açıklaması:</b> 16'nın çeyreği 4 mavi karedir. 2 sarı eklenirse 6 boyalı olur. 16 - 6 = 10 beyaz kare kalır.`
+    explanation: '💡 <b>Çözüm Açıklaması:</b> 16\'nın çeyreği 4 mavi karedir. 2 sarı eklenirse 6 boyalı olur. 16 - 6 = 10 beyaz kare kalır.'
   }
 ];
 
 function startGame() {
-  const inputVal = document.getElementById("student-name-input").value.trim();
+  const inputEl = document.getElementById("student-name-input");
+  const inputVal = inputEl.value.trim();
   const errorBox = document.getElementById("error-msg");
   
   if (inputVal.length < 5) {
     errorBox.innerText = "⚠️ Adınız ve soyadınız en az 5 karakterden oluşmalıdır!";
-    document.getElementById("student-name-input").focus();
+    inputEl.focus();
     return;
   }
   
@@ -594,8 +595,8 @@ function startGame() {
 function loadQuestion() {
   answered = false;
   const q = questions[currentQ];
-  document.getElementById("question-counter").innerText = `Soru ${currentQ + 1} / ${questions.length}`;
-  document.getElementById("progress-fill").style.width = `${((currentQ + 1) / questions.length) * 100}%`;
+  document.getElementById("question-counter").innerText = "Soru " + (currentQ + 1) + " / " + questions.length;
+  document.getElementById("progress-fill").style.width = (((currentQ + 1) / questions.length) * 100) + "%";
   document.getElementById("q-title").innerHTML = q.title;
   document.getElementById("stage-hint").innerText = q.renderStage ? "👆 Soru Önizlemesi" : "";
   document.getElementById("stage-content").innerHTML = q.renderStage ? q.renderStage() : "";
@@ -605,11 +606,14 @@ function loadQuestion() {
   optsContainer.innerHTML = "";
   const letters = ["A", "B", "C"];
 
-  q.options.forEach((optText, idx) => {
+  q.options.forEach(function(optText, idx) {
     const btn = document.createElement("button");
     btn.className = "opt-btn";
-    btn.innerHTML = `<span class="opt-letter">${letters[idx]}</span> <span>${optText}</span>`;
-    btn.onclick = () => selectAnswer(idx, btn);
+    btn.type = "button";
+    btn.innerHTML = '<span class="opt-letter">' + letters[idx] + '</span> <span>' + optText + '</span>';
+    btn.onclick = function() {
+      selectAnswer(idx, btn);
+    };
     optsContainer.appendChild(btn);
   });
 
@@ -633,7 +637,7 @@ function selectAnswer(idx, selectedBtn) {
     explanation: q.explanation
   });
 
-  const slot = document.getElementById(`slot-${currentQ}`);
+  const slot = document.getElementById("slot-" + currentQ);
   const expBox = document.getElementById("explanation-box");
   const expText = document.getElementById("exp-text");
 
@@ -643,16 +647,18 @@ function selectAnswer(idx, selectedBtn) {
     document.getElementById("score").innerText = score;
     slot.innerText = q.badgeIcon;
     slot.classList.add("earned");
-    expText.innerHTML = `✅ <b>Doğru!</b><br>` + q.explanation;
+    expText.innerHTML = "✅ <b>Doğru!</b><br>" + q.explanation;
   } else {
     selectedBtn.classList.add("wrong");
     allBtns[q.correct].classList.add("correct"); 
-    slot.innerText = "😭"; // Hatalı cevapta ağlama emojisi
+    slot.innerText = "😭"; 
     slot.classList.add("missed");
-    expText.innerHTML = `😭 <b>Yanlış Cevap!</b><br>` + q.explanation;
+    expText.innerHTML = "😭 <b>Yanlış Cevap!</b><br>" + q.explanation;
   }
 
-  allBtns.forEach(b => b.style.pointerEvents = "none");
+  allBtns.forEach(function(b) {
+    b.style.pointerEvents = "none";
+  });
   expBox.style.display = "block";
   document.getElementById("next-btn").style.display = "block";
 }
@@ -673,10 +679,12 @@ function launchConfetti() {
     const conf = document.createElement("div");
     conf.className = "confetti";
     conf.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    conf.style.left = Math.random() * 95 + "vw";
+    conf.style.left = (Math.random() * 95) + "vw";
     conf.style.animationDuration = (Math.random() * 1.5 + 1) + "s";
     document.body.appendChild(conf);
-    setTimeout(() => conf.remove(), 2500);
+    setTimeout(function() {
+      conf.remove();
+    }, 2500);
   }
 }
 
@@ -687,38 +695,31 @@ function showEvaluationReport() {
   document.getElementById("progress-bg").style.display = "none";
   document.getElementById("header-stats").style.display = "none";
 
-  const correctCount = userAnswers.filter(a => a.isCorrect).length;
+  const correctCount = userAnswers.filter(function(a) { return a.isCorrect; }).length;
   const wrongCount = 10 - correctCount;
 
-  let reportDetails = userAnswers.map(ans => `
-    <div style="background:${ans.isCorrect ? '#f0fdf4' : '#fef2f2'}; border:1px solid ${ans.isCorrect ? '#bbf7d0' : '#fecaca'}; border-radius:10px; padding:8px; margin-bottom:6px; text-align:left; font-size:0.83rem;">
-      <b>Soru ${ans.questionNum}:</b> ${ans.title}<br>
-      Durum: <span style="color:${ans.isCorrect ? '#16a34a' : '#dc2626'}; font-weight:bold;">${ans.isCorrect ? '✅ Doğru' : '😭 Yanlış'}</span><br>
-      <span style="color:#475569;">${ans.explanation}</span>
-    </div>
-  `).join("");
+  let reportDetails = userAnswers.map(function(ans) {
+    return '<div style="background:' + (ans.isCorrect ? '#f0fdf4' : '#fef2f2') + '; border:1px solid ' + (ans.isCorrect ? '#bbf7d0' : '#fecaca') + '; border-radius:10px; padding:8px; margin-bottom:6px; text-align:left; font-size:0.83rem;">' +
+           '<b>Soru ' + ans.questionNum + ':</b> ' + ans.title + '<br>' +
+           'Durum: <span style="color:' + (ans.isCorrect ? '#16a34a' : '#dc2626') + '; font-weight:bold;">' + (ans.isCorrect ? '✅ Doğru' : '😭 Yanlış') + '</span><br>' +
+           '<span style="color:#475569;">' + ans.explanation + '</span>' +
+           '</div>';
+  }).join("");
 
-  card.innerHTML = `
-    <div style="text-align:center; padding: 10px 4px;">
-      <div style="font-size:2.8rem;">📊👩‍🏫📋</div>
-      <h2 style="color:var(--primary); margin:6px 0;">Değerlendirme Karnesi</h2>
-      <p style="font-size:1.05rem; margin:4px 0;">Öğrenci: <b style="color:#db2777; font-size:1.2rem;">${studentName}</b></p>
-      
-      <div style="background:#312e81; color:white; padding:10px; border-radius:14px; margin:10px 0; display:flex; justify-content:space-around; font-weight:bold; font-size:0.95rem;">
-        <div>⭐ Puan: ${score}/100</div>
-        <div>✅ Doğru: ${correctCount}</div>
-        <div>😭 Yanlış: ${wrongCount}</div>
-      </div>
-
-      <div style="font-weight:800; color:#1e293b; margin:12px 0 6px; font-size:0.95rem; text-align:left;">📋 Soru Analiz Dökümü:</div>
-      <div style="max-height: 260px; overflow-y: auto; padding-right: 4px;">
-        ${reportDetails}
-      </div>
-
-      <p style="font-size:0.82rem; color:#475569; margin-top:10px; font-style:italic;">"Bu analiz raporu öğrencinin ilk deneme performansına göre oluşturulmuştur."<br><b>— Hacer Hoca 👩‍🏫</b></p>
-      <button class="action-btn" onclick="location.reload()">🔄 Yeni Değerlendirme Başlat</button>
-    </div>
-  `;
+  card.innerHTML = '<div style="text-align:center; padding: 10px 4px;">' +
+    '<div style="font-size:2.8rem;">📊👩‍🏫📋</div>' +
+    '<h2 style="color:var(--primary); margin:6px 0;">Değerlendirme Karnesi</h2>' +
+    '<p style="font-size:1.05rem; margin:4px 0;">Öğrenci: <b style="color:#db2777; font-size:1.2rem;">' + studentName + '</b></p>' +
+    '<div style="background:#312e81; color:white; padding:10px; border-radius:14px; margin:10px 0; display:flex; justify-content:space-around; font-weight:bold; font-size:0.95rem;">' +
+    '<div>⭐ Puan: ' + score + '/100</div>' +
+    '<div>✅ Doğru: ' + correctCount + '</div>' +
+    '<div>😭 Yanlış: ' + wrongCount + '</div>' +
+    '</div>' +
+    '<div style="font-weight:800; color:#1e293b; margin:12px 0 6px; font-size:0.95rem; text-align:left;">📋 Soru Analiz Dökümü:</div>' +
+    '<div style="max-height: 260px; overflow-y: auto; padding-right: 4px;">' + reportDetails + '</div>' +
+    '<p style="font-size:0.82rem; color:#475569; margin-top:10px; font-style:italic;">"Bu analiz raporu öğrencinin ilk deneme performansına göre oluşturulmuştur."<br><b>— Hacer Hoca 👩‍🏫</b></p>' +
+    '<button class="action-btn" type="button" onclick="location.reload()">🔄 Yeni Değerlendirme Başlat</button>' +
+    '</div>';
 }
 </script>
 </body>
