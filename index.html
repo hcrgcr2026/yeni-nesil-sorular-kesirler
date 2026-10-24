@@ -108,8 +108,8 @@
     box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
   }
   .badge-slot.missed {
-    background: #fef3c7;
-    border: 1.5px solid #f59e0b;
+    background: #fee2e2;
+    border: 1.5px solid #dc2626;
   }
   .progress-bar-bg {
     width: 92%;
@@ -307,6 +307,7 @@
     background: white;
     user-select: none;
   }
+  /* Ödül Yağmuru Efekti */
   .confetti {
     position: fixed;
     z-index: 999999;
@@ -332,7 +333,7 @@
   </div>
 
   <div class="reward-shelf-container" id="reward-shelf-box" style="display:none;">
-    <div class="shelf-title">📊 Değerlendirme Takibi (Doğru / Gelişim Alanı)</div>
+    <div class="shelf-title">📊 Değerlendirme Takibi (Doğru / Yanlış Dağılımı)</div>
     <div class="badge-shelf" id="badge-shelf">
       <div class="badge-slot" id="slot-0">🔒</div>
       <div class="badge-slot" id="slot-1">🔒</div>
@@ -351,13 +352,13 @@
     <div class="progress-bar-fill" id="progress-fill"></div>
   </div>
 
-  <!-- Karşılama Ekranı -->
+  <!-- Karşılama Ekranı (En az 5 karakter zorunlu) -->
   <div class="card" id="welcome-card">
     <div class="welcome-screen">
       <div style="font-size: 3.5rem;">👩‍🏫📋</div>
       <h2 style="color: var(--primary); margin: 8px 0;">Yeni Nesil Beceri Sınavı</h2>
       <p style="color: #475569; font-size: 0.92rem; line-height: 1.5;">
-        Bu test 3. sınıf düzeyinde <b>10 özgün, çok adımlı ve analitik yeni nesil sorudan</b> oluşur. Başlamak için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde giriniz.
+        Bu test 3. sınıf düzeyinde <b>10 özgün, çok adımlı ve analitik yeni nesil sorudan</b> oluşur. Sınava başlamak için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde giriniz.
       </p>
       <input type="text" id="student-name-input" class="name-input" placeholder="Adınız ve Soyadınız..." maxlength="30">
       <div class="error-msg" id="error-msg"></div>
@@ -629,14 +630,14 @@ function selectAnswer(idx, selectedBtn) {
     document.getElementById("score").innerText = score;
     slot.innerText = q.badgeIcon;
     slot.classList.add("earned");
-    expText.innerHTML = "✅ <b>Tebrikler, harika analiz!</b><br>" + q.explanation;
+    expText.innerHTML = "✅ <b>Doğru Analiz!</b><br>" + q.explanation;
     launchConfetti(); // Coşkulu ödül yağmuru tetiklenir
   } else {
     selectedBtn.classList.add("wrong");
     allBtns[q.correct].classList.add("correct"); 
-    slot.innerText = "🥺"; // Çocuklara özel sevimli hüzün emojisi
+    slot.innerText = "😭"; 
     slot.classList.add("missed");
-    expText.innerHTML = "🥺 <b>Minik bir hata ama üzülme, birlikte öğreniyoruz!</b><br>" + q.explanation;
+    expText.innerHTML = "😭 <b>Yanlış Cevap!</b><br>" + q.explanation;
   }
 
   allBtns.forEach(function(b) {
@@ -659,15 +660,15 @@ function nextQuestion() {
 // Güçlendirilmiş Coşkulu Ödül Yağmuru Efekti
 function launchConfetti() {
   const emojis = ["🌟", "🎉", "🏅", "✨", "🎈", "🎁", "🏆", "💎"];
-  for (let i = 0; i < 45; i++) {
+  for (let i = 0; i < 40; i++) {
     const conf = document.createElement("div");
     conf.className = "confetti";
     conf.innerText = emojis[Math.floor(Math.random() * emojis.length)];
     conf.style.left = (Math.random() * 100) + "vw";
-    conf.style.top = (-30 - Math.random() * 50) + "px";
-    conf.style.fontSize = (Math.random() * 1.8 + 1.2) + "rem";
-    conf.style.animationDuration = (Math.random() * 2 + 1.2) + "s";
-    conf.style.animationDelay = (Math.random() * 0.3) + "s";
+    conf.style.top = (-20 - Math.random() * 40) + "px";
+    conf.style.fontSize = (Math.random() * 1.5 + 1.5) + "rem";
+    conf.style.animationDuration = (Math.random() * 2 + 1) + "s";
+    conf.style.animationDelay = (Math.random() * 0.4) + "s";
     document.body.appendChild(conf);
     setTimeout(function() {
       conf.remove();
@@ -686,9 +687,9 @@ function showEvaluationReport() {
   const wrongCount = 10 - correctCount;
 
   let reportDetails = userAnswers.map(function(ans) {
-    return '<div style="background:' + (ans.isCorrect ? '#f0fdf4' : '#fffbeb') + '; border:1px solid ' + (ans.isCorrect ? '#bbf7d0' : '#fde68a') + '; border-radius:10px; padding:8px; margin-bottom:6px; text-align:left; font-size:0.83rem;">' +
+    return '<div style="background:' + (ans.isCorrect ? '#f0fdf4' : '#fef2f2') + '; border:1px solid ' + (ans.isCorrect ? '#bbf7d0' : '#fecaca') + '; border-radius:10px; padding:8px; margin-bottom:6px; text-align:left; font-size:0.83rem;">' +
            '<b>Soru ' + ans.questionNum + ':</b> ' + ans.title + '<br>' +
-           'Durum: <span style="color:' + (ans.isCorrect ? '#16a34a' : '#d97706') + '; font-weight:bold;">' + (ans.isCorrect ? '✅ Doğru' : '🥺 Geliştirilebilir') + '</span><br>' +
+           'Durum: <span style="color:' + (ans.isCorrect ? '#16a34a' : '#dc2626') + '; font-weight:bold;">' + (ans.isCorrect ? '✅ Doğru' : '😭 Yanlış') + '</span><br>' +
            '<span style="color:#475569;">' + ans.explanation + '</span>' +
            '</div>';
   }).join("");
@@ -700,11 +701,11 @@ function showEvaluationReport() {
     '<div style="background:#312e81; color:white; padding:10px; border-radius:14px; margin:10px 0; display:flex; justify-content:space-around; font-weight:bold; font-size:0.95rem;">' +
     '<div>⭐ Puan: ' + score + '/100</div>' +
     '<div>✅ Doğru: ' + correctCount + '</div>' +
-    '<div>🥺 Gelişen: ' + wrongCount + '</div>' +
+    '<div>😭 Yanlış: ' + wrongCount + '</div>' +
     '</div>' +
     '<div style="font-weight:800; color:#1e293b; margin:12px 0 6px; font-size:0.95rem; text-align:left;">📋 Soru Analiz Dökümü:</div>' +
     '<div style="max-height: 260px; overflow-y: auto; padding-right: 4px;">' + reportDetails + '</div>' +
-    '<p style="font-size:0.82rem; color:#475569; margin-top:10px; font-style:italic;">"Harika bir çaba gösterdin, başarılarının devamını dilerim!"<br><b>— Hacer Hoca 👩‍🏫💖</b></p>' +
+    '<p style="font-size:0.82rem; color:#475569; margin-top:10px; font-style:italic;">"Bu analiz raporu öğrencinin ilk deneme performansına göre oluşturulmuştur."<br><b>— Hacer Hoca 👩‍🏫</b></p>' +
     '<button class="action-btn" type="button" onclick="location.reload()">🔄 Yeni Değerlendirme Başlat</button>' +
     '</div>';
 }
