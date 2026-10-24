@@ -1,1467 +1,528 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🌟 Hacer Hoca ile Yeni Nesil Sorular 🌟</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Nunito (Çocuk dostu, yuvarlak hatlı ve okunaklı font) -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      font-family: 'Nunito', system-ui, -apple-system, sans-serif;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #4338ca 0%, #9333ea 50%, #db2777 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: #1e293b;
-    }
-
-    /* 3. Sınıf Dik Kesir Gösterimi (Pay / Kesir Çizgisi / Payda) */
-    .frac {
-      display: inline-flex;
-      flex-direction: column;
-      vertical-align: middle;
-      text-align: center;
-      font-weight: 900;
-      margin: 0 4px;
-      line-height: 1.05;
-      font-size: 1.08em;
-    }
-    .frac .top {
-      border-bottom: 2.5px solid currentColor;
-      padding: 0 5px 1px 5px;
-    }
-    .frac .bottom {
-      padding: 1px 5px 0 5px;
-    }
-
-    /* Rozet Rafı Animasyonları */
-    .badge-slot {
-      aspect-ratio: 1;
-      background: #f1f5f9;
-      border: 2px dashed #cbd5e1;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.25rem;
-      transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-    }
-    .badge-slot.earned {
-      background: linear-gradient(135deg, #fef08a 0%, #facc15 100%);
-      border: 2px solid #ca8a04;
-      transform: scale(1.1);
-      box-shadow: 0 4px 10px rgba(234, 179, 8, 0.45);
-    }
-
-    /* Zıplama ve Parlama Animasyonları */
-    @keyframes bounceSlow {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-10px) scale(1.08); }
-    }
-    .animate-reward-icon {
-      animation: bounceSlow 1.2s infinite ease-in-out;
-    }
-
-    @keyframes popPanel {
-      0% { opacity: 0; transform: scale(0.88) translateY(12px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .panel-pop {
-      animation: popPanel 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
-      50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-    }
-    .glow-green {
-      animation: pulseGlow 1.5s infinite;
-    }
-
-    /* Ödül Yağmuru Parçacıkları (Yukarıdan Yağan & Merkezden Patlayan) */
-    .reward-particle {
-      position: fixed;
-      z-index: 9999;
-      pointer-events: none;
-      user-select: none;
-      will-change: transform, opacity;
-    }
-    @keyframes fallDown {
-      0% { transform: translateY(-10vh) rotate(0deg) scale(0.8); opacity: 1; }
-      85% { opacity: 1; }
-      100% { transform: translateY(110vh) rotate(540deg) scale(1.2); opacity: 0; }
-    }
-    @keyframes burstOut {
-      0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 1; }
-      70% { opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) scale(1.35) rotate(var(--rot)); opacity: 0; }
-    }
-
-    /* Kurbağa Zıplama Animasyonu */
-    .frog-avatar {
-      transition: all 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    /* Özel Buton Basma Hissi */
-    .btn-press:active:not(:disabled) {
-      transform: scale(0.96);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hacer Hoca ile Yeni Nesil Kesirler Değerlendirmesi</title>
+<style>
+  :root {
+    --primary: #4f46e5;
+    --secondary: #ec4899;
+    --success: #16a34a;
+    --success-light: #dcfce7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --warning: #f59e0b;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1e293b;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+  .app-container {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .teacher-banner {
+    background: linear-gradient(90deg, #4338ca, #db2777);
+    color: white;
+    text-align: center;
+    padding: 12px 10px 8px;
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+  .header-stats {
+    background: #312e81;
+    color: white;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .score-badge {
+    background: #f59e0b;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+  }
+  .reward-shelf-container {
+    background: #ffffff;
+    margin: 8px 12px 0;
+    padding: 8px 10px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 2px solid #e0e7ff;
+  }
+  .shelf-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #4f46e5;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .badge-shelf {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+  }
+  .badge-slot {
+    aspect-ratio: 1;
+    background: #f1f5f9;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+  .badge-slot.earned {
+    background: #fef08a;
+    border: 1.5px solid #eab308;
+    transform: scale(1.08);
+  }
+  .badge-slot.missed {
+    background: #fee2e2;
+    border: 1.5px solid #dc2626;
+  }
+  .progress-bar-bg {
+    width: 92%;
+    height: 8px;
+    background: #cbd5e1;
+    border-radius: 10px;
+    margin: 8px auto 2px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #10b981);
+    width: 10%;
+    transition: width 0.3s ease;
+  }
+  .card {
+    background: var(--card);
+    margin: 8px 12px 14px;
+    padding: 16px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .welcome-screen {
+    text-align: center;
+    padding: 20px 10px;
+  }
+  .name-input {
+    width: 90%;
+    padding: 14px;
+    font-size: 1.05rem;
+    border: 2px solid #818cf8;
+    border-radius: 14px;
+    text-align: center;
+    font-weight: 700;
+    margin: 14px 0 6px;
+    outline: none;
+  }
+  .name-input:focus {
+    border-color: #ec4899;
+    box-shadow: 0 0 0 4px #fce7f3;
+  }
+  .error-msg {
+    color: #dc2626;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    min-height: 20px;
+  }
+  .q-title {
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0 0 10px 0;
+  }
+  .interactive-stage {
+    background: #f8fafc;
+    border: 2px dashed #94a3b8;
+    border-radius: 14px;
+    padding: 12px 10px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .hint-badge {
+    display: inline-block;
+    background: #fef3c7;
+    color: #b45309;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .frac {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: 800;
+    margin: 0 4px;
+    font-size: 1.05em;
+    line-height: 1.1;
+  }
+  .frac .top {
+    border-bottom: 2px solid currentColor;
+    padding: 0 4px;
+  }
+  .frac .bottom {
+    padding: 0 4px;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .opt-btn {
+    background: #f1f5f9;
+    border: 2px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .opt-btn:active {
+    transform: scale(0.98);
+  }
+  .opt-letter {
+    background: var(--primary);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .opt-btn.correct {
+    background: var(--success-light);
+    border-color: var(--success);
+    color: #065f46;
+  }
+  .opt-btn.correct .opt-letter {
+    background: var(--success);
+  }
+  .opt-btn.wrong {
+    background: var(--danger-light);
+    border-color: var(--danger);
+    color: #991b1b;
+  }
+  .opt-btn.wrong .opt-letter {
+    background: var(--danger);
+  }
+  .next-btn, .action-btn {
+    margin-top: 14px;
+    width: 100%;
+    background: linear-gradient(90deg, #4f46e5, #db2777);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+  }
+  .mini-btn {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+  .grid-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 6px 0;
+  }
+  .touch-box {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #64748b;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    background: white;
+    cursor: pointer;
+    user-select: none;
+  }
+  .battery-cell {
+    width: 30px;
+    height: 42px;
+    border: 2px solid #334155;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+  }
+  .battery-cell.active {
+    background: #22c55e;
+  }
+  .aquarium-tank {
+    width: 130px;
+    margin: 0 auto;
+    border: 3px solid #0284c7;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    background: white;
+  }
+  .aqua-level {
+    height: 18px;
+    border-top: 1px dashed #bae6fd;
+    font-size: 0.7rem;
+    line-height: 18px;
+    color: #0369a1;
+    font-weight: bold;
+  }
+  .aqua-level.filled {
+    background: #38bdf8;
+    color: white;
+  }
+  .pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 42px);
+    gap: 5px;
+    justify-content: center;
+    margin: 8px auto;
+  }
+  .pixel-cell {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #94a3b8;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+  }
+  .confetti {
+    position: fixed;
+    top: -20px;
+    font-size: 1.5rem;
+    z-index: 9999;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+  }
+</style>
 </head>
-<body class="flex justify-center items-start min-h-screen p-0 sm:p-4">
+<body>
 
-  <!-- ANA UYGULAMA KAPSAYICISI (Mobile-First) -->
-  <div class="w-full max-w-md min-h-screen sm:min-h-0 sm:rounded-3xl bg-slate-50 shadow-2xl flex flex-col overflow-hidden border-0 sm:border-4 sm:border-white/40 relative">
-
-    <!-- ÜST BAŞLIK BANDI -->
-    <header class="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-600 text-white px-4 py-3 shadow-md">
-      <div class="flex items-center justify-between gap-2">
-        <div class="flex items-center gap-1.5">
-          <span class="text-xl">🌟</span>
-          <h1 class="font-black text-base sm:text-lg tracking-tight leading-tight">
-            Hacer Hoca ile Yeni Nesil Sorular
-          </h1>
-        </div>
-        <!-- Ses Aç / Kapat Butonu -->
-        <button id="sound-toggle-btn" onclick="toggleSound()" class="btn-press bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-1 border border-white/30 shadow-sm shrink-0">
-          <span id="sound-icon">🔊</span>
-          <span id="sound-text">Ses Açık</span>
-        </button>
-      </div>
-
-      <!-- Soru Sayacı ve Puan Çubuğu (Oyun Başladığında Görünür) -->
-      <div id="top-stats-bar" class="hidden mt-2.5 pt-2 border-t border-white/20 flex items-center justify-between text-xs sm:text-sm font-extrabold">
-        <div class="bg-indigo-950/50 px-3 py-1 rounded-full border border-white/15">
-          📍 <span id="question-counter">Soru 1 / 10</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="bg-amber-400 text-amber-950 px-3 py-1 rounded-full shadow-sm flex items-center gap-1 font-black">
-            <span>⭐</span>
-            <span id="score-display">0 Puan</span>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- 🎁 HACER HOCA'NIN ÖDÜL SANDIĞI (10 Bölmeli Rozet Rafı) -->
-    <section id="reward-chest-section" class="hidden bg-white mx-3 mt-3 p-2.5 rounded-2xl shadow-sm border-2 border-indigo-100">
-      <div class="flex items-center justify-between mb-1.5 px-1">
-        <span class="text-xs font-black text-indigo-700 flex items-center gap-1">
-          🎁 Hacer Hoca'nın Ödül Sandığı
-        </span>
-        <span id="badge-count-label" class="text-xs font-black text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
-          0 / 10 Rozet
-        </span>
-      </div>
-      <div class="grid grid-cols-10 gap-1" id="badge-shelf">
-        <div class="badge-slot" id="slot-0" title="1. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-1" title="2. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-2" title="3. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-3" title="4. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-4" title="5. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-5" title="6. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-6" title="7. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-7" title="8. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-8" title="9. Soru Ödülü">🔒</div>
-        <div class="badge-slot" id="slot-9" title="10. Soru Ödülü">🔒</div>
-      </div>
-      <!-- İlerleme Çubuğu -->
-      <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden mt-2">
-        <div id="progress-fill" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500" style="width: 10%;"></div>
-      </div>
-    </section>
-
-    <!-- 1. KARŞILAMA EKRANI -->
-    <main id="welcome-screen" class="flex-1 flex flex-col justify-center p-4">
-      <div class="bg-white rounded-3xl p-6 shadow-lg border-2 border-indigo-100 text-center relative overflow-hidden">
-        <div class="w-24 h-24 mx-auto bg-gradient-to-tr from-amber-200 to-pink-200 rounded-full flex items-center justify-center text-5xl shadow-inner mb-3 border-4 border-white">
-          👩‍🏫
-        </div>
-        <span class="inline-block bg-pink-100 text-pink-700 text-xs font-black px-3 py-1 rounded-full mb-2">
-          3. SINIF ETKİLEŞİMLİ MATEMATİK
-        </span>
-        <h2 class="text-2xl font-black text-indigo-900 leading-snug mb-2">
-          Hacer Hoca'nın Kesirler Atölyesine Hoş Geldin!
-        </h2>
-        <p class="text-slate-600 text-sm font-bold leading-relaxed mb-4">
-          Seni birbirinden eğlenceli <span class="text-indigo-600 font-black">10 Yeni Nesil Kesir Görevi</span> bekliyor! Doğru çözdüğün her soruda <span class="text-amber-600 font-black">Ödül Yağmuru</span> başlayacak ve özel madalyalar kazanacaksın. Zorlandığın yerde ise Hacer Hoca ipuçlarıyla hep yanında! 💖
-        </p>
-
-        <!-- Örnek Kesir Kartları -->
-        <div class="flex justify-center gap-3 mb-5">
-          <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl px-3.5 py-2 flex items-center gap-2">
-            <span class="text-2xl">🍕</span>
-            <span class="frac text-indigo-700 text-lg"><span class="top">1</span><span class="bottom">2</span></span>
-            <span class="text-xs font-extrabold text-indigo-800">Yarım</span>
-          </div>
-          <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl px-3.5 py-2 flex items-center gap-2">
-            <span class="text-2xl">🍰</span>
-            <span class="frac text-amber-800 text-lg"><span class="top">1</span><span class="bottom">4</span></span>
-            <span class="text-xs font-extrabold text-amber-900">Çeyrek</span>
-          </div>
-        </div>
-
-        <label for="student-name-input" class="block text-xs font-black text-indigo-800 uppercase tracking-wider mb-1.5">
-          👇 Adını Yaz Şampiyon 👇
-        </label>
-        <input
-          type="text"
-          id="student-name-input"
-          placeholder="Örn: Zeynep, Kerem, Elif..."
-          maxlength="22"
-          class="w-full px-4 py-3.5 rounded-2xl border-2 border-indigo-300 focus:border-pink-500 focus:ring-4 focus:ring-pink-100 outline-none text-center font-black text-lg text-slate-800 mb-4 transition-all"
-        >
-
-        <button
-          onclick="startGame()"
-          class="btn-press w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-black text-lg shadow-lg shadow-pink-500/30 flex items-center justify-center gap-2"
-        >
-          <span>🚀</span>
-          <span>Göreve Başla ve Ödülleri Topla!</span>
-        </button>
-      </div>
-    </main>
-
-    <!-- 2. OYUN / SORU EKRANI -->
-    <main id="quiz-screen" class="hidden flex-1 flex flex-col p-3 pt-2.5">
-      <div class="bg-white rounded-3xl p-4 shadow-md border-2 border-slate-100 flex-1 flex flex-col">
-
-        <!-- Soru Başlığı ve Rozet Hedefi -->
-        <div class="flex items-center justify-between gap-2 mb-2.5">
-          <h2 id="q-title" class="text-base sm:text-lg font-black text-indigo-800 leading-tight"></h2>
-          <span id="q-target-badge" class="shrink-0 bg-amber-100 border border-amber-300 text-amber-900 text-xs font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1"></span>
-        </div>
-
-        <!-- DOKUNMATİK ETKİLEŞİM SAHNESİ -->
-        <div class="bg-slate-50 border-2 border-dashed border-indigo-300 rounded-2xl p-3 mb-3 text-center relative">
-          <div id="stage-hint" class="inline-block bg-amber-100 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full mb-2 shadow-sm">
-            👆 Ekrandaki nesnelere dokunarak dene!
-          </div>
-          <div id="stage-content" class="min-h-[120px] flex flex-col justify-center items-center"></div>
-        </div>
-
-        <!-- Soru Metni -->
-        <div id="q-text" class="text-slate-800 text-sm sm:text-base font-bold leading-relaxed mb-3.5 px-1"></div>
-
-        <!-- Şıklar (A, B, C) -->
-        <div id="options-container" class="flex flex-col gap-2.5"></div>
-
-        <!-- 💡 YANLIŞ CEVAPTA AÇILAN: HACER HOCA'NIN ÖĞRENME DESTEK KÖŞESİ -->
-        <div id="support-corner-panel" class="hidden mt-4 rounded-2xl border-2 border-amber-400 bg-gradient-to-b from-amber-50 to-orange-50 p-4 shadow-lg">
-          <div class="flex items-start gap-2.5 mb-2.5">
-            <div class="w-12 h-12 rounded-2xl bg-amber-200 border-2 border-white shadow flex items-center justify-center text-2xl shrink-0">
-              👩‍🏫
-            </div>
-            <div>
-              <div class="text-xs font-black uppercase tracking-wider text-amber-800">
-                💡 Hacer Hoca'nın Öğrenme Destek Köşesi
-              </div>
-              <p id="support-compassionate-msg" class="text-sm font-extrabold text-slate-800 leading-snug mt-0.5"></p>
-            </div>
-          </div>
-
-          <!-- Seçilen Yanlış Şıkka Özel Teşhis -->
-          <div class="bg-rose-100/90 border-2 border-rose-300 rounded-xl p-3 mb-2.5">
-            <div class="text-xs font-black text-rose-800 flex items-center gap-1 mb-1">
-              <span>🔍</span>
-              <span>Neden Bu Şıkta Yanıldık?</span>
-            </div>
-            <div id="support-diagnosis-text" class="text-xs sm:text-sm font-bold text-rose-950 leading-relaxed"></div>
-          </div>
-
-          <!-- Görsel Mini Konu Anlatımı / İpucu Kartı -->
-          <div class="bg-white border-2 border-indigo-200 rounded-xl p-3 mb-3 shadow-sm">
-            <div class="text-xs font-black text-indigo-700 flex items-center gap-1 mb-1.5">
-              <span>📘</span>
-              <span>Hacer Hoca'nın Görsel İpucu Kartı:</span>
-            </div>
-            <div id="support-visual-lesson" class="text-xs sm:text-sm font-bold text-slate-700 leading-relaxed"></div>
-          </div>
-
-          <button
-            onclick="retryAfterSupport()"
-            class="btn-press w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-sm sm:text-base shadow-md flex items-center justify-center gap-2"
-          >
-            <span>🔄</span>
-            <span>Şimdi Anladım, Tekrar Deneyeyim!</span>
-          </button>
-        </div>
-
-        <!-- 🎉 DOĞRU CEVAPTA AÇILAN: ÖDÜL YAĞMURU VE MADALYA KARTI -->
-        <div id="reward-panel" class="hidden mt-4 rounded-2xl border-2 border-emerald-500 bg-gradient-to-b from-emerald-50 via-teal-50 to-amber-50 p-4 shadow-xl">
-          <!-- Madalya Kutusu -->
-          <div class="bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-200 border-2 border-amber-400 rounded-2xl p-3 text-center mb-3 shadow-sm relative">
-            <div id="reward-big-icon" class="text-5xl mb-1 inline-block animate-reward-icon"></div>
-            <div id="reward-badge-title" class="text-sm sm:text-base font-black text-amber-950"></div>
-            <div id="reward-teacher-praise" class="text-xs sm:text-sm font-extrabold text-amber-900 mt-1 leading-snug"></div>
-            <button
-              onclick="triggerRewardShower()"
-              class="btn-press mt-2 bg-white/80 hover:bg-white text-amber-900 border border-amber-400 px-3 py-1 rounded-full text-xs font-black shadow-sm inline-flex items-center gap-1"
-            >
-              <span>🎉</span>
-              <span>Tekrar Ödül Yağmuru Başlat!</span>
-            </button>
-          </div>
-
-          <!-- Kısa ve Eğlenceli Çözüm Özeti -->
-          <div class="bg-white/90 border border-emerald-200 rounded-xl p-3 mb-3">
-            <div class="text-xs font-black text-emerald-800 mb-1 flex items-center gap-1">
-              <span>✅</span>
-              <span>Nasıl Çözdük? Birlikte Hatırlayalım:</span>
-            </div>
-            <div id="reward-explanation-text" class="text-xs sm:text-sm font-bold text-slate-700 leading-relaxed"></div>
-          </div>
-
-          <button
-            id="next-question-btn"
-            onclick="nextQuestion()"
-            class="btn-press w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-base shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2"
-          >
-            <span>Sonraki Göreve Geç</span>
-            <span>➡️</span>
-          </button>
-        </div>
-
-      </div>
-    </main>
-
-    <!-- 3. OYUN SONU ÜSTÜN BAŞARI SERTİFİKASI EKRANI -->
-    <main id="certificate-screen" class="hidden flex-1 flex flex-col p-3">
-      <div class="bg-gradient-to-b from-amber-50 via-white to-pink-50 rounded-3xl p-5 shadow-xl border-4 border-amber-400 text-center relative">
-        <div class="text-4xl mb-1">🏆👩‍🏫🏆</div>
-        <div class="text-xs font-black tracking-widest text-amber-800 uppercase">
-          🌟 HACER HOCA İLE YENİ NESİL SORULAR 🌟
-        </div>
-        <h2 class="text-2xl font-black text-indigo-900 mt-1 mb-2">
-          Üstün Başarı Sertifikası
-        </h2>
-
-        <p class="text-xs sm:text-sm font-bold text-slate-600">
-          3. Sınıf Kesirler Atölyesindeki tüm görevleri azimle tamamlayan sevgili öğrencim
-        </p>
-        <div id="cert-student-name" class="text-2xl sm:text-3xl font-black text-pink-600 my-1.5 py-1 px-4 bg-pink-50 border-2 border-pink-200 rounded-2xl inline-block">
-          Şampiyon
-        </div>
-        <p class="text-xs sm:text-sm font-bold text-slate-600 mb-3">
-          bu özel madalya sertifikasını almaya hak kazanmıştır!
-        </p>
-
-        <!-- Toplam Puan ve Yıldız -->
-        <div class="flex justify-center gap-3 mb-4">
-          <div class="bg-indigo-600 text-white px-4 py-2 rounded-2xl font-black text-sm shadow">
-            ⭐ Toplam Puan: <span id="cert-score">100</span>
-          </div>
-          <div class="bg-amber-500 text-white px-4 py-2 rounded-2xl font-black text-sm shadow">
-            🏅 Rozetler: 10 / 10
-          </div>
-        </div>
-
-        <!-- Kazanılan 10 Rozetin Listesi -->
-        <div class="bg-white border-2 border-amber-200 rounded-2xl p-3 mb-4">
-          <div class="text-xs font-black text-amber-900 mb-2">
-            🎁 Kazanılan Tüm Şampiyonluk Rozetleri
-          </div>
-          <div id="cert-badges-grid" class="grid grid-cols-2 gap-2 text-left"></div>
-        </div>
-
-        <!-- Hacer Hoca İmzası -->
-        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-3 mb-4 text-xs sm:text-sm font-bold text-indigo-950 italic">
-          "Azmin, dikkatin ve gayretin için seninle gurur duyuyorum! Matematik yolculuğunda başarıların hep devam etsin."
-          <div class="not-italic font-black text-pink-600 mt-1 text-right">
-            — Hacer Hoca 💖
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-2.5">
-          <button
-            onclick="triggerRewardShower()"
-            class="btn-press w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-amber-950 font-black text-base shadow-lg flex items-center justify-center gap-2"
-          >
-            <span>🎊</span>
-            <span>Süper Ödül Yağmuru Başlat!</span>
-          </button>
-          <button
-            onclick="restartGame()"
-            class="btn-press w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm shadow flex items-center justify-center gap-2"
-          >
-            <span>🔄</span>
-            <span>Baştan Tekrar Oyna</span>
-          </button>
-        </div>
-      </div>
-    </main>
-
+<div class="app-container">
+  <div class="teacher-banner">
+    🌟 Hacer Hoca ile Yeni Nesil Kesirler Değerlendirmesi 🌟
   </div>
 
-  <script>
-    /**************************************************************
-     * 1. WEB AUDIO API SES MOTORU (Dış dosyaya ihtiyaç duymaz)
-     **************************************************************/
-    let soundEnabled = true;
-    let audioCtx = null;
+  <div class="header-stats" id="header-stats" style="display:none;">
+    <div id="question-counter">Soru 1 / 10</div>
+    <div class="score-badge">🏆 Puan: <span id="score">0</span></div>
+  </div>
 
-    function getAudioCtx() {
-      if (!audioCtx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) audioCtx = new AudioContext();
-      }
-      if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
-    }
+  <div class="reward-shelf-container" id="reward-shelf-box" style="display:none;">
+    <div class="shelf-title">📊 Değerlendirme Takibi (Doğru / Yanlış Dağılımı)</div>
+    <div class="badge-shelf" id="badge-shelf">
+      <div class="badge-slot" id="slot-0">🔒</div>
+      <div class="badge-slot" id="slot-1">🔒</div>
+      <div class="badge-slot" id="slot-2">🔒</div>
+      <div class="badge-slot" id="slot-3">🔒</div>
+      <div class="badge-slot" id="slot-4">🔒</div>
+      <div class="badge-slot" id="slot-5">🔒</div>
+      <div class="badge-slot" id="slot-6">🔒</div>
+      <div class="badge-slot" id="slot-7">🔒</div>
+      <div class="badge-slot" id="slot-8">🔒</div>
+      <div class="badge-slot" id="slot-9">🔒</div>
+    </div>
+  </div>
 
-    function toggleSound() {
-      soundEnabled = !soundEnabled;
-      document.getElementById('sound-icon').innerText = soundEnabled ? '🔊' : '🔇';
-      document.getElementById('sound-text').innerText = soundEnabled ? 'Ses Açık' : 'Ses Kapalı';
-      if (soundEnabled) playPopSound(600);
-    }
+  <div class="progress-bar-bg" id="progress-bg" style="display:none;">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+  </div>
 
-    // Dokunma / Etkileşim Sesi
-    function playPopSound(freq = 520) {
-      if (!soundEnabled) return;
-      try {
-        const ctx = getAudioCtx();
-        if (!ctx) return;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(freq * 1.35, ctx.currentTime + 0.09);
-        gain.gain.setValueAtTime(0.15, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.09);
-      } catch (e) {}
-    }
+  <!-- Karşılama Ekranı (İsim Zorunlu) -->
+  <div class="card" id="welcome-card">
+    <div class="welcome-screen">
+      <div style="font-size: 3.5rem;">👩‍🏫📋</div>
+      <h2 style="color: var(--primary); margin: 8px 0;">Değerlendirme Sınavına Hoş Geldin!</h2>
+      <p style="color: #475569; font-size: 0.92rem; line-height: 1.5;">
+        Bu test <b>10 yeni nesil sorudan</b> oluşur. Seçtiğin cevaplar kaydedilir ve sınav sonunda Hacer Hoca sana detaylı bir <b>Başarı Karnesi ve Analiz Raporu</b> sunar!
+      </p>
+      <input type="text" id="student-name-input" class="name-input" placeholder="Adını ve soyadını yaz (Zorunludur)..." maxlength="30">
+      <div class="error-msg" id="error-msg"></div>
+      <button class="action-btn" onclick="startGame()">🚀 Sınavı Başlat</button>
+    </div>
+  </div>
 
-    // Doğru Cevap & Ödül Yağmuru Zafer Melodisi
-    function playVictoryMelody() {
-      if (!soundEnabled) return;
-      try {
-        const ctx = getAudioCtx();
-        if (!ctx) return;
-        const notes = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
-        const times = [0, 0.11, 0.22, 0.34, 0.48, 0.60];
-        const durations = [0.1, 0.1, 0.11, 0.13, 0.11, 0.32];
+  <!-- Soru Kartı -->
+  <div class="card" id="quiz-card" style="display:none;">
+    <div class="q-title" id="q-title"></div>
+    <div class="interactive-stage">
+      <div class="hint-badge" id="stage-hint">👆 Deneme Alanı</div>
+      <div id="stage-content"></div>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options-container"></div>
+    <button class="next-btn" id="next-btn" style="display:none;" onclick="nextQuestion()">Sonraki Soru ➡️</button>
+  </div>
+</div>
 
-        notes.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + times[idx]);
-          gain.gain.setValueAtTime(0.22, ctx.currentTime + times[idx]);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + times[idx] + durations[idx]);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + times[idx]);
-          osc.stop(ctx.currentTime + times[idx] + durations[idx]);
-        });
-      } catch (e) {}
-    }
+<script>
+let studentName = "";
+let currentQ = 0;
+let score = 0;
+let answered = false;
+let userAnswers = [];
+let waterClicks = 0;
 
-    // Yanlış Cevap / Öğrenme Destek Yumuşak Bildirim Sesi
-    function playSupportChime() {
-      if (!soundEnabled) return;
-      try {
-        const ctx = getAudioCtx();
-        if (!ctx) return;
-        const notes = [440, 392];
-        notes.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.15);
-          gain.gain.setValueAtTime(0.16, ctx.currentTime + idx * 0.15);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.15 + 0.18);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + idx * 0.15);
-          osc.stop(ctx.currentTime + idx * 0.15 + 0.18);
-        });
-      } catch (e) {}
-    }
+function frac(top, bottom) {
+  return `<span class="frac"><span class="top">${top}</span><span class="bottom">${bottom}</span></span>`;
+}
 
-    /**************************************************************
-     * 2. KESİR GÖSTERİM YARDIMCISI (Alt-Üst Çizgili Kesir)
-     **************************************************************/
-    function frac(top, bottom, extraClass = '') {
-      return `<span class="frac ${extraClass}"><span class="top">${top}</span><span class="bottom">${bottom}</span></span>`;
-    }
-
-    /**************************************************************
-     * 3. ÖDÜL YAĞMURU SİSTEMİ (Konfeti + Madalya + Havai Fişek)
-     **************************************************************/
-    function triggerRewardShower() {
-      playVictoryMelody();
-      const showerIcons = ['🌟', '🏆', '🏅', '🎉', '✨', '👏', '👑', '💎', '🎊', '⭐'];
-
-      // 1. Yukarıdan aşağıya yoğun ödül yağmuru
-      for (let i = 0; i < 34; i++) {
-        const el = document.createElement('div');
-        el.className = 'reward-particle';
-        el.innerText = showerIcons[Math.floor(Math.random() * showerIcons.length)];
-        el.style.left = (Math.random() * 94 + 2) + 'vw';
-        el.style.top = '-5vh';
-        el.style.fontSize = (Math.random() * 1.2 + 1.3) + 'rem';
-        const duration = (Math.random() * 1.6 + 1.5).toFixed(2);
-        const delay = (Math.random() * 0.7).toFixed(2);
-        el.style.animation = `fallDown ${duration}s ease-in ${delay}s forwards`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), (parseFloat(duration) + parseFloat(delay) + 0.2) * 1000);
-      }
-
-      // 2. Ekranın ortasından havai fişek gibi patlayan yıldızlar
-      for (let j = 0; j < 22; j++) {
-        const burst = document.createElement('div');
-        burst.className = 'reward-particle';
-        burst.innerText = showerIcons[Math.floor(Math.random() * showerIcons.length)];
-        burst.style.left = '50vw';
-        burst.style.top = '45vh';
-        burst.style.fontSize = (Math.random() * 1.1 + 1.4) + 'rem';
-        const angle = (Math.PI * 2 * j) / 22;
-        const dist = Math.random() * 160 + 70;
-        const tx = Math.cos(angle) * dist + 'px';
-        const ty = Math.sin(angle) * dist + 'px';
-        const rot = (Math.random() * 360 - 180) + 'deg';
-        burst.style.setProperty('--tx', tx);
-        burst.style.setProperty('--ty', ty);
-        burst.style.setProperty('--rot', rot);
-        burst.style.animation = `burstOut 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
-        document.body.appendChild(burst);
-        setTimeout(() => burst.remove(), 1350);
-      }
-    }
-
-    /**************************************************************
-     * 4. 10 ETKİLEŞİMLİ YENİ NESİL SORU VE DESTEK VERİTABANI
-     **************************************************************/
-    const questions = [
-      // SORU 1: Bütün - Yarım - Çeyrek
-      {
-        title: "🍕 1. Dijital Pizza Ustası",
-        badgeIcon: "🍕",
-        badgeName: "Usta Şef Madalyası",
-        praise: "Harika bir aşçısın! Bütün, yarım ve çeyrek arasındaki ilişkiyi şıp diye çözdün!",
-        hint: "👆 Boş bölmelere (3 ve 4) dokunarak çeyrek pizza dilimi ekle veya çıkar!",
-        renderStage: () => `
-          <div class="text-xs font-black text-slate-700 mb-2">Bütün Pizza Tepsisi (4 Eş Çeyrek Bölme)</div>
-          <div class="grid grid-cols-4 gap-2 max-w-[280px] mx-auto mb-2" id="pizza-tray">
-            <div class="h-16 rounded-xl border-2 border-amber-500 bg-amber-100 flex flex-col items-center justify-center shadow-sm">
-              <span class="text-2xl">🍕</span>
-              <span class="text-[10px] font-black text-amber-900">1. Çeyrek</span>
-            </div>
-            <div class="h-16 rounded-xl border-2 border-amber-500 bg-amber-100 flex flex-col items-center justify-center shadow-sm">
-              <span class="text-2xl">🍕</span>
-              <span class="text-[10px] font-black text-amber-900">2. Çeyrek</span>
-            </div>
-            <button onclick="togglePizzaSlice(this, 3)" class="pizza-extra h-16 rounded-xl border-2 border-dashed border-slate-400 bg-white flex flex-col items-center justify-center shadow-sm transition-all">
-              <span class="text-xl">➕</span>
-              <span class="text-[10px] font-extrabold text-slate-500">3. Bölme</span>
-            </button>
-            <button onclick="togglePizzaSlice(this, 4)" class="pizza-extra h-16 rounded-xl border-2 border-dashed border-slate-400 bg-white flex flex-col items-center justify-center shadow-sm transition-all">
-              <span class="text-xl">➕</span>
-              <span class="text-[10px] font-extrabold text-slate-500">4. Bölme</span>
-            </button>
-          </div>
-          <div id="pizza-status-label" class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
-            Başlangıçta: 2 Çeyrek Dilim (= 1 Yarım Pizza)
-          </div>
-        `,
-        text: `Aşçı Kerem'in tepsisinde başlangıçta <b>2 tane çeyrek</b> dilim pizza vardır. Kerem'in tepsiyi tamamen doldurup <b>1 bütün</b> pizza elde etmesi için kaç çeyrek dilim daha eklemesi gerekir ve başlangıçtaki 2 çeyrek dilim neye eşittir?`,
-        options: [
-          `1 çeyrek dilim daha eklemeli – Başlangıçtaki kısım 1 bütündür.`,
-          `2 çeyrek dilim daha eklemeli – Başlangıçtaki kısım 1 yarımdır.`,
-          `4 çeyrek dilim daha eklemeli – Başlangıçtaki kısım 1 çeyrektir.`
-        ],
-        correct: 1,
-        wrongDiagnoses: {
-          0: `Tepsimizde toplam 4 eş çeyrek bölme var. Başlangıçta 2 çeyrek dilim olduğu için sadece 1 çeyrek eklersek 3 çeyrek olur, tepsi tam dolmaz. Ayrıca 2 çeyrek dilim tepsinin sadece yarısını kaplar.`,
-          2: `4 çeyrek dilim zaten 1 bütünün tamamıdır! Tepside 2 çeyrek dilim hazır olduğu için geriye sadece 2 boş bölme kalmıştır.`
-        },
-        visualLesson: `
-          <div class="space-y-1.5">
-            <div class="bg-amber-50 border border-amber-300 rounded-lg p-2 text-center">
-              <b>🍕 1 Bütün Pizza = 2 Yarım = 4 Çeyrek Dilim</b>
-            </div>
-            <div>• <b>2 tane çeyrek</b> dilimi yan yana koyduğumuzda tepsinin tam ortasına gelir, yani <b>1 Yarım</b> eder!</div>
-            <div>• 4 eş bölmenin 2'si doluysa: <b>4 - 2 = 2 çeyrek dilim</b> daha eklemeliyiz.</div>
-          </div>
-        `,
-        explanation: `Bir bütün pizza <b>4 eş çeyrek</b> dilimden oluşur. Başlangıçtaki 2 çeyrek dilim birleşince <b>1 yarım</b> pizza eder. Boş kalan 2 bölmeyi doldurmak için <b>2 çeyrek dilim daha</b> eklemeliyiz!`
-      },
-
-      // SORU 2: Birim Kesir ve Pay-Payda
-      {
-        title: "🔋 2. Tablet Şarj Göstergesi",
-        badgeIcon: "⚡",
-        badgeName: "Süper Enerji Rozeti",
-        praise: "Pay ve paydayı hiç karıştırmadın! Enerjinle bütün sınıfı aydınlattın!",
-        hint: "👆 Kutulara parmağınla dokunarak toplam kaç eş bölme olduğunu numaralandır!",
-        renderStage: () => `
-          <div class="text-xs font-black text-slate-700 mb-2">🔋 Tablet Bataryası (Kutulara Dokun ve Say)</div>
-          <div class="flex items-center justify-center gap-1 bg-slate-800 p-2.5 rounded-2xl border-4 border-slate-600 max-w-[310px] mx-auto relative">
-            <button onclick="numberBatteryCell(this, 1)" class="w-8 h-12 rounded-lg bg-emerald-500 border-2 border-emerald-200 text-white font-black text-sm flex items-center justify-center shadow">1</button>
-            <button onclick="numberBatteryCell(this, 2)" class="w-8 h-12 rounded-lg bg-white border-2 border-slate-300 text-slate-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="numberBatteryCell(this, 3)" class="w-8 h-12 rounded-lg bg-white border-2 border-slate-300 text-slate-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="numberBatteryCell(this, 4)" class="w-8 h-12 rounded-lg bg-white border-2 border-slate-300 text-slate-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="numberBatteryCell(this, 5)" class="w-8 h-12 rounded-lg bg-white border-2 border-slate-300 text-slate-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="numberBatteryCell(this, 6)" class="w-8 h-12 rounded-lg bg-white border-2 border-slate-300 text-slate-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="numberBatteryCell(this, 7)" class="w-8 h-12 rounded-lg bg-white border-2 border-slate-300 text-slate-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="numberBatteryCell(this, 8)" class="w-8 h-12 rounded-lg bg-white border-2 border-slate-300 text-slate-700 font-black text-sm flex items-center justify-center">?</button>
-            <div class="w-2.5 h-6 bg-slate-500 rounded-r-md ml-0.5"></div>
-          </div>
-          <div id="battery-count-info" class="text-xs font-extrabold text-emerald-800 mt-2">
-            Toplam 8 eş bölmeden sadece 1 yeşil bölme yanıyor!
-          </div>
-        `,
-        text: `Zeynep'in eğitim tabletinin şarj göstergesi <b>8 eş bölmeye</b> ayrılmıştır ve ekranda sadece <b>1 yeşil bölme</b> yanmaktadır. Bu yeşil bölmenin temsil ettiği <b>birim kesir</b> aşağıdakilerden hangisidir?`,
-        options: [
-          `${frac(8, 1)}`,
-          `${frac(1, 7)}`,
-          `${frac(1, 8)}`
-        ],
-        correct: 2,
-        wrongDiagnoses: {
-          0: `Pay ile paydanın yerini karıştırdık! ${frac(8, 1)} kesrinde 8 üstte yazılmış. Oysa bütünün kaç eş parçaya bölündüğü her zaman çizginin <b>altına (paydaya)</b> yazılır.`,
-          1: `Çok dikkatli olmalıyız! Beyaz kutuları sayıp paydaya 7 yazdın ama paydaya sadece boş kutular değil, <b>yeşil kutu dahil BÜTÜN eş kutuların toplam sayısı (1 + 7 = 8)</b> yazılır.`
-        },
-        visualLesson: `
-          <div class="flex items-center justify-center gap-3 bg-indigo-50 p-2.5 rounded-xl border border-indigo-200">
-            <div class="text-center">
-              <div class="bg-emerald-100 text-emerald-900 px-2.5 py-1 rounded-t-lg border-b-2 border-indigo-900 font-black">1 (Pay: Yanan yeşil bölme)</div>
-              <div class="bg-amber-100 text-amber-900 px-2.5 py-1 rounded-b-lg font-black">8 (Payda: Tüm eş bölmeler)</div>
-            </div>
-          </div>
-          <div class="mt-1.5 text-center">Eş parçalardan <b>sadece 1 tanesini</b> gösteren kesre <b>birim kesir</b> deriz: ${frac(1, 8)}</div>
-        `,
-        explanation: `Kesir çizgisinin altına (<b>paydaya</b>) yeşil dahil tüm eş kutuların sayısını (<b>8</b>), üstüne (<b>paya</b>) ise yanan yeşil kutu sayısını (<b>1</b>) yazarız. Birim kesrimiz ${frac(1, 8)} (sekizde bir) olur!`
-      },
-
-      // SORU 3: Eş Parçalara Ayrılma Şartı
-      {
-        title: "🌻 3. Eş Parçaları Bul!",
-        badgeIcon: "🌻",
-        badgeName: "Altın Bahçıvan Rozeti",
-        praise: "Kesir olmanın birinci kuralı olan 'EŞ PARÇA' sırrını harika biliyorsun!",
-        hint: "👆 Bahçelerin üzerine dokunarak cetvelle parçaların eşit olup olmadığını ölç!",
-        renderStage: () => `
-          <div class="w-full max-w-[300px] mx-auto space-y-2 text-xs font-extrabold">
-            <!-- 1. Bahçe -->
-            <div onclick="measureGarden(1)" class="cursor-pointer bg-white p-1.5 rounded-xl border-2 border-slate-400 hover:border-indigo-500 transition-all">
-              <div class="flex justify-between mb-1 px-1">
-                <span>1. Bahçe</span>
-                <span id="ruler-msg-1" class="text-indigo-600">📏 Ölçmek için dokun</span>
-              </div>
-              <div class="flex h-8 rounded-lg overflow-hidden border border-slate-400">
-                <div style="width:20%" class="bg-pink-100 border-r border-slate-400 flex items-center justify-center">🌷</div>
-                <div style="width:60%" class="bg-slate-100 border-r border-slate-400 flex items-center justify-center text-[10px]">Geniş Bölüm</div>
-                <div style="width:20%" class="bg-slate-100 flex items-center justify-center text-[10px]">Dar</div>
-              </div>
-            </div>
-
-            <!-- 2. Bahçe -->
-            <div onclick="measureGarden(2)" class="cursor-pointer bg-white p-1.5 rounded-xl border-2 border-emerald-500 hover:border-indigo-500 transition-all">
-              <div class="flex justify-between mb-1 px-1">
-                <span>2. Bahçe</span>
-                <span id="ruler-msg-2" class="text-indigo-600">📏 Ölçmek için dokun</span>
-              </div>
-              <div class="flex h-8 rounded-lg overflow-hidden border border-emerald-600">
-                <div style="width:25%" class="bg-amber-200 border-r border-emerald-600 flex items-center justify-center">🌻</div>
-                <div style="width:25%" class="bg-emerald-50 border-r border-emerald-600 flex items-center justify-center">⬜</div>
-                <div style="width:25%" class="bg-emerald-50 border-r border-emerald-600 flex items-center justify-center">⬜</div>
-                <div style="width:25%" class="bg-emerald-50 flex items-center justify-center">⬜</div>
-              </div>
-            </div>
-
-            <!-- 3. Bahçe -->
-            <div onclick="measureGarden(3)" class="cursor-pointer bg-white p-1.5 rounded-xl border-2 border-slate-400 hover:border-indigo-500 transition-all">
-              <div class="flex justify-between mb-1 px-1">
-                <span>3. Bahçe</span>
-                <span id="ruler-msg-3" class="text-indigo-600">📏 Ölçmek için dokun</span>
-              </div>
-              <div class="flex h-8 rounded-lg overflow-hidden border border-slate-400">
-                <div style="width:15%" class="bg-rose-100 border-r border-slate-400 flex items-center justify-center">🌹</div>
-                <div style="width:50%" class="bg-slate-100 border-r border-slate-400 flex items-center justify-center text-[10px]">Çok Geniş</div>
-                <div style="width:20%" class="bg-slate-100 border-r border-slate-400 flex items-center justify-center text-[10px]">Orta</div>
-                <div style="width:15%" class="bg-slate-100 flex items-center justify-center text-[10px]">Dar</div>
-              </div>
-            </div>
-          </div>
-        `,
-        text: `Bahçıvan dede, bahçesinin tam ${frac(1, 4)}'ine (dörtte birine) ayçiçeği ekmek istiyor. Ekrandaki bahçelerden hangisi kesir kuralına <b>uygun</b> olarak bölünmüş ve ekilmiştir?`,
-        options: [
-          `1. Bahçe`,
-          `2. Bahçe`,
-          `3. Bahçe`
-        ],
-        correct: 1,
-        wrongDiagnoses: {
-          0: `1. Bahçe hem sadece 3 parçaya bölünmüş hem de ortadaki parça diğerlerinden çok daha büyük! Parçalar eşit büyüklükte olmadığı için kesir belirtmez.`,
-          2: `3. Bahçede 4 parça var gibi görünüyor ama dikkatli bakarsan parçaların büyüklükleri birbirinden farklı! Eşit olmayan parçalar ${frac(1, 4)} kesrini gösteremez.`
-        },
-        visualLesson: `
-          <div class="bg-emerald-50 border border-emerald-300 rounded-lg p-2">
-            <b>🌟 Kesir Olmanın Altın Kuralı:</b><br>
-            Bir bütünün kesir belirtebilmesi için parçaların <b>birbiriyle tıpatıp aynı büyüklükte (EŞ PARÇA)</b> olması şarttır! Sadece <b>2. Bahçe</b> 4 eş parçaya ayrılmıştır.
-          </div>
-        `,
-        explanation: `Kesirlerde adalet vardır! Bütünün tüm parçaları <b>birbiriyle EŞ (eşit büyüklükte)</b> olmalıdır. <b>2. Bahçe</b> 4 eş parçaya bölünmüş ve 1 parçasına ayçiçeği ekilerek ${frac(1, 4)} gösterilmiştir.`
-      },
-
-      // SORU 4: Sayı Doğrusunda Birim Kesir
-      {
-        title: "🐸 4. Zıplayan Kurbağa",
-        badgeIcon: "🐸",
-        badgeName: "Şampiyon Zıplayıcı",
-        praise: "Sayı doğrusunda çizgileri değil aralıkları sayarak tam isabet zıpladın!",
-        hint: "👆 'Kurbağayı 1 Adım Zıplat' butonuna basarak kurbağanın nereye konduğunu gör!",
-        renderStage: () => `
-          <div class="w-full max-w-[310px] mx-auto pt-2 pb-1">
-            <!-- Kurbağa ve Noktalar -->
-            <div class="grid grid-cols-6 text-center font-black text-xs mb-1">
-              <div id="frog-pos-0" class="text-indigo-900"><span class="text-2xl block frog-avatar">🐸</span>0</div>
-              <div id="frog-pos-1" class="text-slate-700"><span class="text-2xl block">⚪</span>A</div>
-              <div id="frog-pos-2" class="text-slate-700"><span class="text-2xl block">⚪</span>B</div>
-              <div id="frog-pos-3" class="text-slate-700"><span class="text-2xl block">⚪</span>C</div>
-              <div id="frog-pos-4" class="text-slate-700"><span class="text-2xl block">⚪</span>D</div>
-              <div id="frog-pos-5" class="text-emerald-800"><span class="text-2xl block">🍃</span>1</div>
-            </div>
-            <!-- Sayı Doğrusu Çubuğu (5 Eş Aralık) -->
-            <div class="grid grid-cols-5 gap-0.5 mx-5 h-3 bg-slate-300 rounded-full overflow-hidden border border-slate-500">
-              <div id="step-bar-1" class="bg-slate-200 transition-all"></div>
-              <div class="bg-slate-200"></div>
-              <div class="bg-slate-200"></div>
-              <div class="bg-slate-200"></div>
-              <div class="bg-slate-200"></div>
-            </div>
-            <div class="text-[11px] font-extrabold text-slate-600 mt-1.5">
-              0 ile 1 arası: <b>1 - 2 - 3 - 4 - 5 Eş Adım (Aralık)</b>
-            </div>
-            <div class="flex justify-center gap-2 mt-2">
-              <button onclick="jumpFrogStep(1)" class="btn-press bg-emerald-600 text-white text-xs font-black px-3 py-1.5 rounded-xl shadow">
-                🐸 Kurbağayı 1 Adım Zıplat!
-              </button>
-              <button onclick="jumpFrogStep(0)" class="btn-press bg-slate-200 text-slate-700 text-xs font-extrabold px-2.5 py-1.5 rounded-xl">
-                Sıfırla
-              </button>
-            </div>
-          </div>
-        `,
-        text: `Sayı doğrusunda <b>0 ile 1</b> arasındaki mesafe <b>5 eş parçaya (aralığa)</b> bölünmüştür. <b>0</b> noktasında duran kurbağa sadece <b>1 birim kesir</b> (1 adım) ileri zıplarsa hangi harfin üzerine konar ve bu noktanın kesri nedir?`,
-        options: [
-          `A noktası – ${frac(1, 5)}`,
-          `A noktası – ${frac(1, 6)}`,
-          `B noktası – ${frac(2, 5)}`
-        ],
-        correct: 0,
-        wrongDiagnoses: {
-          1: `A noktasını doğru buldun! Ama paydaya 6 yazarken 0 ve 1 dahil <b>dik çizgileri saydın</b>. Sayı doğrusunda çizgiler değil, iki çizgi arasındaki <b>adımlar (boşluklar)</b> sayılır! 0 ile 1 arasında 5 eş adım vardır.`,
-          2: `Paydanın 5 olduğunu doğru buldun! Ancak B noktası 2. adımdır (${frac(2, 5)}). Birim kesir demek sadece <b>1 adım</b> zıplamak demektir, yani ilk harf olan A noktasıdır.`
-        },
-        visualLesson: `
-          <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-2">
-            <b>🐸 Sayı Doğrusu Sırrı:</b><br>
-            • Çizgileri değil, kurbağanın zıpladığı <b>aralıkları (adımları)</b> sayarız: 0'dan 1'e kadar <b>5 eş adım</b> var (Payda = 5).<br>
-            • 1 adım zıplayınca ilk nokta olan <b>A</b>'ya geliriz: ${frac(1, 5)}
-          </div>
-        `,
-        explanation: `0 ile 1 arası <b>5 eş aralığa</b> bölündüğü için paydamız <b>5</b>'tir. Kurbağa birim kesir kadar yani <b>1 adım</b> zıplayınca <b>A noktasına</b> konar ve bu nokta ${frac(1, 5)} kesridir!`
-      },
-
-      // SORU 5: Pay ve Payda İlişkisi (Köprü Tamiri)
-      {
-        title: "🧱 5. Köprü Tamiri",
-        badgeIcon: "👷",
-        badgeName: "Baş Mimar Madalyası",
-        praise: "Köprüyü ustalıkla tamir ettin! Pay ve payda arasındaki ilişkiyi çok iyi biliyorsun!",
-        hint: "👆 Beyaz bloklara dokunarak onları kahverengiye boya ve kaç blok boyadığını say!",
-        renderStage: () => `
-          <div class="text-xs font-black text-slate-700 mb-1.5">Köprü Durumu (6 Eş Tahta Blok)</div>
-          <div class="grid grid-cols-6 gap-1.5 max-w-[290px] mx-auto mb-2" id="bridge-container">
-            <div class="h-12 rounded-lg bg-amber-800 border-2 border-amber-950 text-white font-black text-xs flex items-center justify-center shadow">1</div>
-            <div class="h-12 rounded-lg bg-amber-800 border-2 border-amber-950 text-white font-black text-xs flex items-center justify-center shadow">2</div>
-            <button onclick="paintBridgeBlock(this)" class="bridge-white h-12 rounded-lg bg-white border-2 border-dashed border-slate-400 text-slate-500 font-black text-xs flex items-center justify-center">Boya</button>
-            <button onclick="paintBridgeBlock(this)" class="bridge-white h-12 rounded-lg bg-white border-2 border-dashed border-slate-400 text-slate-500 font-black text-xs flex items-center justify-center">Boya</button>
-            <button onclick="paintBridgeBlock(this)" class="bridge-white h-12 rounded-lg bg-white border-2 border-dashed border-slate-400 text-slate-500 font-black text-xs flex items-center justify-center">Boya</button>
-            <button onclick="paintBridgeBlock(this)" class="bridge-white h-12 rounded-lg bg-white border-2 border-dashed border-slate-400 text-slate-500 font-black text-xs flex items-center justify-center">Boya</button>
-          </div>
-          <div id="bridge-counter-label" class="text-xs font-extrabold text-amber-900 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
-            Başlangıçta: 2 blok tamir edildi (Yeni boyadığın: 0 blok)
-          </div>
-        `,
-        text: `Oyun karakterimizin karşıya geçmesi için 6 eş parçadan oluşan köprünün ${frac(5, 6)}'sının (altıda beşinin) tamir edilmiş (kahverengi) olması gerekiyor. Şu an köprünün ${frac(2, 6)}'si tamir edildiğine göre, beyaz bloklardan <b>kaç tanesini daha</b> boyamalıyız?`,
-        options: [
-          `2 blok daha boyamalıyız.`,
-          `3 blok daha boyamalıyız.`,
-          `5 blok daha boyamalıyız.`
-        ],
-        correct: 1,
-        wrongDiagnoses: {
-          0: `Şu an 2 blok zaten boyalı. Eğer 2 blok daha boyarsak 2 + 2 = 4 blok (${frac(4, 6)}) olur. Oysa hedefimiz 5 bloğun boyalı olması (${frac(5, 6)})!`,
-          2: `5 sayısı ulaşmak istediğimiz <b>toplam</b> boyalı blok sayısıdır. Köprüde zaten 2 blok hazır boyalı olduğu için 5'ten 2'yi çıkarmalıyız!`
-        },
-        visualLesson: `
-          <div class="bg-amber-50 border border-amber-300 rounded-lg p-2">
-            <b>🧱 Adım Adım Tamir:</b><br>
-            • Hedefimiz: 6 parçadan <b>5 tanesinin</b> boyalı olması (${frac(5, 6)}).<br>
-            • Hazır boyalı olan: <b>2 parça</b> (${frac(2, 6)}).<br>
-            • Eksik parça: <b>5 - 2 = 3 blok daha</b> boyanmalıdır!
-          </div>
-        `,
-        explanation: `Köprüde 2 blok zaten boyalı (${frac(2, 6)}). Toplam 5 boyalı bloğa (${frac(5, 6)}) ulaşmak için 2'nin üzerine sayalım: 3, 4, 5! Yani <b>3 beyaz bloğu daha</b> boyamalıyız.`
-      },
-
-      // SORU 6: Birim Kesirleri Sezgisel Karşılaştırma
-      {
-        title: "🍰 6. Hangi Dilim Daha Büyük?",
-        badgeIcon: "🎂",
-        badgeName: "Süper Mantık Yıldızı",
-        praise: "Sayıların büyüklüğüne aldanmadın! Dilim mantığını harika kavradın!",
-        hint: "👆 Tepsilere dokunarak hangi dilimin daha büyük olduğunu gözlerinle karşılaştır!",
-        renderStage: () => `
-          <div class="w-full max-w-[300px] mx-auto space-y-2 text-left text-xs font-extrabold">
-            <div onclick="highlightSlice(1)" id="slice-row-1" class="cursor-pointer bg-white p-1.5 rounded-xl border-2 border-pink-400 transition-all">
-              <div class="flex justify-between mb-1">
-                <span>1. Tepsi (${frac(1, 2)} - 2 Kişilik Paylaşım)</span>
-                <span class="text-pink-600 font-black">Kocaman Dilim!</span>
-              </div>
-              <div class="flex h-7 rounded-lg overflow-hidden border border-slate-500">
-                <div style="width:50%" class="bg-pink-500 text-white flex items-center justify-center">🍰 Yarım Dilim</div>
-                <div style="width:50%" class="bg-slate-100"></div>
-              </div>
-            </div>
-
-            <div onclick="highlightSlice(2)" id="slice-row-2" class="cursor-pointer bg-white p-1.5 rounded-xl border-2 border-slate-300 transition-all">
-              <div class="flex justify-between mb-1">
-                <span>2. Tepsi (${frac(1, 4)} - 4 Kişilik Paylaşım)</span>
-                <span class="text-slate-600">Orta Dilim</span>
-              </div>
-              <div class="flex h-7 rounded-lg overflow-hidden border border-slate-500">
-                <div style="width:25%" class="bg-amber-500 text-white flex items-center justify-center">🍰</div>
-                <div style="width:75%" class="bg-slate-100"></div>
-              </div>
-            </div>
-
-            <div onclick="highlightSlice(3)" id="slice-row-3" class="cursor-pointer bg-white p-1.5 rounded-xl border-2 border-slate-300 transition-all">
-              <div class="flex justify-between mb-1">
-                <span>3. Tepsi (${frac(1, 8)} - 8 Kişilik Paylaşım)</span>
-                <span class="text-slate-500">İncecik Dilim</span>
-              </div>
-              <div class="flex h-7 rounded-lg overflow-hidden border border-slate-500">
-                <div style="width:12.5%" class="bg-indigo-500 text-white flex items-center justify-center text-[10px]">🍰</div>
-                <div style="width:87.5%" class="bg-slate-100"></div>
-              </div>
-            </div>
-          </div>
-        `,
-        text: `Aynı büyüklükteki üç tepsi kek farklı sayıda eş dilimlere ayrılmıştır. Çok acıkan Mert <b>en büyük</b> dilimi yemek istiyor. Mert hangi kesir kartını seçmelidir?`,
-        options: [
-          `${frac(1, 8)} (Çünkü 8 sayısı en büyüktür)`,
-          `${frac(1, 4)} (Çünkü çeyrek dilim orta boydur)`,
-          `${frac(1, 2)} (Çünkü az parçaya bölünen tepsinin dilimi daha büyüktür)`
-        ],
-        correct: 2,
-        wrongDiagnoses: {
-          0: `8 sayısının büyük olması seni şaşırtmasın! Bir pastayı 8 kişiye bölersek herkese <b>incecik, küçücük</b> bir dilim düşer. Paydadaki sayı büyüdükçe dilim küçülür!`,
-          1: `${frac(1, 4)} (çeyrek) dilim ${frac(1, 8)}'den büyüktür ama 1. tepsideki ${frac(1, 2)} (yarım) dilimden küçüktür.`
-        },
-        visualLesson: `
-          <div class="bg-pink-50 border border-pink-300 rounded-lg p-2">
-            <b>🎂 Pasta Paylaşım Kuralı:</b><br>
-            Bir pastayı ne kadar <b>AZ parçaya</b> bölersek dilimler o kadar <b>BÜYÜK</b> olur!<br>
-            • 2 eş parçaya bölünen ${frac(1, 2)} (yarım) dilim en büyüktür!
-          </div>
-        `,
-        explanation: `Bir bütünü ne kadar az eş parçaya ayırırsak her bir parça o kadar büyük olur. Sadece <b>2 eş parçaya</b> bölünen tepsinin dilimi (${frac(1, 2)}) en büyük dilimdir!`
-      },
-
-      // SORU 7: Bir Çokluğun Birim Kesir Kadarını Bulma
-      {
-        title: "⭐ 7. Hazine Sandığı",
-        badgeIcon: "💎",
-        badgeName: "Altın Hazine Avcısı",
-        praise: "Gruplama ve bölme işlemini birleştirerek hazine sandığını açtın!",
-        hint: "👆 Yıldız sıralarına dokunarak 12 yıldızı 3 eş gruba ayır ve 1 grubunda kaç yıldız olduğunu gör!",
-        renderStage: () => `
-          <div class="text-xs font-black text-slate-700 mb-1.5">Gökyüzündeki 12 Yıldız (3 Eş Sıra / Grup)</div>
-          <div class="space-y-1.5 max-w-[260px] mx-auto mb-2">
-            <button onclick="selectStarGroup(this, 1)" class="w-full py-1.5 px-3 rounded-xl border-2 border-amber-400 bg-amber-50 flex items-center justify-between text-lg shadow-sm">
-              <span>⭐ ⭐ ⭐ ⭐</span>
-              <span class="text-xs font-black text-amber-900 bg-amber-200 px-2 py-0.5 rounded-full">1. Grup (4)</span>
-            </button>
-            <button onclick="selectStarGroup(this, 2)" class="w-full py-1.5 px-3 rounded-xl border-2 border-slate-300 bg-white flex items-center justify-between text-lg">
-              <span>⭐ ⭐ ⭐ ⭐</span>
-              <span class="text-xs font-extrabold text-slate-600">2. Grup (4)</span>
-            </button>
-            <button onclick="selectStarGroup(this, 3)" class="w-full py-1.5 px-3 rounded-xl border-2 border-slate-300 bg-white flex items-center justify-between text-lg">
-              <span>⭐ ⭐ ⭐ ⭐</span>
-              <span class="text-xs font-extrabold text-slate-600">3. Grup (4)</span>
-            </button>
-          </div>
-          <div id="chest-status-label" class="text-xs font-extrabold text-indigo-800 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
-            🧰 3 eş gruptan 1 grubunda 4 yıldız var! (12 ÷ 3 = 4)
-          </div>
-        `,
-        text: `Oyunda bir üst seviyeye geçmek için ekrandaki <b>12 yıldızın</b> ${frac(1, 3)}'ini (üçte birini) hazine sandığına atman gerekiyor. Sandığın içine <b>kaç tane yıldız</b> atmalısın?`,
-        options: [
-          `3 yıldız`,
-          `4 yıldız`,
-          `6 yıldız`
-        ],
-        correct: 1,
-        wrongDiagnoses: {
-          0: `3 sayısı yıldızların ayrıldığı <b>eş grup sayısıdır</b> (paydamız 3). Bize ise 12 yıldızı 3 eş gruba böldüğümüzde <b>1 grubun içine düşen yıldız sayısı</b> soruluyor!`,
-          2: `6 yıldız, 12 yıldızın yarısıdır (${frac(1, 2)}'sidir, 12 ÷ 2 = 6). Oysa sorumuzda ${frac(1, 3)}'i yani 3 eş parçadan biri soruluyor.`
-        },
-        visualLesson: `
-          <div class="bg-amber-50 border border-amber-300 rounded-lg p-2">
-            <b>💎 Bir Çokluğun Birim Kesrini Bulma:</b><br>
-            12 yıldızın ${frac(1, 3)}'ini bulmak için 12'yi paydadaki sayıya (3'e) böleriz:<br>
-            <b class="text-indigo-700 text-sm">12 ÷ 3 = 4 yıldız!</b>
-          </div>
-        `,
-        explanation: `12 yıldızın ${frac(1, 3)}'ini bulmak demek, 12 yıldızı <b>3 eş gruba</b> bölüp 1 grubunu almak demektir: <b>12 ÷ 3 = 4 yıldız</b> sandığa atılır!`
-      },
-
-      // SORU 8: Birim Kesri Bulup Geriye Kalanı Hesaplama
-      {
-        title: "♻️ 8. Sıfır Atık Oyunu",
-        badgeIcon: "🌍",
-        badgeName: "Doğa Kahramanı Madalyası",
-        praise: "Soru kökündeki 'GERİYE KALAN' tuzağına düşmedin! Gerçek bir çevre ve matematik kahramanısın!",
-        hint: "👆 1. Kutuya dokunarak çeyreğini geri dönüşüme at ve geriye kalan yeşil kutuları say!",
-        renderStage: () => `
-          <div class="text-xs font-black text-slate-700 mb-1.5">Toplanan 20 Plastik Şişe (4 Eş Grup - Her Grupta 5 Şişe)</div>
-          <div class="grid grid-cols-2 gap-2 max-w-[290px] mx-auto mb-2">
-            <button id="bottle-group-1" onclick="recycleFirstGroup()" class="p-2 rounded-xl border-2 border-blue-500 bg-blue-50 text-center cursor-pointer transition-all shadow-sm">
-              <div class="text-sm">🍾🍾🍾🍾🍾</div>
-              <div class="text-[11px] font-black text-blue-800 mt-0.5">👆 1. Çeyrek (5 Şişe) - Kutuya At!</div>
-            </button>
-            <div class="bottle-remain p-2 rounded-xl border-2 border-slate-300 bg-white text-center transition-all">
-              <div class="text-sm">🍾🍾🍾🍾🍾</div>
-              <div class="text-[11px] font-extrabold text-slate-700 mt-0.5">2. Grup: 5 Şişe (Kalan)</div>
-            </div>
-            <div class="bottle-remain p-2 rounded-xl border-2 border-slate-300 bg-white text-center transition-all">
-              <div class="text-sm">🍾🍾🍾🍾🍾</div>
-              <div class="text-[11px] font-extrabold text-slate-700 mt-0.5">3. Grup: 5 Şişe (Kalan)</div>
-            </div>
-            <div class="bottle-remain p-2 rounded-xl border-2 border-slate-300 bg-white text-center transition-all">
-              <div class="text-sm">🍾🍾🍾🍾🍾</div>
-              <div class="text-[11px] font-extrabold text-slate-700 mt-0.5">4. Grup: 5 Şişe (Kalan)</div>
-            </div>
-          </div>
-          <div id="recycle-status" class="text-xs font-extrabold text-blue-900 bg-blue-100 px-3 py-1 rounded-full border border-blue-300">
-            1. Çeyrek kutuya dokun ve geriye kaç şişe kaldığını gör!
-          </div>
-        `,
-        text: `Okul bahçesindeki temizlik oyununda öğrenciler <b>20 tane</b> plastik şişe toplamıştır. Bu şişelerin ${frac(1, 4)}'ini (çeyreğini) mavi geri dönüşüm kutusuna atmışlardır. Diğer kutulara atılmak üzere <b>geriye kaç şişe kalmıştır?</b>`,
-        options: [
-          `5 şişe`,
-          `10 şişe`,
-          `15 şişe`
-        ],
-        correct: 2,
-        wrongDiagnoses: {
-          0: `Harika bir bölme işlemiyle 20 ÷ 4 = 5 buldun! Ama dikkat: <b>5 şişe mavi kutuya ATILAN</b> miktardır. Soru bize atılanı değil, <b>GERİYE KAÇ ŞİŞE KALDIĞINI</b> soruyor!`,
-          1: `10 şişe, 20 şişenin yarısıdır. Oysa biz 20 şişeden sadece 5 tanesini (${frac(1, 4)}'ini) mavi kutuya attık.`
-        },
-        visualLesson: `
-          <div class="bg-emerald-50 border border-emerald-300 rounded-lg p-2 space-y-1">
-            <b>♻️ 2 Adımlı Yeni Nesil Çözüm:</b><br>
-            <b>1. Adım (Atılanı Bul):</b> 20 şişenin ${frac(1, 4)}'i ➔ <b>20 ÷ 4 = 5 şişe</b> mavi kutuya atıldı.<br>
-            <b>2. Adım (Kalanı Bul):</b> Toplam 20 şişeden 5'ini çıkaralım ➔ <b class="text-emerald-800">20 - 5 = 15 şişe geriye kaldı!</b>
-          </div>
-        `,
-        explanation: `Önce 20 şişenin ${frac(1, 4)}'ini bulduk: <b>20 ÷ 4 = 5 şişe</b> kutuya atıldı. Sonra geriye kalanı bulmak için toplamdan çıkardık: <b>20 - 5 = 15 şişe</b> geriye kaldı!`
-      },
-
-      // SORU 9: Bütüne Tamamlama (Akvaryum)
-      {
-        title: "🐠 9. Akvaryumu Dolduralım",
-        badgeIcon: "🐬",
-        badgeName: "Okyanus Kaptanı Rozeti",
-        praise: "Su seviyesini adım adım yükselterek akvaryumu 1 bütüne tamamladın!",
-        hint: "👆 'Musluğu Aç' butonuna basarak su seviyesini 9. bölmeye kadar doldur ve basış sayısına bak!",
-        renderStage: () => `
-          <div class="flex items-center justify-center gap-4">
-            <!-- 9 Bölmeli Akvaryum -->
-            <div id="aqua-tank" class="w-36 border-4 border-sky-600 border-t-0 rounded-b-2xl overflow-hidden bg-white shadow-inner flex flex-col">
-              <div class="aqua-row h-4 border-t border-dashed border-sky-200 text-[10px] font-black text-sky-800 flex items-center justify-center">9. Bölme (Boş)</div>
-              <div class="aqua-row h-4 border-t border-dashed border-sky-200 text-[10px] font-black text-sky-800 flex items-center justify-center">8. Bölme (Boş)</div>
-              <div class="aqua-row h-4 border-t border-dashed border-sky-200 text-[10px] font-black text-sky-800 flex items-center justify-center">7. Bölme (Boş)</div>
-              <div class="aqua-row h-4 border-t border-dashed border-sky-200 text-[10px] font-black text-sky-800 flex items-center justify-center">6. Bölme (Boş)</div>
-              <div class="aqua-row h-4 border-t border-dashed border-sky-200 text-[10px] font-black text-sky-800 flex items-center justify-center">5. Bölme (Boş)</div>
-              <div class="aqua-row filled h-4 border-t border-sky-400 bg-sky-400 text-white text-[10px] font-black flex items-center justify-center">4. Bölme 🐠</div>
-              <div class="aqua-row filled h-4 border-t border-sky-400 bg-sky-400 text-white text-[10px] font-black flex items-center justify-center">3. Bölme</div>
-              <div class="aqua-row filled h-4 border-t border-sky-400 bg-sky-400 text-white text-[10px] font-black flex items-center justify-center">2. Bölme 🐟</div>
-              <div class="aqua-row filled h-4 border-t border-sky-400 bg-sky-400 text-white text-[10px] font-black flex items-center justify-center">1. Bölme</div>
-            </div>
-
-            <!-- Kontroller -->
-            <div class="flex flex-col gap-2 text-center">
-              <div class="bg-sky-100 border-2 border-sky-300 rounded-xl p-2">
-                <div class="text-[11px] font-extrabold text-sky-900">Musluk Basış Sayısı</div>
-                <div id="tap-counter" class="text-2xl font-black text-sky-700">0</div>
-              </div>
-              <button onclick="fillAquariumStep()" class="btn-press bg-sky-600 hover:bg-sky-700 text-white text-xs font-black px-3 py-2 rounded-xl shadow">
-                💧 Musluğu Aç (+${frac(1, 9)})
-              </button>
-              <button onclick="resetAquarium()" class="btn-press bg-slate-200 text-slate-700 text-[11px] font-bold px-2 py-1 rounded-lg">
-                Sıfırla
-              </button>
-            </div>
-          </div>
-        `,
-        text: `Dijital akvaryum <b>9 eş bölmeye</b> ayrılmıştır ve şu an ${frac(4, 9)}'ü su ile doludur. Musluk butonuna her bastığımızda akvaryuma ${frac(1, 9)} (birim kesir) kadar su dolmaktadır. Akvaryumu <b>tamamen doldurmak (1 bütün yapmak)</b> için butona kaç kez basmalıyız?`,
-        options: [
-          `4 kez`,
-          `5 kez`,
-          `9 kez`
-        ],
-        correct: 1,
-        wrongDiagnoses: {
-          0: `4 bölme zaten başlangıçta suyla dolu olan kısımdır! Bize üstteki <b>boş bölmeleri doldurmak için</b> kaç kez basmamız gerektiği soruluyor.`,
-          2: `9 bölme akvaryumun tamamıdır. İçinde zaten 4 bölme su olduğu için 9 kez basarsak su taşar!`
-        },
-        visualLesson: `
-          <div class="bg-sky-50 border border-sky-300 rounded-lg p-2">
-            <b>🐬 Bütüne Tamamlama:</b><br>
-            • Akvaryumun tamamı (1 Bütün) = <b>9 eş bölme</b> (${frac(9, 9)}).<br>
-            • Dolu olan kısım = <b>4 bölme</b> (${frac(4, 9)}).<br>
-            • Boş kalan kısım: <b>9 - 4 = 5 boş bölme</b> (5 kez basmalıyız!).
-          </div>
-        `,
-        explanation: `9 eş bölmenin 4'ü dolu olduğuna göre geriye <b>9 - 4 = 5 boş bölme</b> kalmıştır. Her basışta 1 bölme dolduğu için butona <b>5 kez</b> basmalıyız!`
-      },
-
-      // SORU 10: Çok Adımlı Sentez Sorusu (Piksel Boyama)
-      {
-        title: "🎨 10. Piksel Boyama Atölyesi",
-        badgeIcon: "👑",
-        badgeName: "Kesirler Şampiyonu Tacı",
-        praise: "En kapsamlı yeni nesil sentez sorusunu bile hatasız çözdün! Şampiyonluk Tacı senin oldu!",
-        hint: "👆 Beyaz karelere parmağınla dokunarak onları numaralandır ve kaç tane kaldığını say!",
-        renderStage: () => `
-          <div class="text-xs font-black text-slate-700 mb-1.5">16 Eş Karelik Dijital Tuval (Beyaz Karelere Dokun ve Say!)</div>
-          <div class="grid grid-cols-4 gap-1.5 max-w-[200px] mx-auto mb-2" id="pixel-board">
-            <!-- 4 Mavi Kare (1/4) -->
-            <div class="h-10 rounded-lg bg-blue-500 border-2 border-blue-700 text-white font-black text-xs flex items-center justify-center">Mavi</div>
-            <div class="h-10 rounded-lg bg-blue-500 border-2 border-blue-700 text-white font-black text-xs flex items-center justify-center">Mavi</div>
-            <div class="h-10 rounded-lg bg-blue-500 border-2 border-blue-700 text-white font-black text-xs flex items-center justify-center">Mavi</div>
-            <div class="h-10 rounded-lg bg-blue-500 border-2 border-blue-700 text-white font-black text-xs flex items-center justify-center">Mavi</div>
-            <!-- 2 Sarı Kare -->
-            <div class="h-10 rounded-lg bg-amber-400 border-2 border-amber-600 text-amber-950 font-black text-xs flex items-center justify-center">Sarı</div>
-            <div class="h-10 rounded-lg bg-amber-400 border-2 border-amber-600 text-amber-950 font-black text-xs flex items-center justify-center">Sarı</div>
-            <!-- 10 Beyaz Kare -->
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-            <button onclick="countWhitePixel(this)" class="white-pixel h-10 rounded-lg bg-white border-2 border-slate-400 text-indigo-700 font-black text-sm flex items-center justify-center">?</button>
-          </div>
-          <div id="pixel-count-status" class="text-xs font-extrabold text-indigo-800 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
-            4 Mavi + 2 Sarı = 6 Boyalı Kare | Saydığın Beyaz Kare: 0
-          </div>
-        `,
-        text: `Elif, tabletindeki <b>16 eş kareden</b> oluşan resim tuvalinin önce ${frac(1, 4)}'ini <b>maviye</b>, ardından kalan karelerden <b>2 tanesini sarıya</b> boyamıştır. Tuvalde henüz boyanmamış kaç tane <b>beyaz kare</b> kalmıştır?`,
-        options: [
-          `10 beyaz kare`,
-          `12 beyaz kare`,
-          `14 beyaz kare`
-        ],
-        correct: 0,
-        wrongDiagnoses: {
-          1: `16 karenin ${frac(1, 4)}'ini (16 ÷ 4 = 4 mavi kare) doğru bulup 16 - 4 = 12 yaptın! Ama Elif daha sonra <b>2 kareyi de sarıya</b> boyadı. Sarı kareleri de çıkarmayı unutmayalım!`,
-          2: `16 kareden sadece 2 sarı kareyi çıkardın (16 - 2 = 14). Oysa önce 16 karenin ${frac(1, 4)}'i olan 4 mavi kareyi de çıkarmamız gerekiyor.`
-        },
-        visualLesson: `
-          <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-2 space-y-1">
-            <b>👑 3 Adımda Şampiyon Çözümü:</b><br>
-            <b>1. Adım (Mavi):</b> 16 karenin ${frac(1, 4)}'i ➔ <b>16 ÷ 4 = 4 mavi kare</b>.<br>
-            <b>2. Adım (Toplam Boyalı):</b> 4 mavi + 2 sarı = <b>6 boyalı kare</b>.<br>
-            <b>3. Adım (Kalan Beyaz):</b> <b>16 - 6 = 10 beyaz kare</b> kalır!
-          </div>
-        `,
-        explanation: `Önce 16 karenin ${frac(1, 4)}'ini bulduk: <b>16 ÷ 4 = 4 mavi kare</b>. Sonra 2 sarı kareyi ekledik: <b>4 + 2 = 6 boyalı kare</b>. Geriye <b>16 - 6 = 10 beyaz kare</b> kaldı!`
-      }
-    ];
-
-    /**************************************************************
-     * 5. OYUN DURUMU VE AKIŞ YÖNETİMİ
-     **************************************************************/
-    let studentName = "Şampiyon";
-    let currentQ = 0;
-    let score = 0;
-    let questionSolved = false;
-    let earnedBadgesCount = 0;
-    let pixelCounter = 0;
-    let tapCount = 0;
-
-    function startGame() {
-      const nameInput = document.getElementById('student-name-input').value.trim();
-      if (nameInput.length > 0) {
-        studentName = nameInput;
-      }
-      playVictoryMelody();
-      document.getElementById('welcome-screen').classList.add('hidden');
-      document.getElementById('top-stats-bar').classList.remove('hidden');
-      document.getElementById('reward-chest-section').classList.remove('hidden');
-      document.getElementById('quiz-screen').classList.remove('hidden');
-      loadQuestion();
-    }
-
-    function loadQuestion() {
-      questionSolved = false;
-      pixelCounter = 0;
-      tapCount = 0;
-      const q = questions[currentQ];
-
-      document.getElementById('question-counter').innerText = `Soru ${currentQ + 1} / ${questions.length}`;
-      document.getElementById('progress-fill').style.width = `${((currentQ + 1) / questions.length) * 100}%`;
-      document.getElementById('q-title').innerHTML = q.title;
-      document.getElementById('q-target-badge').innerHTML = `${q.badgeIcon} Ödül: ${q.badgeName}`;
-      document.getElementById('stage-hint').innerText = q.hint;
-      document.getElementById('stage-content').innerHTML = q.renderStage();
-      document.getElementById('q-text').innerHTML = q.text;
-
-      // Panelleri gizle
-      document.getElementById('support-corner-panel').classList.add('hidden');
-      document.getElementById('reward-panel').classList.add('hidden');
-
-      // Şıkları Oluştur
-      const optsContainer = document.getElementById('options-container');
-      optsContainer.innerHTML = '';
-      const letters = ['A', 'B', 'C'];
-
-      q.options.forEach((optHtml, idx) => {
-        const btn = document.createElement('button');
-        btn.id = `opt-btn-${idx}`;
-        btn.className = 'btn-press w-full p-3 sm:p-3.5 rounded-2xl border-2 border-slate-200 bg-slate-50 hover:bg-indigo-50/60 hover:border-indigo-300 text-left flex items-center gap-3 transition-all shadow-sm';
-        btn.innerHTML = `
-          <span id="opt-letter-${idx}" class="w-8 h-8 rounded-full bg-indigo-600 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm">
-            ${letters[idx]}
-          </span>
-          <span class="font-extrabold text-slate-800 text-sm sm:text-base flex-1">${optHtml}</span>
-          <span id="opt-status-${idx}" class="text-xs font-black"></span>
-        `;
-        btn.onclick = () => handleAnswer(idx);
-        optsContainer.appendChild(btn);
-      });
-    }
-
-    function handleAnswer(selectedIndex) {
-      if (questionSolved) return;
-      const q = questions[currentQ];
-      const selectedBtn = document.getElementById(`opt-btn-${selectedIndex}`);
-      const selectedLetter = document.getElementById(`opt-letter-${selectedIndex}`);
-      const selectedStatus = document.getElementById(`opt-status-${selectedIndex}`);
-
-      // DOĞRU CEVAP!
-      if (selectedIndex === q.correct) {
-        questionSolved = true;
-
-        // Öğrenme destek köşesi açıksa kapat
-        document.getElementById('support-corner-panel').classList.add('hidden');
-
-        // Doğru Şık Tasarımı
-        selectedBtn.className = 'w-full p-3.5 rounded-2xl border-2 border-emerald-500 bg-emerald-100 text-left flex items-center gap-3 shadow-md glow-green';
-        selectedLetter.className = 'w-8 h-8 rounded-full bg-emerald-600 text-white font-black text-sm flex items-center justify-center shrink-0';
-        selectedLetter.innerText = '✓';
-        selectedStatus.className = 'text-xs font-black text-emerald-800 bg-white px-2 py-0.5 rounded-full';
-        selectedStatus.innerText = 'Doğru!';
-
-        // Puan ve Rozet Güncelleme
-        score += 10;
-        document.getElementById('score-display').innerText = `${score} Puan`;
-
-        const slot = document.getElementById(`slot-${currentQ}`);
-        if (!slot.classList.contains('earned')) {
-          slot.innerText = q.badgeIcon;
-          slot.classList.add('earned');
-          earnedBadgesCount++;
-          document.getElementById('badge-count-label').innerText = `${earnedBadgesCount} / 10 Rozet`;
-        }
-
-        // Ödül Yağmuru Başlat!
-        triggerRewardShower();
-
-        // Ödül Kartını Doldur ve Göster
-        document.getElementById('reward-big-icon').innerText = q.badgeIcon;
-        document.getElementById('reward-badge-title').innerText = `🎁 KAZANILAN ÖDÜL: ${q.badgeName}!`;
-        document.getElementById('reward-teacher-praise').innerHTML = `👩‍🏫 <b>Hacer Hoca:</b> "Harikasın <b>${studentName}</b>! ${q.praise}"`;
-        document.getElementById('reward-explanation-text').innerHTML = q.explanation;
-
-        const nextBtn = document.getElementById('next-question-btn');
-        nextBtn.innerHTML = currentQ === questions.length - 1
-          ? `<span>🏆 Üstün Başarı Sertifikanı Gör!</span>`
-          : `<span>Sonraki Göreve Geç</span><span>➡️</span>`;
-
-        const rewardPanel = document.getElementById('reward-panel');
-        rewardPanel.classList.remove('hidden');
-        rewardPanel.classList.add('panel-pop');
-
-        setTimeout(() => {
-          rewardPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 120);
-
-      } else {
-        // YANLIŞ CEVAP -> Soruyu bitirme! Hacer Hoca'nın Öğrenme Destek Köşesini Aç!
-        playSupportChime();
-
-        // Yanlış şıkkı devre dışı bırak ve işaretle
-        selectedBtn.disabled = true;
-        selectedBtn.className = 'w-full p-3 rounded-2xl border-2 border-rose-300 bg-rose-50/80 opacity-80 text-left flex items-center gap-3 cursor-not-allowed';
-        selectedLetter.className = 'w-8 h-8 rounded-full bg-rose-500 text-white font-black text-sm flex items-center justify-center shrink-0';
-        selectedLetter.innerText = '✗';
-        selectedStatus.className = 'text-xs font-extrabold text-rose-700';
-        selectedStatus.innerText = 'Tekrar Dene';
-
-        // Öğrenme Destek Köşesi İçeriğini Hazırla
-        document.getElementById('support-compassionate-msg').innerHTML =
-          `Hiç üzülme <b>${studentName}</b>! Hata yaparak öğreniriz. Gel bu konunun sırrını birlikte keşfedelim! 💖`;
-
-        const diagnosis = q.wrongDiagnoses[selectedIndex] || `Bu şıkta küçük bir işlem hatası yaptık. Gel aşağıdaki ipucu kartına birlikte bakalım!`;
-        document.getElementById('support-diagnosis-text').innerHTML = diagnosis;
-        document.getElementById('support-visual-lesson').innerHTML = q.visualLesson;
-
-        const supportPanel = document.getElementById('support-corner-panel');
-        supportPanel.classList.remove('hidden');
-        supportPanel.classList.add('panel-pop');
-
-        setTimeout(() => {
-          supportPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 120);
-      }
-    }
-
-    function retryAfterSupport() {
-      playPopSound(640);
-      document.getElementById('support-corner-panel').classList.add('hidden');
-      document.getElementById('options-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    function nextQuestion() {
-      playPopSound(580);
-      currentQ++;
-      if (currentQ < questions.length) {
-        loadQuestion();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        showCertificate();
-      }
-    }
-
-    function showCertificate() {
-      document.getElementById('quiz-screen').classList.add('hidden');
-      document.getElementById('certificate-screen').classList.remove('hidden');
-      document.getElementById('cert-student-name').innerText = studentName;
-      document.getElementById('cert-score').innerText = score;
-
-      const grid = document.getElementById('cert-badges-grid');
-      grid.innerHTML = questions.map(q => `
-        <div class="bg-amber-50 border border-amber-300 rounded-xl p-2 flex items-center gap-2">
-          <span class="text-2xl">${q.badgeIcon}</span>
-          <span class="text-xs font-black text-amber-950 leading-tight">${q.badgeName}</span>
+const questions = [
+  {
+    title: "🍕 1. Dijital Pizza Ustası",
+    badgeIcon: "🍕",
+    badgeName: "Bütün/Yarım",
+    renderStage: () => `
+      <div style="font-weight:bold; margin-bottom:6px;">Bütün Pizza Tepsisi (4 Eş Bölme)</div>
+      <div class="grid-row">
+        <div class="touch-box" style="background:#fef08a;">🍕</div>
+        <div class="touch-box" style="background:#fef08a;">🍕</div>
+        <div class="touch-box">⬜</div>
+        <div class="touch-box">⬜</div>
+      </div>
+      <div style="font-size:0.82rem; color:#475569;">Başlangıçta: 2 Çeyrek Dilim Dolu</div>
+    `,
+    text: `Aşçı Kerem'in tepsisinde şu an <b>2 tane çeyrek</b> dilim pizza vardır. Tepsiyi tamamen doldurup <b>1 bütün</b> pizza elde etmek için kaç çeyrek dilim daha eklemelidir ve başlangıçtaki 2 çeyrek dilim neye eşittir?`,
+    options: [
+      `1 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 bütündür.`,
+      `2 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 yarımdür.`,
+      `4 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 çeyrektir.`
+    ],
+    correct: 1,
+    explanation: `Bir bütün pizza 4 çeyrektir. Tepsideki 2 çeyrek dilim 1 yarım eder. 1 bütün için 2 çeyrek daha eklenmelidir.`
+  },
+  {
+    title: "🔋 2. Tablet Şarj Göstergesi",
+    badgeIcon: "⚡",
+    badgeName: "Birim Kesir",
+    renderStage: () => `
+      <div style="font-weight:bold; margin-bottom:6px;">🔋 Şarj Çubuğu (8 Eş Bölme)</div>
+      <div class="grid-row" style="gap:4px;">
+        <div class="battery-cell active"></div>
+        <div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>
+        <div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>
+      </div>
+      <div style="font-size:0.82rem; color:#475569; margin-top:4px;">Sadece 1 yeşil bölme yanıyor!</div>
+    `,
+    text: `Zeynep'in tabletinin şarj göstergesi <b>8 eş bölmeye</b> ayrılmıştır ve sadece <b>1 yeşil bölme</b> yanmaktadır. Bu yeşil bölmenin gösterdiği <b>birim kesir</b> hangisidir?`,
+    options: [
+      `${frac(8, 1)}`,
+      `${frac(1, 7)}`, `${frac(1, 8)}`
+    ],
+    correct: 2,
+    explanation: `Paydaya toplam eş parça sayısı (8), paya ise boyalı parça sayısı (1) yazılır. Kesir ${frac(1, 8)} olur.`
+  },
+  {
+    title: "🌻 3. Eş Parçaları Bul!",
+    badgeIcon: "🌻",
+    badgeName: "Eş Parça Kuralı",
+    renderStage: () => `
+      <div style="font-size:0.8rem; font-weight:bold; color:#b45309;">Şekillerin Eşit Bölünme Durumu Analizi</div>
+    `,
+    text: `Bahçıvan dede, bahçesinin tam ${frac(1, 4)}'ine (dörtte birine) ayçiçeği ekmek istiyor. Hangi bahçe kesir kuralına <b>uygun</b> olarak bölünmüş ve ekilmiştir?`,
+    options: [
+      `1. Bahçe`,
+      `2. Bahçe`,
+      `3. Bahçe`
+    ],
+    correct: 1,
+    explanation: `Kesir belirtebilmesi için şeklin mutlaka aynı büyüklükte (eş) parçalara ayrılması şarttır (2. Bahçe).`
+  },
+  {
+    title: "🐸 4. Zıplayan Kurbağa",
+    badgeIcon: "🐸",
+    badgeName: "Sayı Doğrusu",
+    renderStage: () => `
+      <div style="padding:6px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:0.85rem;">
+          <span>0</span><span>A</span><span>B</span><span>C</span><span>D</span><span>1</span>
         </div>
-      `).join('');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      triggerRewardShower();
-    }
-
-    function restartGame() {
-      currentQ = 0;
-      score = 0;
-      earnedBadgesCount = 0;
-      document.getElementById('score-display').innerText = '0 Puan';
-      document.getElementById('badge-count-label').innerText = '0 / 10 Rozet';
-      for (let i = 0; i < 10; i++) {
-        const slot = document.getElementById(`slot-${i}`);
-        slot.innerText = '🔒';
-        slot.classList.remove('earned');
-      }
-      document.getElementById('certificate-screen').classList.add('hidden');
-      document.getElementById('quiz-screen').classList.remove('hidden');
-      loadQuestion();
-    }
-
-    /**************************************************************
-     * 6. 10 SORUNUN DOKUNMATİK SAHNE FONKSİYONLARI
-     **************************************************************/
-
-    // Soru 1: Pizza Dilimi Ekle / Çıkar
-    function togglePizzaSlice(btn, slotNum) {
-      playPopSound(550);
-      const isFilled = btn.dataset.filled === 'true';
-      if (!isFilled) {
-        btn.dataset.filled = 'true';
-        btn.className = 'pizza-extra h-16 rounded-xl border-2 border-emerald-500 bg-emerald-100 flex flex-col items-center justify-center shadow-sm transition-all';
-        btn.innerHTML = `<span class="text-2xl">🍕</span><span class="text-[10px] font-black text-emerald-900">+1 Çeyrek</span>`;
-      } else {
-        btn.dataset.filled = 'false';
-        btn.className = 'pizza-extra h-16 rounded-xl border-2 border-dashed border-slate-400 bg-white flex flex-col items-center justify-center shadow-sm transition-all';
-        btn.innerHTML = `<span class="text-xl">➕</span><span class="text-[10px] font-extrabold text-slate-500">${slotNum}. Bölme</span>`;
-      }
-      const extras = document.querySelectorAll('.pizza-extra[data-filled="true"]').length;
-      const totalQuarters = 2 + extras;
-      const label = document.getElementById('pizza-status-label');
-      if (totalQuarters === 4) {
-        label.className = 'text-xs font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300';
-        label.innerText = `🎉 Harika! 2 çeyrek daha ekledin ve 4 Çeyrek = 1 BÜTÜN Pizza oldu!`;
-      } else {
-        label.className = 'text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200';
-        label.innerText = `Şu an tepside: ${totalQuarters} Çeyrek Dilim var (Eklediğin: ${extras})`;
-      }
-    }
-
-    // Soru 2: Şarj Bölmelerini Numaralandır
-    function numberBatteryCell(btn, num) {
-      playPopSound(480 + num * 40);
-      btn.innerText = num;
-      if (num > 1) {
-        btn.className = 'w-8 h-12 rounded-lg bg-indigo-100 border-2 border-indigo-400 text-indigo-900 font-black text-sm flex items-center justify-center';
-      }
-      document.getElementById('battery-count-info').innerHTML =
-        `📏 Saydığın Bölme: <b>${num}. Eş Bölme</b> (Toplam 8 Eş Bölmeden 1'i Yeşil!)`;
-    }
-
-    // Soru 3: Bahçeleri Cetvelle Ölçme Animasyonu
-    function measureGarden(gardenNum) {
-      playPopSound(600);
-      if (gardenNum === 1) {
-        document.getElementById('ruler-msg-1').innerHTML = `<span class="text-rose-600 font-black">📏 2cm | 6cm | 2cm ❌ Eşit Değil!</span>`;
-      } else if (gardenNum === 2) {
-        document.getElementById('ruler-msg-2').innerHTML = `<span class="text-emerald-700 font-black">📏 3cm | 3cm | 3cm | 3cm ✅ 4 Eş Parça!</span>`;
-      } else if (gardenNum === 3) {
-        document.getElementById('ruler-msg-3').innerHTML = `<span class="text-rose-600 font-black">📏 1cm | 5cm | 2cm | 1cm ❌ Eşit Değil!</span>`;
-      }
-    }
-
-    // Soru 4: Kurbağayı Sayı Doğrusunda 1 Adım Zıplat
-    function jumpFrogStep(step) {
-      playPopSound(step === 1 ? 720 : 440);
-      const pos0 = document.getElementById('frog-pos-0');
-      const pos1 = document.getElementById('frog-pos-1');
-      const bar1 = document.getElementById('step-bar-1');
-      if (step === 1) {
-        pos0.innerHTML = `<span class="text-2xl block">⚪</span>0`;
-        pos1.innerHTML = `<span class="text-2xl block frog-avatar">🐸</span><span class="text-emerald-700 font-black">A (${frac(1, 5)})</span>`;
-        bar1.className = 'bg-emerald-500 transition-all';
-      } else {
-        pos0.innerHTML = `<span class="text-2xl block frog-avatar">🐸</span>0`;
-        pos1.innerHTML = `<span class="text-2xl block">⚪</span>A`;
-        bar1.className = 'bg-slate-200 transition-all';
-      }
-    }
-
-    // Soru 5: Köprü Bloklarını Boyama
-    function paintBridgeBlock(btn) {
-      playPopSound(560);
-      const painted = btn.dataset.painted === 'true';
-      if (!painted) {
-        btn.dataset.painted = 'true';
-        btn.className = 'bridge-white h-12 rounded-lg bg-amber-700 border-2 border-amber-950 text-white font-black text-xs flex items-center justify-center shadow';
-        btn.innerText = '🟫';
-      } else {
-        btn.dataset.painted = 'false';
-        btn.className = 'bridge-white h-12 rounded-lg bg-white border-2 border-dashed border-slate-400 text-slate-500 font-black text-xs flex items-center justify-center';
-        btn.innerText = 'Boya';
-      }
-      const newCount = document.querySelectorAll('.bridge-white[data-painted="true"]').length;
-      const totalPainted = 2 + newCount;
-      const label = document.getElementById('bridge-counter-label');
-      label.innerHTML = `Toplam Boyalı: <b>${totalPainted} / 6</b> | Yeni Boyadığın: <b>${newCount} blok</b>`;
-    }
-
-    // Soru 6: Dilim Büyüklüklerini Vurgula
-    function highlightSlice(num) {
-      playPopSound(500 + num * 60);
-      [1, 2, 3].forEach(i => {
-        const el = document.getElementById(`slice-row-${i}`);
-        if (i === num) {
-          el.classList.add('ring-4', 'ring-indigo-300');
-        } else {
-          el.classList.remove('ring-4', 'ring-indigo-300');
-        }
-      });
-    }
-
-    // Soru 7: Hazine Sandığı Yıldız Grupları
-    function selectStarGroup(btn, groupNum) {
-      playPopSound(650);
-      document.getElementById('chest-status-label').innerHTML =
-        `✨ Seçtiğin <b>${groupNum}. Eş Grupta</b> tam <b>4 Yıldız</b> var! (12 ÷ 3 = 4)`;
-    }
-
-    // Soru 8: Sıfır Atık 1. Çeyrek Grubu Kutuya Atma
-    function recycleFirstGroup() {
-      playPopSound(700);
-      const firstBtn = document.getElementById('bottle-group-1');
-      firstBtn.className = 'p-2 rounded-xl border-2 border-blue-600 bg-blue-200 text-center transition-all';
-      firstBtn.innerHTML = `<div class="text-sm">♻️ Mavi Kutuya Atıldı!</div><div class="text-[11px] font-black text-blue-900">5 Şişe (${frac(1, 4)}'i)</div>`;
-
-      const remains = document.querySelectorAll('.bottle-remain');
-      remains.forEach((el, idx) => {
-        el.className = 'bottle-remain p-2 rounded-xl border-2 border-emerald-500 bg-emerald-100 text-center transition-all glow-green';
-        el.innerHTML = `<div class="text-sm">🍾🍾🍾🍾🍾</div><div class="text-[11px] font-black text-emerald-900">Kalan: ${(idx + 1) * 5} Şişe</div>`;
-      });
-
-      document.getElementById('recycle-status').className = 'text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-400';
-      document.getElementById('recycle-status').innerText = '✅ 5 şişe kutuya atıldı! Geriye: 5 + 5 + 5 = 15 Şişe Kaldı!';
-    }
-
-    // Soru 9: Akvaryum Musluğunu Açma
-    function fillAquariumStep() {
-      const emptyRows = Array.from(document.querySelectorAll('#aqua-tank .aqua-row:not(.filled)'));
-      if (emptyRows.length > 0) {
-        playPopSound(500 + (5 - emptyRows.length) * 60);
-        const nextRow = emptyRows[emptyRows.length - 1];
-        nextRow.classList.add('filled', 'bg-sky-400', 'text-white');
-        nextRow.classList.remove('text-sky-800');
-        const levelNum = 10 - emptyRows.length;
-        nextRow.innerText = `${levelNum}. Bölme 💧`;
-        tapCount++;
-        document.getElementById('tap-counter').innerText = tapCount;
-      } else {
-        playVictoryMelody();
-      }
-    }
-
-    function resetAquarium() {
-      playPopSound(400);
-      tapCount = 0;
-      document.getElementById('stage-content').innerHTML = questions[8].renderStage();
-    }
-
-    // Soru 10: Beyaz Kareleri Dokunarak Sayma
-    function countWhitePixel(btn) {
-      if (btn.dataset.counted === 'true') return;
-      pixelCounter++;
-      playPopSound(480 + pixelCounter * 35);
-      btn.dataset.counted = 'true';
-      btn.className = 'white-pixel h-10 rounded-lg bg-emerald-100 border-2 border-emerald-500 text-emerald-900 font-black text-sm flex items-center justify-center shadow-sm';
-      btn.innerText = pixelCounter;
-      document.getElementById('pixel-count-status').innerHTML =
-        `4 Mavi + 2 Sarı = 6 Boyalı | Saydığın Beyaz Kare: <b>${pixelCounter} / 10</b>`;
-    }
-  </script>
-</body>
-</html>
+        <div style="height:5px; background:#334155; margin:4px 0; border-radius:4px;"></div>
+      </div>
+    `,
+    text: `Sayı doğrusunda <b>0 ile 1</b> arası <b>5 eş parçaya (adıma)</b> bölünmüştür. 0 noktasındaki kurbağa sadece <b>birim kesir</b> kadar (1 adım) ileri zıplarsa hangi harfe konar ve bu kesir nedir?`,
+    options: [
+      `A noktası – ${frac(1, 5)}`,
+      `A noktası – ${frac(1, 6)}`,
+      `B noktası – ${frac(2, 5)}`
+    ],
+    correct: 0,
+    explanation: `Aralık sayısı 5 olduğundan payda 5'tir. İlk adım A noktasına karşılık gelir ve ${frac(1, 5)} olur.`
+  },
+  {
+    title: "🧱 5. Köprü Tamiri",
+    badgeIcon: "👷",
+    badgeName: "Pay-Payda",
+    renderStage: () => `
+      <div style="font-weight:bold; margin-bottom:6px;">Köprü (6 Eş Tahta Blok)</div>
+      <div class="grid-row">
+        <div class="touch-box" style="background:#a16207; color:white;">🟫</div>
+        <div class="touch-box" style="background:#a16207; color:white;">🟫</div>
+        <div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div>
+      </div>
+    `,
+    text: `6 eş parçadan oluşan köprünün ${frac(5, 6)}'sinin tamir edilmiş (kahverengi) olması gerekiyor. Şu an ${frac(2,
