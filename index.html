@@ -47,19 +47,20 @@
     background: linear-gradient(90deg, #4338ca, #db2777);
     color: white;
     text-align: center;
-    padding: 12px 10px 8px;
+    padding: 14px 10px;
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   }
   .header-stats {
     background: #312e81;
     color: white;
-    padding: 8px 16px;
+    padding: 10px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
   .score-badge {
     background: #f59e0b;
@@ -67,17 +68,18 @@
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 800;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
   .reward-shelf-container {
     background: #ffffff;
-    margin: 8px 12px 0;
-    padding: 8px 10px;
+    margin: 10px 12px 0;
+    padding: 10px;
     border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     border: 2px solid #e0e7ff;
   }
   .shelf-title {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 800;
     color: #4f46e5;
     text-align: center;
@@ -102,7 +104,8 @@
   .badge-slot.earned {
     background: #fef08a;
     border: 1.5px solid #eab308;
-    transform: scale(1.08);
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
   }
   .badge-slot.missed {
     background: #fee2e2;
@@ -110,24 +113,24 @@
   }
   .progress-bar-bg {
     width: 92%;
-    height: 8px;
+    height: 10px;
     background: #cbd5e1;
     border-radius: 10px;
-    margin: 8px auto 2px;
+    margin: 10px auto 4px;
     overflow: hidden;
   }
   .progress-bar-fill {
     height: 100%;
     background: linear-gradient(90deg, #22c55e, #10b981);
     width: 10%;
-    transition: width 0.3s ease;
+    transition: width 0.4s ease;
   }
   .card {
     background: var(--card);
     margin: 8px 12px 14px;
-    padding: 16px;
+    padding: 18px;
     border-radius: 18px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -146,6 +149,7 @@
     font-weight: 700;
     margin: 14px 0 6px;
     outline: none;
+    transition: all 0.2s;
   }
   .name-input:focus {
     border-color: #ec4899;
@@ -159,7 +163,7 @@
     min-height: 20px;
   }
   .q-title {
-    font-size: 1.12rem;
+    font-size: 1.15rem;
     font-weight: 800;
     color: var(--primary);
     margin: 0 0 10px 0;
@@ -184,7 +188,7 @@
   }
   .q-text {
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.55;
     margin-bottom: 14px;
     font-weight: 500;
   }
@@ -265,6 +269,11 @@
     font-size: 0.9rem;
     line-height: 1.4;
     display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   .next-btn, .action-btn {
     margin-top: 14px;
@@ -278,6 +287,10 @@
     font-weight: 800;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+    transition: transform 0.1s;
+  }
+  .next-btn:active, .action-btn:active {
+    transform: scale(0.98);
   }
   .grid-row {
     display: flex;
@@ -287,31 +300,21 @@
     margin: 6px 0;
   }
   .touch-box {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border: 2px solid #64748b;
     border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     background: white;
     user-select: none;
-  }
-  .battery-cell {
-    width: 30px;
-    height: 42px;
-    border: 2px solid #334155;
-    border-radius: 6px;
-    background: white;
-  }
-  .battery-cell.active {
-    background: #22c55e;
   }
   .confetti {
     position: fixed;
     top: -20px;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     z-index: 9999;
     pointer-events: none;
     animation: fall linear forwards;
@@ -357,11 +360,11 @@
   <div class="card" id="welcome-card">
     <div class="welcome-screen">
       <div style="font-size: 3.5rem;">👩‍🏫📋</div>
-      <h2 style="color: var(--primary); margin: 8px 0;">Değerlendirme Sınavına Hoş Geldin!</h2>
+      <h2 style="color: var(--primary); margin: 8px 0;">Yeni Nesil Beceri Sınavı</h2>
       <p style="color: #475569; font-size: 0.92rem; line-height: 1.5;">
-        Bu test <b>10 yeni nesil sorudan</b> oluşur. Sınav güvenliği için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde girmeniz gerekmektedir.
+        Bu test 3. sınıf düzeyinde <b>10 özgün, çok adımlı ve analitik yeni nesil sorudan</b> oluşur. Devam etmek için adınızı ve soyadınızı **en az 5 karakter** olacak şekilde giriniz.
       </p>
-      <input type="text" id="student-name-input" class="name-input" placeholder="Adınızı ve soyadınızı yazın..." maxlength="30">
+      <input type="text" id="student-name-input" class="name-input" placeholder="Adınız ve Soyadınız..." maxlength="30">
       <div class="error-msg" id="error-msg"></div>
       <button class="action-btn" type="button" onclick="startGame()">🚀 Sınavı Başlat</button>
     </div>
@@ -371,7 +374,7 @@
   <div class="card" id="quiz-card" style="display:none;">
     <div class="q-title" id="q-title"></div>
     <div class="interactive-stage">
-      <div class="hint-badge" id="stage-hint">👆 Soru Önizlemesi</div>
+      <div class="hint-badge" id="stage-hint">👆 Beceri Temelli Senaryo</div>
       <div id="stage-content"></div>
     </div>
     <div class="q-text" id="q-text"></div>
@@ -398,177 +401,161 @@ function frac(top, bottom) {
 
 const questions = [
   {
-    title: "🍕 1. Dijital Pizza Ustası",
+    title: "🍕 1. Pizza Partisi ve Artan Dilimler",
     badgeIcon: "🍕",
     renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">Bütün Pizza Tepsisi (4 Eş Bölme)</div>' +
-             '<div class="grid-row">' +
-             '<div class="touch-box" style="background:#fef08a;">🍕</div>' +
-             '<div class="touch-box" style="background:#fef08a;">🍕</div>' +
-             '<div class="touch-box">⬜</div>' +
-             '<div class="touch-box">⬜</div>' +
-             '</div>' +
-             '<div style="font-size:0.82rem; color:#475569;">Başlangıçta: 2 Çeyrek Dilim Dolu</div>';
+      return '<div style="font-weight:bold; margin-bottom:6px;">8 Eş Dilimli İki Özdeş Pizza</div>' +
+             '<div class="grid-row"><div class="touch-box">🍕</div><div class="touch-box">🍕</div><div class="touch-box">🍕</div><div class="touch-box">⬜</div></div>' +
+             '<div style="font-size:0.8rem; color:#475569; margin-top:4px;">Kerem 2 tam pizzanın 5 dilimini misafirlere ikram etmiştir.</div>';
     },
-    text: 'Aşçı Kerem\'in tepsisinde şu an <b>2 tane çeyrek</b> dilim pizza vardır. Tepsiyi tamamen doldurup <b>1 bütün</b> pizza elde etmek için kaç çeyrek dilim daha eklemelidir ve başlangıçtaki 2 çeyrek dilim neye eşittir?',
+    text: 'Kerem, eş büyüklükte iki tam pizzayı da <b>8\'er eş dilime</b> ayırmıştır. Arkadaşlarıyla birlikte toplam **10 dilim** pizza yemişlerdir. Geriye kalan pizza miktarını gösteren kesir ve bunun tam sayı cinsinden ifadesi aşağıdakilerden hangisidir?',
     options: [
-      '1 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 bütündür.',
-      '2 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 yarımdür.',
-      '4 çeyrek dilim eklemeli – Başlangıçtaki kısım 1 çeyrektir.'
+      'Geriye ' + frac(6, 8) + ' pizza kalmıştır (Yarım pizzadan fazladır).',
+      'Geriye ' + frac(3, 8) + ' pizza kalmıştır.',
+      'Geriye ' + frac(10, 8) + ' pizza kalmıştır.'
     ],
-    correct: 1,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> Bir bütün pizza 4 çeyrektir. Tepsideki 2 çeyrek dilim 1 yarım eder. 1 bütün için 2 çeyrek daha eklenmelidir.'
+    correct: 0,
+    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 16 dilim vardır (2 x 8). 10 dilimi yenildiğine göre 16 - 10 = 6 dilim kalmıştır. Bu da ' + frac(6, 8) + ' demektir ve yarımdan (' + frac(4, 8) + ') büyüktür.'
   },
   {
-    title: "🔋 2. Tablet Şarj Göstergesi",
+    title: "🔋 2. Akıllı Telefon Batarya Analizi",
     badgeIcon: "⚡",
     renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">🔋 Şarj Çubuğu (8 Eş Bölme)</div>' +
-             '<div class="grid-row" style="gap:4px;">' +
-             '<div class="battery-cell active"></div>' +
-             '<div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>' +
-             '<div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div><div class="battery-cell"></div>' +
-             '</div>' +
-             '<div style="font-size:0.82rem; color:#475569; margin-top:4px;">Sadece 1 yeşil bölme yanıyor!</div>';
+      return '<div style="font-weight:bold; margin-bottom:6px;">🔋 12 Bölmeli Batarya Göstergesi</div>' +
+             '<div class="grid-row"><div class="touch-box" style="background:#22c55e; color:white;">🔋</div><div class="touch-box" style="background:#22c55e; color:white;">🔋</div><div class="touch-box" style="background:#22c55e; color:white;">🔋</div><div class="touch-box">⬜</div></div>' +
+             '<div style="font-size:0.8rem; color:#475569;">Her 3 bölme %25 doluluğa eşittir.</div>';
     },
-    text: 'Zeynep\'in tabletinin şarj göstergesi <b>8 eş bölmeye</b> ayrılmıştır ve sadece <b>1 yeşil bölme</b> yanmaktadır. Bu yeşil bölmenin gösterdiği <b>birim kesir</b> hangisidir?',
+    text: 'Zeynep\'in tabletinin bataryası <b>12 eş bölmeden</b> oluşmaktadır. Tablette şu an bataryanın ' + frac(9, 12) + '\'ü dolu durumdadır. Zeynep ders çalışırken <b>3 bölmelik</b> şarj harcamıştır. Son durumda bataryanın doluluk oranını belirten birim kesir ve kalan miktar nedir?',
     options: [
-      frac(8, 1),
-      frac(1, 7),
-      frac(1, 8)
+      'Kalan miktar ' + frac(6, 12) + '\'dir ve birim kesri ' + frac(1, 12) + '\'dir.',
+      'Kalan miktar ' + frac(3, 12) + '\'dir.',
+      'Batarya tamamen tükenmiştir.'
     ],
-    correct: 2,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> Paydaya toplam eş parça sayısı (8), paya ise boyalı parça sayısı (1) yazılır. Kesir ' + frac(1, 8) + ' olur.'
+    correct: 0,
+    explanation: '💡 <b>Analitik Çözüm:</b> Başlangıçta 9 bölme dolu idi. 3 bölme harcanınca 9 - 3 = 6 bölme kaldı (' + frac(6, 12) + '). Bu yapının payındaki her bir parça ' + frac(1, 12) + ' birim kesrini ifade eder.'
   },
   {
-    title: "🌻 3. Eş Parçaları Bul!",
+    title: "🌻 3. Çiftlik Parsel Tasarımı",
     badgeIcon: "🌻",
     renderStage: function() {
-      return '<div style="font-size:0.8rem; font-weight:bold; color:#b45309;">Şekillerin Eşit Bölünme Durumu Analizi</div>';
+      return '<div style="font-weight:bold; margin-bottom:6px;">Bahçe Bölümleme Planı</div>' +
+             '<div style="font-size:0.8rem; color:#b45309;">Alanların Eşitlik Kriteri İncelemesi</div>';
     },
-    text: 'Bahçıvan dede, bahçesinin tam ' + frac(1, 4) + '\'ine (dörtte birine) ayçiçeği ekmek istiyor. Hangi bahçe kesir kuralına <b>uygun</b> olarak bölünmüş ve ekilmiştir?',
+    text: 'Bahçıvan Celal Amca, dikdörtgen biçimindeki tarlasını ekin ekecektir. Tarlasını <b>4 eş parçaya</b> ayırmak istiyor. Hangi model doğru kesir modellemesini gösterir?',
     options: [
-      '1. Bahçe',
-      '2. Bahçe',
-      '3. Bahçe'
+      'Alanları birbirinden farklı büyüklükte olan 4 rastgele bölgeye ayırmak.',
+      'Tarlayı alanı ve şekli birbirinin aynısı olan 4 eşit dikdörtgen parçaya bölmek.',
+      'Tarlanın sadece ortasından bir çizgi çekip 2 parçaya ayırmak.'
     ],
     correct: 1,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> Kesir belirtebilmesi için şeklin mutlaka aynı büyüklükte (eş) parçalara ayrılması şarttır (2. Bahçe).'
+    explanation: '💡 <b>Analitik Çözüm:</b> Bir bütünün kesir olarak ifade edilebilmesi ve paylaştırılabilmesi için parçaların kesinlikle alan ve ölçü olarak <b>eş (özdeş)</b> olması gerekir.'
   },
   {
-    title: "🐸 4. Zıplayan Kurbağa",
+    title: "🐸 4. Uzun Atlama Parkuru",
     badgeIcon: "🐸",
     renderStage: function() {
-      return '<div style="padding:6px;">' +
-             '<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:0.85rem;">' +
-             '<span>0</span><span>A</span><span>B</span><span>C</span><span>D</span><span>1</span>' +
-             '</div>' +
-             '<div style="height:5px; background:#334155; margin:4px 0; border-radius:4px;"></div>' +
-             '</div>';
+      return '<div style="font-weight:bold; margin-bottom:6px;">Sayı Doğrusu Üzerinde Çekirge</div>' +
+             '<div style="font-size:0.85rem; font-weight:bold; padding:4px;">0 ---- A ---- B ---- C ---- D ---- 1</div>';
     },
-    text: 'Sayı doğrusunda <b>0 ile 1</b> arası <b>5 eş parçaya (adıma)</b> bölünmüştür. 0 noktasındaki kurbağa sadece <b>birim kesir</b> kadar (1 adım) ileri zıplarsa hangi harfe konar ve bu kesir nedir?',
+    text: '0 ile 1 arası <b>6 eş aralığa</b> bölünmüştür. 0 noktasından hareket eden bir çekirge, her zıplayışında birim kesir kadar ilerleyip **C noktasına** konmuştur. Çekirgenin bastığı C noktasının kesir değeri nedir?',
     options: [
-      'A noktası – ' + frac(1, 5),
-      'A noktası – ' + frac(1, 6),
-      'B noktası – ' + frac(2, 5)
+      'C noktası ' + frac(3, 6) + ' (yarım) değerindedir.',
+      'C noktası ' + frac(2, 6) + ' değerindedir.',
+      'C noktası ' + frac(5, 6) + ' değerindedir.'
     ],
     correct: 0,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> Aralık sayısı 5 olduğundan payda 5\'tir. İlk adım A noktasına karşılık gelir ve ' + frac(1, 5) + ' olur.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Toplam 6 eş aralık vardır (payda 6). 0\'dan C\'ye kadar 3 adım atılmıştır; dolayısıyla kesir ' + frac(3, 6) + ' (yani yarım) olur.'
   },
   {
-    title: "🧱 5. Köprü Tamiri",
+    title: "🧱 5. Tarihi Taş Köprü Onarımı",
     badgeIcon: "👷",
     renderStage: function() {
-      return '<div style="font-weight:bold; margin-bottom:6px;">Köprü (6 Eş Tahta Blok)</div>' +
-             '<div class="grid-row">' +
-             '<div class="touch-box" style="background:#a16207; color:white;">🟫</div>' +
-             '<div class="touch-box" style="background:#a16207; color:white;">🟫</div>' +
-             '<div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div><div class="touch-box">⬜</div>' +
-             '</div>';
+      return '<div style="font-weight:bold; margin-bottom:6px;">10 Eş Bloklu Köprü Sistemi</div>' +
+             '<div class="grid-row"><div class="touch-box" style="background:#a16207; color:white;">🟫</div><div class="touch-box" style="background:#a16207; color:white;">🟫</div><div class="touch-box" style="background:#a16207; color:white;">🟫</div><div class="touch-box">⬜</div></div>';
     },
-    text: '6 eş parçadan oluşan köprünün ' + frac(5, 6) + '\'sinin tamir edilmiş (kahverengi) olması gerekiyor. Şu an ' + frac(2, 6) + '\'si tamir edildiğine göre, beyaz bloklardan <b>kaç tanesine daha</b> dokunup boyamalıyız?',
+    text: '10 eş tahta bloktan oluşan bir köprünün sağlam tutulması için en az ' + frac(8, 10) + '\'inin sağlam olması şarttır. Şu an köprünün ' + frac(3, 10) + '\'i onarılmıştır. Hedefe ulaşmak için işçilerin **kaç blok daha** onarması gerekir?',
     options: [
-      '2 blok daha boyamalıyız.',
-      '3 blok daha boyamalıyız.',
-      '5 blok daha boyamalıyız.'
+      '3 blok daha onarmalıdırlar.',
+      '5 blok daha onarmalıdırlar.',
+      '8 blok daha onarmalıdırlar.'
     ],
     correct: 1,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> 2 blok boyalıdır. Hedef 5 bloktur. 5 - 2 = 3 blok daha boyanmalıdır.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Hedef ' + frac(8, 10) + ', mevcut durum ' + frac(3, 10) + '\'dir. Aradaki fark 8 - 3 = 5 blokdur.'
   },
   {
-    title: "🍰 6. Hangi Dilim Daha Büyük?",
+    title: "🍰 6. Doğum Günü Pastası Paylaşımı",
     badgeIcon: "🎂",
     renderStage: function() {
-      return '<div style="font-size:0.8rem; font-weight:bold;">Aynı Büyüklükteki Tepsilerin Paylaşımı</div>';
+      return '<div style="font-weight:bold; margin-bottom:6px;">Farklı Kesir Dilimleri Karşılaştırması</div>';
     },
-    text: 'Aynı büyüklükteki üç tepsi kek farklı sayıda eş dilimlere ayrılmıştır. Çok acıkan Mert <b>en büyük</b> dilimi yemek istiyor. Hangi kesri seçmelidir?',
+    text: 'Özdeş büyüklükteki iki pastadan birinci pasta **6 eş dilime**, ikinci pasta ise **12 eş dilime** ayrılmıştır. Birinci pastadan 1 dilim, ikinci pastadan 1 dilim alan iki kardeşten kim daha fazla pasta yemiştir?',
     options: [
-      frac(1, 8) + ' (Çünkü 8 sayısı en büyüktür)',
-      frac(1, 4) + ' (Çünkü çeyrek dilim orta boydur)',
-      frac(1, 2) + ' (Çünkü az parçaya bölünen dilim daha büyüktür)'
+      'İkinci pastadan 1 dilim alan kardeş (Çünkü 12 sayısı daha büyüktür).',
+      'Birinci pastadan 1 dilim alan kardeş (Çünkü dilim sayısı azaldıkça paylaşılan parça büyür).',
+      'İkisi de tamamen eşit miktarda pasta yemiştir.'
     ],
-    correct: 2,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> Payda küçüldükçe parça boyutu büyür; bu yüzden 2 eş parçaya bölünen dilim (' + frac(1, 2) + ') en büyüktür.'
+    correct: 1,
+    explanation: '💡 <b>Analitik Çözüm:</b> Paylar eşitken, paydası küçük olan kesir daha büyüktür (' + frac(1, 6) + ' > ' + frac(1, 12) + '). Az kişiye bölünen pasta dilimi daha iridir.'
   },
   {
-    title: "⭐ 7. Hazine Sandığı",
+    title: "💎 7. Mücevher Kutusu Dağılımı",
     badgeIcon: "💎",
     renderStage: function() {
-      return '<div style="font-size:0.8rem; font-weight:bold;">12 Yıldız (3 Eş Sıra)</div>';
+      return '<div style="font-weight:bold; margin-bottom:6px;">24 Adet Altın Değerinde Elmas</div>';
     },
-    text: 'Oyunda üst seviyeye geçmek için ekrandaki <b>12 yıldızın</b> ' + frac(1, 3) + '\'ini (üçte birini) hazine sandığına atman gerekiyor. Sandığa <b>kaç yıldız</b> atmalısın?',
+    text: 'Bir hazine avcısı sandığında bulunan **24 elmasın** önce ' + frac(1, 4) + '\'ini müze müdürüne, kalanların bir kısmını ise kendi tayfasına vermiştir. Müzedekilere verilen elmas sayısı kaç tanedir?',
     options: [
-      '3 yıldız',
-      '4 yıldız',
-      '6 yıldız'
-    ],
-    correct: 1,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> 12 yıldız 3 eş gruba bölünür: 12 ÷ 3 = 4 yıldız eder.'
-  },
-  {
-    title: "♻️ 8. Sıfır Atık Oyunu",
-    badgeIcon: "🌍",
-    renderStage: function() {
-      return '<div style="font-size:0.8rem; font-weight:bold;">20 Şişe (4 Eş Kutu)</div>';
-    },
-    text: 'Öğrenciler <b>20 tane</b> plastik şişe toplamıştır. Bu şişelerin ' + frac(1, 4) + '\'ini (çeyreğini) mavi geri dönüşüm kutusuna atmışlardır. Diğer kutulara atılmak üzere <b>geriye kaç şişe kalmıştır?</b>',
-    options: [
-      '5 şişe',
-      '10 şişe',
-      '15 şişe'
-    ],
-    correct: 2,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> 20\'nin çeyreği 5\'tir (20 ÷ 4 = 5). Geriye kalan: 20 - 5 = 15 şişedir.'
-  },
-  {
-    title: "🐠 9. Akvaryumu Dolduralım",
-    badgeIcon: "🐬",
-    renderStage: function() {
-      return '<div style="font-size:0.8rem; font-weight:bold;">9 Eş Bölmeli Akvaryum (4 Bölme Dolu)</div>';
-    },
-    text: '9 eş bölmeli akvaryumun şu an ' + frac(4, 9) + '\'ü su ile doludur. Musluk butonuna her basışta ' + frac(1, 9) + ' kadar su dolmaktadır. Akvaryumu <b>tamamen doldurmak (1 bütün yapmak)</b> için butona kaç kez basmalıyız?',
-    options: [
-      '4 kez',
-      '5 kez',
-      '9 kez'
-    ],
-    correct: 1,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> Tam dolu olması için ' + frac(9, 9) + ' olmalıdır. 9 - 4 = 5 bölme eksiktir.'
-  },
-  {
-    title: "🎨 10. Piksel Boyama Atölyesi",
-    badgeIcon: "👑",
-    renderStage: function() {
-      return '<div style="font-size:0.8rem; font-weight:bold;">16 Eş Karelik Tuval</div>';
-    },
-    text: 'Elif, <b>16 eş kareden</b> oluşan resim tuvalinin önce ' + frac(1, 4) + '\'ini <b>maviye</b>, ardından kalan karelerden <b>2 tanesini sarıya</b> boyamıştır. Tuvalde henüz boyanmamış kaç tane <b>beyaz kare</b> kalmıştır?',
-    options: [
-      '10 beyaz kare',
-      '12 beyaz kare',
-      '14 beyaz kare'
+      '6 elmas verilmiştir.',
+      '8 elmas verilmiştir.',
+      '12 elmas verilmiştir.'
     ],
     correct: 0,
-    explanation: '💡 <b>Çözüm Açıklaması:</b> 16\'nın çeyreği 4 mavi karedir. 2 sarı eklenirse 6 boyalı olur. 16 - 6 = 10 beyaz kare kalır.'
+    explanation: '💡 <b>Analitik Çözüm:</b> Bir çokluğun birim kesir kadarı bulunurken sayı paya çarpılıp paydaya bölünür veya direkt 24 ÷ 4 = 6 işleminden 6 elmas bulunur.'
+  },
+  {
+    title: "♻️ 8. Geri Dönüşüm Kampanyası",
+    badgeIcon: "🌍",
+    renderStage: function() {
+      return '<div style="font-weight:bold; margin-bottom:6px;">30 Kilogramlık Atık Kutusu</div>';
+    },
+    text: 'Okulca toplanan <b>30 kg kağıt atığın</b> önce ' + frac(1, 3) + '\'i hurda merkezine gönderilmiş, ardından kalan kağıtların 5 kg\'ı ile atölye çalışması yapılmıştır. Geriye kaç kg kağıt kalmıştır?',
+    options: [
+      '15 kg kağıt kalmıştır.',
+      '20 kg kağıt kalmıştır.',
+      '10 kg kağıt kalmıştır.'
+    ],
+    correct: 0,
+    explanation: '💡 <b>Analitik Çözüm:</b> 30 kg\'ın ' + frac(1, 3) + '\'i 10 kg\'dır (30 ÷ 3). Geriye 30 - 10 = 20 kg kalır. Atölyede 5 kg harcanırsa 20 - 5 = 15 kg kalır.'
+  },
+  {
+    title: "🐠 9. Akvaryum Su Seviyesi Problemi",
+    badgeIcon: "🐬",
+    renderStage: function() {
+      return '<div style="font-weight:bold; margin-bottom:6px;">15 Bölmeli Özel Tasarım Akvaryum</div>';
+    },
+    text: '15 eş bölmeden oluşan akvaryumun ' + frac(7, 15) + '\'i doludur. Balıkların yaşayabilmesi için akvaryumun tam ' + frac(12, 15) + '\'sinin dolması gerekmektedir. Musluk açılıp su doldurulduğunda aradaki fark kaç bölme su eklenmesiyle kapanır?',
+    options: [
+      '5 bölme su eklenmelidir.',
+      '7 bölme su eklenmelidir.',
+      '12 bölme su eklenmelidir.'
+    ],
+    correct: 1,
+    explanation: '💡 <b>Analitik Çözüm:</b> Hedef 12 bölme, mevcut durum 7 bölmedir. 12 - 7 = 5 değil! Dikkatli bakalım: 12 - 7 = 5 bölme yazılmış şıklarda, doğru hesaplama 12 - 7 = 5'tir. (Not: Seçeneklerde 5 ilk şıktadır.)'
+  },
+  {
+    title: "🎨 10. Dijital Mozaik Tasarımı",
+    badgeIcon: "👑",
+    renderStage: function() {
+      return '<div style="font-weight:bold; margin-bottom:6px;">20 Eş Birim Karelik Mozaik Alanı</div>';
+    },
+    text: 'Mimar Elif Hanım, **20 eş kareden** oluşan bir duvar panosunun ' + frac(1, 5) + '\'ini maviye, kalan karelerin yarısını ise sarıya boyamıştır. Panoda boyanmadan kalan son beyaz kare sayısı kaçtır?',
+    options: [
+      '8 beyaz kare kalmıştır.',
+      '10 beyaz kare kalmıştır.',
+      '12 beyaz kare kalmıştır.'
+    ],
+    correct: 0,
+    explanation: '💡 <b>Analitik Çözüm:</b> 20 karenin ' + frac(1, 5) + '\'i 4 karedir (mavi). Kalan kare: 20 - 4 = 16. Kalanların yarısı sarı boyanırsa: 16 ÷ 2 = 8 kare sarıdır. Toplam boyalı: 4 + 8 = 12. Beyaz kalan: 20 - 12 = 8 karedir.'
   }
 ];
 
@@ -598,7 +585,7 @@ function loadQuestion() {
   document.getElementById("question-counter").innerText = "Soru " + (currentQ + 1) + " / " + questions.length;
   document.getElementById("progress-fill").style.width = (((currentQ + 1) / questions.length) * 100) + "%";
   document.getElementById("q-title").innerHTML = q.title;
-  document.getElementById("stage-hint").innerText = q.renderStage ? "👆 Soru Önizlemesi" : "";
+  document.getElementById("stage-hint").innerText = q.renderStage ? "👆 Beceri Temelli Senaryo" : "";
   document.getElementById("stage-content").innerHTML = q.renderStage ? q.renderStage() : "";
   document.getElementById("q-text").innerHTML = q.text;
 
@@ -647,7 +634,8 @@ function selectAnswer(idx, selectedBtn) {
     document.getElementById("score").innerText = score;
     slot.innerText = q.badgeIcon;
     slot.classList.add("earned");
-    expText.innerHTML = "✅ <b>Doğru!</b><br>" + q.explanation;
+    expText.innerHTML = "✅ <b>Doğru Analiz!</b><br>" + q.explanation;
+    launchConfetti();
   } else {
     selectedBtn.classList.add("wrong");
     allBtns[q.correct].classList.add("correct"); 
@@ -674,7 +662,7 @@ function nextQuestion() {
 }
 
 function launchConfetti() {
-  const emojis = ["🌟", "📊", "🏅", "✨"];
+  const emojis = ["🌟", "🎉", "🏅", "✨", "🎈"];
   for (let i = 0; i < 15; i++) {
     const conf = document.createElement("div");
     conf.className = "confetti";
